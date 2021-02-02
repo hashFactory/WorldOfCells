@@ -10,7 +10,7 @@ contact: nicolas.bredeche(at)sorbonne-universite.fr
 - Java JDK
 - JOGL
 
-# INSTALLATION (Ubuntu Mate)
+# INSTALLATION (Ubuntu)
 
 1. installer la version developpement d'openJDK (exemple avec openjdk ver.8): 
 
