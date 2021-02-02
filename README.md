@@ -16,7 +16,7 @@ _instructions pour Ubuntu Mate_
 
 1. installer la version developpement d'openJDK (exemple avec openjdk ver.8): 
 
-<p>_sudo apt-get install openjdk-8-jdk_</p>
+<p>sudo apt-get install openjdk-8-jdk</p>
 
 2. installer Jogl: 
 
