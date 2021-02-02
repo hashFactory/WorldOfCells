@@ -41,13 +41,11 @@ INSTALLATION
 2. installer Jogl: 
     sudo apt-get install libjogl2-java
 
-3. recuperer et desarchiver WorldOfCells-2021.zip
-
-4. compiler depuis le répertoire WorldOfCells
+3. compiler depuis le répertoire WorldOfCells
 
     javac -classpath "/usr/share/java/gluegen2-rt.jar:/usr/share/java/jogl2.jar:." applications/simpleworld/*.java
 
-5. executer
+4. executer
     java -classpath "/usr/share/java/gluegen2-rt.jar:/usr/share/java/jogl2.jar:." applications/simpleworld/MyEcosystem
 
 =-=-=-=-=
