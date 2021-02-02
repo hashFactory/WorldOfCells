@@ -2,7 +2,7 @@
 
 A template java projet for creating your own 3D environment with agents and cellular automata
 
-support de code pour l'UE projet du L2 Sorbonne Universite (LU2IN013)
+Support de code pour l'UE projet du L2 Sorbonne Universite (LU2IN013)
 contact: nicolas.bredeche(at)sorbonne-universite.fr
 
 # DEPENDANCES
@@ -16,31 +16,31 @@ _instructions pour Ubuntu Mate_
 
 1. installer la version developpement d'openJDK (exemple avec openjdk ver.8): 
 
-_sudo apt-get install openjdk-8-jdk_
+<p>_sudo apt-get install openjdk-8-jdk_</p>
 
 2. installer Jogl: 
 
-_sudo apt-get install libjogl2-java_
+<p>_sudo apt-get install libjogl2-java_</p>
 
 3. compiler depuis le répertoire WorldOfCells
 
-_javac -classpath "/usr/share/java/gluegen2-rt.jar:/usr/share/java/jogl2.jar:." applications/simpleworld/*.java_
+<p>_javac -classpath "/usr/share/java/gluegen2-rt.jar:/usr/share/java/jogl2.jar:." applications/simpleworld/*.java_</p>
 
 4. executer
 
-_java -classpath "/usr/share/java/gluegen2-rt.jar:/usr/share/java/jogl2.jar:." applications/simpleworld/MyEcosystem_
+<p>_java -classpath "/usr/share/java/gluegen2-rt.jar:/usr/share/java/jogl2.jar:." applications/simpleworld/MyEcosystem_</p>
 
 
 # PRISE EN MAIN
 
-- lancer applications.simpleworld.MyEcosystem
+- lancer _applications.simpleworld.MyEcosystem_
 - pendant l'execution, appuyer sur "h" pour afficher l'aide dans la console
-- etudier les codes source du package applications.simpleworld
+- etudier les codes source du package _applications.simpleworld_
 
 Ressources:
-- la classe World et WorldOfTrees contiennent l'essentiel des elements pour creer votre monde
-- le package objects contient la definition de quelques objets presents dans l'environnement
-- la classe PerlinNoiseLandscapeGenerator est a ecrire
+- les classes _World_ et _WorldOfTrees_ contiennent l'essentiel des elements pour creer votre monde
+- le package _objects_ contient la definition de quelques objets presents dans l'environnement
+- la classe _PerlinNoiseLandscapeGenerator_ est a ecrire
 
 # HISTORIQUE
 
@@ -49,12 +49,11 @@ Ressources:
 - 2020-02-20: mise a jour tutorial Eclipse
 - 2021-02-02: mise a jour avec la derniere version de JOGL + upload sur github
 
-
 # AUTRES INFORMATIONS
 
-- pour verifier votre version de java et javac: "update-alternatives --config java" (ou javac)
+- pour verifier votre version de java et javac: _update-alternatives --config java_ (ou _javac_)
 - Probleme possible sur certaines machines: les arbres ne s'affichent pas sur certaines machines
-	Solution: dans src/Objects/Tree.java, il y a 8 lignes commençant par "gl.glVertex3f(...)". Il suffit d'inverser les lignes paires et impaires (1 et 2, 3 et 4, etc.)
-- utilisation sur une machine virtuelle: l'option 3D de la VM doit être activée (erreur "VMware: No 3D enabled").
+	<p>Solution: dans _src/Objects/Tree.java_, il y a 8 lignes commençant par _gl.glVertex3f(...)_. Il suffit d'inverser les lignes paires et impaires (1 et 2, 3 et 4, etc.)</p>
+- utilisation sur une machine virtuelle: l'option 3D de la VM doit être activée (erreur "_VMware: No 3D enabled_").
 - OpenJDK: https://openjdk.java.net/install/
 - package Ubuntu JOGL: https://packages.ubuntu.com/search?suite=default&section=all&arch=any&keywords=libjogl2-java&searchon=names
