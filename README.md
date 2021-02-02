@@ -16,19 +16,19 @@ _instructions pour Ubuntu Mate_
 
 1. installer la version developpement d'openJDK (exemple avec openjdk ver.8): 
 
-<p>sudo apt-get install openjdk-8-jdk</p>
+_sudo apt-get install openjdk-8-jdk_
 
 2. installer Jogl: 
 
-<p>_sudo apt-get install libjogl2-java_</p>
+_sudo apt-get install libjogl2-java_
 
 3. compiler depuis le répertoire WorldOfCells
 
-<p>_javac -classpath "/usr/share/java/gluegen2-rt.jar:/usr/share/java/jogl2.jar:." applications/simpleworld/*.java_</p>
+_javac -classpath "/usr/share/java/gluegen2-rt.jar:/usr/share/java/jogl2.jar:." applications/simpleworld/*.java_
 
 4. executer
 
-<p>_java -classpath "/usr/share/java/gluegen2-rt.jar:/usr/share/java/jogl2.jar:." applications/simpleworld/MyEcosystem_</p>
+_java -classpath "/usr/share/java/gluegen2-rt.jar:/usr/share/java/jogl2.jar:." applications/simpleworld/MyEcosystem_
 
 
 # PRISE EN MAIN
