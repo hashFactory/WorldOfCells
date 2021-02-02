@@ -32,17 +32,20 @@ Ressources:
 # INSTALLATION
 
 1. installer la version developpement d'openJDK (exemple avec openjdk ver.8): 
-    sudo apt-get install openjdk-8-jdk
+
+	sudo apt-get install openjdk-8-jdk
 
 2. installer Jogl: 
-    sudo apt-get install libjogl2-java
+
+	sudo apt-get install libjogl2-java
 
 3. compiler depuis le répertoire WorldOfCells
 
-    javac -classpath "/usr/share/java/gluegen2-rt.jar:/usr/share/java/jogl2.jar:." applications/simpleworld/*.java
+	javac -classpath "/usr/share/java/gluegen2-rt.jar:/usr/share/java/jogl2.jar:." applications/simpleworld/*.java
 
 4. executer
-    java -classpath "/usr/share/java/gluegen2-rt.jar:/usr/share/java/jogl2.jar:." applications/simpleworld/MyEcosystem
+
+java -classpath "/usr/share/java/gluegen2-rt.jar:/usr/share/java/jogl2.jar:." applications/simpleworld/MyEcosystem
 
 # AUTRES INFORMATIONS
 
