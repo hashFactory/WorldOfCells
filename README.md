@@ -53,5 +53,6 @@ Ressources:
 - pour verifier votre version de java et javac: "update-alternatives --config java" (ou javac)
 - Probleme possible sur certaines machines: les arbres ne s'affichent pas sur certaines machines
 	Solution: dans src/Objects/Tree.java, il y a 8 lignes commençant par "gl.glVertex3f(...)". Il suffit d'inverser les lignes paires et impaires (1 et 2, 3 et 4, etc.)
+- utilisation sur une machine virtuelle: l'option 3D de la VM doit être activée (erreur "VMware: No 3D enabled").
 - OpenJDK: https://openjdk.java.net/install/
 - package Ubuntu JOGL: https://packages.ubuntu.com/search?suite=default&section=all&arch=any&keywords=libjogl2-java&searchon=names
