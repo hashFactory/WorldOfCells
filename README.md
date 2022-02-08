@@ -1,5 +1,32 @@
 # WorldOfCells
 
+Un projet d'Alexandre Capy et Tristan Charpentier.
+
+Pour travailler sur le repertoire :
+
+```bash
+git clone https://github.com/hashFactory/WorldOfCells.git
+cd WorldOfCells
+```
+
+Pour compiler :
+
+```bash
+javac -classpath "./jogl/gluegen2-rt.jar:./jogl/jogl2.jar:." applications/simpleworld/*.java
+```
+
+Et tourner :
+
+```bash
+export _JAVA_OPTIONS="-Djogl.disable.openglcore"
+java -classpath "./jogl/gluegen2-rt.jar:./jogl/jogl2.jar:." applications/simpleworld/MyEcosystem 
+```
+
+
+-----
+
+# Old readme
+
 A template java projet for creating your own 3D environment with agents and cellular automata
 
 Support de code pour l'UE projet du L2 Sorbonne Universite (LU2IN013)
