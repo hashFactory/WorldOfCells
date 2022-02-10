@@ -40,7 +40,7 @@ public class LandscapeToolbox {
 	{
 		int dxView = landscape.length;
 		int dyView = landscape[0].length;
-		
+
     	// smoothing coasts (coast tiles will have a zero)
 		for ( int x = 0 ; x != dxView ; x++ )
 			for ( int y = 0 ; y != dyView ; y++ )
@@ -54,7 +54,7 @@ public class LandscapeToolbox {
 						landscape[x][y] = 0.0;
 				}
 			}
-		
+
 		return landscape;
 	}
 	

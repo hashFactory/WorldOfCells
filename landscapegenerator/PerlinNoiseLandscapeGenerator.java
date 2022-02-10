@@ -10,12 +10,19 @@ public class PerlinNoiseLandscapeGenerator {
     {
     	double landscape[][] = new double[dxView][dyView];
 
+
+    	double fac = Math.random();
+    	double fac2 = Math.random();
+    	double fac3 = Math.random();
+
     	// A ECRIRE ! 
     	// ...
     	for ( int x = 0 ; x < dxView ; x++ )
     		for ( int y = 0 ; y < dyView ; y++ )
-    			landscape[x][y] = Math.random();
-    	
+    			landscape[x][y] = generateHeight(fac, 100, (float)x / 400.0) - generateHeight(fac2, 60, (float)y / 100.0);
+
+        //List<>
+
     	// ...
     	// cf. http://freespace.virgin.net/hugo.elias/models/m_perlin.htm pour une explication
 
@@ -25,5 +32,9 @@ public class PerlinNoiseLandscapeGenerator {
     	landscape = LandscapeToolbox.smoothLandscape(landscape);
     	
 		return landscape;
+    }
+
+    static double generateHeight(double a, double b, double x) {
+        return Math.sin(a * x) * b;
     }
 }

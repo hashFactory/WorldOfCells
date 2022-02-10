@@ -194,7 +194,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
             canvas.addMouseListener(__landscape);// register mouse callback functions
             canvas.addKeyListener(__landscape);// register keyboard callback functions
             frame.add(canvas);
-            frame.setSize(1024, 768);
+            frame.setSize(1024*2, 768*2);
             //frame.setSize(1280, 960);
             frame.setResizable(false);
             frame.addWindowListener(new WindowAdapter() {
@@ -373,6 +373,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         		// ** update Cellular Automata
             	
             	_myWorld.step();
+            	//System.out.println("Landscape [6,8] = " + landscape[6][8]);
 
         		// ** draw everything
 
