@@ -4,6 +4,7 @@
 
 package graphics;
 
+import landscapegenerator.PolynomialLandscapeGenerator;
 import worlds.*;
 
 import java.awt.*;
@@ -90,7 +91,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 		
 		private float rotateX = 0.0f;
 		
-		private float rotationVelocity = 0.6f; // 0.2f
+		private float rotationVelocity = 0.2f; // 0.2f
 
         int it = 0;
         int movingIt = 0;
@@ -131,8 +132,9 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         {
     		_myWorld = __myWorld;
 
-    		landscape = PerlinNoiseLandscapeGenerator.generatePerlinNoiseLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,10); // 11
-    		
+    		//landscape = PerlinNoiseLandscapeGenerator.generatePerlinNoiseLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,10); // 11
+    		landscape = PolynomialLandscapeGenerator.generatePolynomialLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,1); // 11
+
     		initLandscape();
         }
 
@@ -352,6 +354,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
                 {
                 	// as seen from above, no rotation (debug mode)
                 	gl.glTranslatef(0.0f, 0.0f, -500.0f); // 0,0,-5
+                	gl.glRotatef(1.0f, 0.0f, 1.0f, 0.0f);
                 }
                 else
                 {
@@ -525,12 +528,6 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         }
  
 
-      
-        
-        /**
-         * 
-         * @param args
-         */
         /*
 		public static void main(String[] args) {
 
