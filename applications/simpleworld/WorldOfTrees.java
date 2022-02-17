@@ -9,13 +9,19 @@ import com.jogamp.opengl.GL2;
 import objects.*;
 import worlds.World;
 
+import java.util.ArrayList;
+
 public class WorldOfTrees extends World {
 
     protected ForestCA cellularAutomata;
 
+	ArrayList<Ville> villes;
+
     public void init ( int __dxCA, int __dyCA, double[][] landscape )
     {
     	super.init(__dxCA, __dyCA, landscape);
+
+		villes = new ArrayList<>();
     	
     	// add colors
     	
