@@ -18,7 +18,7 @@ public class Ville extends UniqueDynamicObject{
 
 		
 
-	private ArrayList<Agent> agents;	//Liste de tous les agents 
+	private ArrayList<Agent> agents;	//Liste de tous les agents (fermiers, mineurs, bûcherons et soldats)
 	private ArrayList<Structure> structures; //Liste de tous les villages, fermes et mines
 
 	public Ville(int __x, int __y, World __world) 
