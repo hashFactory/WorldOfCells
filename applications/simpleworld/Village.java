@@ -12,11 +12,16 @@ public class Village extends Structure{
 
 	private ArrayList<Agent> agents;	//Liste des agents du village, un village ne peut pas produire de soldats
 
+	private ArrayList<int[][]> frontiere;	//Frontière du village
+
 	public Village (int __x, int __y, World __world) 
 	{
 		super(__x,__y,__world);
 
 		agents = new ArrayList<Agent>();
+
+		frontiere = new ArrayList<int[][]>();
+		frontiere.add(new int[__x][__y]);
 	}
 
 	public void step(){

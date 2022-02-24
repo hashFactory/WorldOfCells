@@ -17,16 +17,18 @@ public class Ville extends UniqueDynamicObject{
 	private int fer;		//Quantité de fer, nécessaire à la création de soldats
 	private int or;			//Quantité d'or, sert de monnais, obtenus dans les mines, ou par transactions avec d'autres villes
 
-		
+	private int numero;		//identifiant de la ville
 
-	private ArrayList<Agent> agents;	//Liste de tous les agents (fermiers, mineurs, bûcherons et soldats)
+	private ArrayList<Agent> agents;	 //Liste de tous les agents (fermiers, mineurs, bûcherons et soldats)
 	private ArrayList<Structure> structures; //Liste de tous les villages, fermes et mines
 	
 	private ArrayList<int[][]> frontiere;
 
-	public Ville(int __x, int __y, World __world) 
+	public Ville(int num, int __x, int __y, World __world) 
 	{
 		super(__x,__y,__world);
+
+		numero = num;
 
 		nourriture = 10; 
 		bois = 0;
