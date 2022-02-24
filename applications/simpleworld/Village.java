@@ -22,6 +22,8 @@ public class Village extends Structure{
 	public void step(){
 	
 	//Produit des agents
+
+	//influence
 		
 	}
 	

@@ -12,9 +12,10 @@ import applications.simpleworld.Structure;
 
 public class Ville extends UniqueDynamicObject{
 
-	private int nourriture;	//Quantité de nourriture, nécessaire à la création d'agents
+	private int nourriture;		//Quantité de nourriture, nécessaire à la création d'agents
 	private int bois;		//Quantité de bois, nécessaire à la création de villages
 	private int fer;		//Quantité de fer, nécessaire à la création de soldats
+	private int or;			//Quantité d'or, sert de monnais, obtenus dans les mines, ou par transactions avec d'autres villes
 
 		
 
@@ -37,7 +38,7 @@ public class Ville extends UniqueDynamicObject{
 
 	public void step(){
 	
-	//toutes les X itérations, récupère les ressources + étendre influence si possible + nourrir population
+	//toutes les X itérations, récupère les ressources + étendre influence si possible (étendre l'influence doit coûter qqch) + nourrir population
 
 	//condition si envahie -> détruire ville, le vainqueur récupère villages, fermes et mines
 		
