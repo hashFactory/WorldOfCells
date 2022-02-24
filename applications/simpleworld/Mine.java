@@ -10,7 +10,7 @@ public class Mine extends Structure{
 
 
 	int stockFer;
-	int stoclOr;
+	int stockOr;
 	int cpt;
 
 	static final int STOCKMAX = 100;	
@@ -20,7 +20,7 @@ public class Mine extends Structure{
 		super(__x,__y,__world);
 
 		stockFer = 0;
-		stoclOr = 0;
+		stockOr = 0;
 		cpt = 0;
 	}
 

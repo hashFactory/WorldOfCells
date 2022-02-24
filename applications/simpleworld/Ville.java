@@ -21,6 +21,8 @@ public class Ville extends UniqueDynamicObject{
 
 	private ArrayList<Agent> agents;	//Liste de tous les agents (fermiers, mineurs, bûcherons et soldats)
 	private ArrayList<Structure> structures; //Liste de tous les villages, fermes et mines
+	
+	private ArrayList<int[][]> frontiere;
 
 	public Ville(int __x, int __y, World __world) 
 	{
@@ -32,6 +34,10 @@ public class Ville extends UniqueDynamicObject{
 		
 		agents = new ArrayList<Agent>();
 		structures = new ArrayList<Structure>();
+
+		frontiere = new ArrayList<int[][]>();
+		frontiere.add(new int[__x][__y]);		//Cas de Base : la frontiere est la ville
+		
 	}
 
 	//fonction récupère ressource
