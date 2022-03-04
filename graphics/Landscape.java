@@ -4,11 +4,14 @@
 
 package graphics;
 
+import applications.simpleworld.Ville;
 import landscapegenerator.PolynomialLandscapeGenerator;
+import util.Location;
 import worlds.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
@@ -123,7 +126,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         int smoothingDistanceThreshold;
         
         int movingX = 0; 
-        int movingY = 0; 
+        int movingY = 0;
         
         /**
          * 
@@ -132,10 +135,34 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         {
     		_myWorld = __myWorld;
 
-    		//landscape = PerlinNoiseLandscapeGenerator.generatePerlinNoiseLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,10); // 11
-    		landscape = PolynomialLandscapeGenerator.generatePolynomialLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,1); // 11
+			int nombreDeVilles = 2;
+
+    		landscape = PerlinNoiseLandscapeGenerator.generatePerlinNoiseLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,10); // 11
+    		//landscape = PolynomialLandscapeGenerator.generatePolynomialLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,nombreDeVilles); // 11
 
     		initLandscape();
+
+			// placer villes
+			ArrayList<Location> surterrain = new ArrayList<>();
+
+			// recuperer liste de cases au dessus de l'eau
+			for (int i = 0; i < __dx; i++) {
+				for (int j = 0; j < __dy; j++) {
+					if (landscape[i][j] >= 0.0) {
+						surterrain.add(new Location(i, j));
+					}
+				}
+			}
+
+			for (int i = 0; i < nombreDeVilles; i++) {
+				int index = (int)(Math.random() * surterrain.size());
+
+				float color[] = new float[3];
+				color[0] = 1.f; color[1] = 0.2f; color[2] = 1.0f;
+
+				_myWorld.cellsColorValues.setCellState(surterrain.get(index).x, surterrain.get(index).y, color);
+				_myWorld.uniqueDynamicObjects.add(new Ville(surterrain.get(index).x, surterrain.get(index).y, _myWorld));
+			}
         }
 
         /**
@@ -380,7 +407,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 
         		// ** draw everything
 
-            	gl.glBegin(GL2.GL_QUADS);                
+            	gl.glBegin(GL2.GL_QUADS);
                 
                 //movingX = movingIt;// it; // was: it
                 //movingY = 0; // was: it
@@ -540,7 +567,9 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			
+			landscape = PerlinNoiseLandscapeGenerator.generatePerlinNoiseLandscape(256,256,0.5,0.5,1); // 11
+
+			initLandscape();
 		}
 
 

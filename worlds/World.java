@@ -16,7 +16,7 @@ public abstract class World {
 	protected int iteration = 0;
 
 	protected ArrayList<UniqueObject> uniqueObjects = new ArrayList<UniqueObject>();
-	protected ArrayList<UniqueDynamicObject> uniqueDynamicObjects = new ArrayList<UniqueDynamicObject>();
+	public ArrayList<UniqueDynamicObject> uniqueDynamicObjects = new ArrayList<UniqueDynamicObject>();
     
 	protected int dxCA;
 	protected int dyCA;
@@ -144,7 +144,7 @@ public abstract class World {
     	for ( int i = 0 ; i < uniqueDynamicObjects.size(); i++ )
     		uniqueDynamicObjects.get(i).displayUniqueObject(_myWorld,gl,offsetCA_x,offsetCA_y,offset,stepX,stepY,lenX,lenY,normalizeHeight);
 	}
-    
+
 	public int getWidth() { return dxCA; }
 	public int getHeight() { return dxCA; }
 

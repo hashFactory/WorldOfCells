@@ -25,6 +25,7 @@
         au dessus d'une certains altitude
     [ ] ville / village
     [ ] ferme
+[ ] generation depuis heightmap de coordonees lat/long
 
 limiter points d'interets a 5
 
