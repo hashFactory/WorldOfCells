@@ -28,7 +28,7 @@ public class ForestCA extends CellularAutomataInteger {
 		for ( int x = 0 ; x != _dx ; x++ )
     		for ( int y = 0 ; y != _dy ; y++ )
     		{
-    			if ( _cellsHeightValuesCA.getCellState(x,y) >= 0 )
+    			if ( _cellsHeightValuesCA.getCellState(x,y) >= 0.05 )
     			{
     				if ( Math.random() < 0.53 ) // was: 0.71
     					this.setCellState(x, y, 1); // tree
@@ -106,6 +106,11 @@ public class ForestCA extends CellularAutomataInteger {
 	    					color[1] = 0.f;
 	    					color[2] = 0.f;
 	    					break;
+						case 33:
+							color[0] = 1.0f;
+							color[1] = 0.2f;
+							color[2] = 1.0f;
+							break;
 	    				default:
 	    					color[0] = 0.5f;
 	    					color[1] = 0.5f;

@@ -4,14 +4,16 @@
 
 package landscapegenerator;
 
+import static java.lang.System.nanoTime;
+
 class SimplerNoise {
 	// recuperre de https://stackoverflow.com/questions/28755988/perlin-noise-for-terrain-generation
-	static float noise2(int x, int y) {
-		int n = x + y * 57;
+	static float noise2(int x, int y, int v1, int v2, int v3) {
+		int n = x + y * v1;
 		n = (n << 13) ^ n;
-		return (float) (1.0-((n*(n*n*15731+789221)+1376312589)&0x7fffffff)/1073741824.0);
+		return (float) (1.0-((n*(n*n*15731+v2)+v3)&0x7fffffff)/1073741824.0);
 	}
-	static float stretchedNoise2(float x_float, float y_float, float stretch) {
+	static float stretchedNoise2(float x_float, float y_float, float stretch, int v1, int v2, int v3) {
 		// stretch
 		x_float /= stretch;
 		y_float /= stretch;
@@ -26,9 +28,9 @@ class SimplerNoise {
 		for (int j = 0; j < 4; j++) {
 			double[] p2 = new double[4];
 			for (int i = 0; i < 4; i++) {
-				p2[i] = noise2(x + i - 1, y + j - 1);
+				p2[i] = noise2(x + i - 1, y + j - 1, v1, v2, v3);
 			}
-			// interpolate each row
+			// interpolate each rowstepX
 			p[j] = cubicInterp(p2, fractional_X);
 		}
 		// and interpolate the results each row's interpolation
@@ -44,17 +46,17 @@ class SimplerNoise {
 		double S = v1;
 		return P * x * x * x + Q * x * x + R * x + S;
 	}
-	public static double perlin2(float xx, float yy, double nn) {
+	public static double perlin2(float xx, float yy, int v1, int v2, int v3) {
 		double noise = 0;
-		noise += stretchedNoise2(xx, yy,  5) * 1; // sample 1
-		noise += stretchedNoise2(xx, yy, 13) * 2; // twice as influential
-		noise += stretchedNoise2(xx, yy, 21) * 1;
-		noise += stretchedNoise2(xx, yy, 55) * 3;
+		noise += stretchedNoise2(xx, yy,  5, v1, v2, v3) * 1; // sample 1
+		noise += stretchedNoise2(xx, yy, 13, v1, v2, v3) * 2; // twice as influential
+		noise += stretchedNoise2(xx, yy, 21, v1, v2, v3) * 1;
+		noise += stretchedNoise2(xx, yy, 55, v1, v2, v3) * 5;
 
 		// you can keep repeating different variants of the above lines
 		// some interesting variants are included below.
 
-		return noise / (1+2+1+3); // make sure you sum the multipliers above
+		return noise / (1+2+1+5); // make sure you sum the multipliers above
 	}
 
 }
@@ -116,26 +118,33 @@ public class PerlinNoiseLandscapeGenerator {
     	double landscape[][] = new double[dxView][dyView];
 		ImprovedNoise im = new ImprovedNoise();
 
-    	double fac = Math.random();
-    	double fac2 = Math.random();
-    	double fac3 = Math.random();
+    	int v1 = (int)(Math.random() * 128);
+		int v2 = (int)(Math.random() * 789221);
+		int v3 = (int)(Math.random() * 1376312589);
+		double fac3 = Math.random();
 
     	// A ECRIRE ! 
     	// ...
+
+		long t1 = nanoTime();
+
     	for ( int x = 0 ; x < dxView ; x++ )
     		for ( int y = 0 ; y < dyView ; y++ )
-    			landscape[x][y] = SimplerNoise.perlin2(x, y, 0.1);
+    			landscape[x][y] = SimplerNoise.perlin2(x, y, v1, v2, v3);
 				//landscape[x][y] = ImprovedNoise.noise(x, y, 0);
 				//landscape[x][y] = generateHeight(fac, 10, (float)x / 20.0) - generateHeight(fac2, 20, (float)y / 20.0)
                 //     + generateHeight(fac, 10, (float)y / 20.0) - generateHeight(fac3, 2, (float)x / 40.0);
-
+		/*
 		for ( int x = 0 ; x < dxView ; x++) {
 			for (int y = 0; y < dyView; y++) {
 				landscape[x][y] += 0.0;
-				System.out.print(landscape[x][y] + " ");
+				//System.out.print(landscape[x][y] + " ");
 			}
-			System.out.println();
+			//System.out.println();
 		}
+		*/
+		long t2 = nanoTime();
+		System.out.println("Generated new terrain! in " + ((t2 - t1) / 1000000) + " ms");
 
 		// scaling and polishing
     	landscape = LandscapeToolbox.scaleAndCenter(landscape, scaling, landscapeAltitudeRatio);

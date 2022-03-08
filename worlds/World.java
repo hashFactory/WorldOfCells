@@ -66,21 +66,25 @@ public abstract class World {
     			cellsHeightAmplitudeCA.setCellState(x,y,maxHeightValue-minHeightValue);
     			cellsHeightValuesCA.setCellState(x,y,(minHeightValue+maxHeightValue)/2.0);
 
-    			/* TODO! Default coloring
+    			// TODO! Default coloring
     	    	// init color information
-    	        if ( this.cellsHeightAmplitudeCA.getCellState(x,y) >= 0.0 )
-    	        {
-    				float color[] = { (float)height*4.0f, 1.0f-(float)height*0.3f, (float)height*2.0f };
-    				this.cellsColorValues.setCellState(x,y,color);
-    	        }
+				double height = this.cellsHeightAmplitudeCA.getCellState(x,y);
+				float[] color;
+				if ( height >= 0.0 )
+				{
+					color = new float[]{(float) height * 4.0f, 1.0f - (float) height * 0.3f, (float) height * 2.0f};
+					// sand
+					if (height <= 0.4)
+						color = new float[]{ 1.f, 1.f, 0.5f };
+				}
     	        else
     	        {
     	        	// water
-    				float color[] = { (float)(-height), 1.0f-(float)(-height)*0.3f, (float)1.0f };
-    				this.cellsColorValues.setCellState(x,y,color);
-    	        }
-    	        */
-    		}
+					color = new float[]{(float) (-height), 1.0f - (float) (-height) * 0.3f, (float) 1.0f};
+				}
+				this.cellsColorValues.setCellState(x,y,color);
+
+			}
     	
     	initCellularAutomata(__dxCA,__dyCA,landscape);
 

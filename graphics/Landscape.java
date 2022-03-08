@@ -5,7 +5,7 @@
 package graphics;
 
 import applications.simpleworld.Ville;
-import landscapegenerator.PolynomialLandscapeGenerator;
+
 import util.Location;
 import worlds.*;
 
@@ -189,8 +189,8 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         	
     		_myWorld.init(dxView-1,dyView-1,landscape);
     		
-    		heightFactor = 32.0f; //64.0f; // was: 32.0f;
-            heightBooster = 6.0; // default: 2.0 // 6.0 makes nice high mountains.
+    		heightFactor = 16.0f; //64.0f; // was: 32.0f;
+            heightBooster = 3.0; // default: 2.0 // 6.0 makes nice high mountains.
            
     		offset = -200.0f; // was: -40.
     		stepX = (-offset*2.0f) / dxView;
@@ -567,7 +567,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			landscape = PerlinNoiseLandscapeGenerator.generatePerlinNoiseLandscape(256,256,0.5,0.5,1); // 11
+			landscape = PerlinNoiseLandscapeGenerator.generatePerlinNoiseLandscape(256,256,1,0.25,1); // 11
 
 			initLandscape();
 		}

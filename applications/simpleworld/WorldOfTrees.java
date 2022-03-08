@@ -34,13 +34,20 @@ public class WorldOfTrees extends World {
 					color[1] = height / (float)this.getMaxEverHeight();
 					color[2] = height / (float)this.getMaxEverHeight();
 					/**/
-		        	
+
 					// green mountains
-		        	/**/
-		        	color[0] = height / ( (float)this.getMaxEverHeight() );
+					/**/
+					color[0] = height / ( (float)this.getMaxEverHeight() );
 					color[1] = 0.9f + 0.1f * height / ( (float)this.getMaxEverHeight() );
 					color[2] = height / ( (float)this.getMaxEverHeight() );
 					/**/
+
+					// sand
+					if (height <= 0.05) {
+						color[0] = 1.f;
+						color[1] = 1.f;
+						color[2] = 0.5f;
+					}
 		        }
 		        else
 		        {
@@ -95,7 +102,7 @@ public class WorldOfTrees extends World {
     {
     	cellularAutomata.setCellState( x%dxCA, y%dyCA, state);
     }
-    
+
 	public void displayObjectAt(World _myWorld, GL2 gl, int cellState, int x,
 			int y, double height, float offset,
 			float stepX, float stepY, float lenX, float lenY,
@@ -107,6 +114,10 @@ public class WorldOfTrees extends World {
 		case 2:
 		case 3:
 			Tree.displayObjectAt(_myWorld,gl,cellState, x, y, height, offset, stepX, stepY, lenX, lenY, normalizeHeight);
+			break;
+			case 33:
+			break;
+
 		default:
 			// nothing to display at this location.
 		}
