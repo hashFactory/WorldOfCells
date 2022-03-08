@@ -6,7 +6,7 @@ package graphics;
 
 import applications.simpleworld.Ville;
 
-import util.Location;
+import util.Case;
 import worlds.*;
 
 import java.awt.*;
@@ -143,13 +143,13 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
     		initLandscape();
 
 			// placer villes
-			ArrayList<Location> surterrain = new ArrayList<>();
+			ArrayList<Case> surterrain = new ArrayList<>();
 
 			// recuperer liste de cases au dessus de l'eau
 			for (int i = 0; i < __dx; i++) {
 				for (int j = 0; j < __dy; j++) {
 					if (landscape[i][j] >= 0.0) {
-						surterrain.add(new Location(i, j));
+						surterrain.add(new Case(i, j));
 					}
 				}
 			}
@@ -161,7 +161,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 				color[0] = 1.f; color[1] = 0.2f; color[2] = 1.0f;
 
 				_myWorld.cellsColorValues.setCellState(surterrain.get(index).x, surterrain.get(index).y, color);
-				_myWorld.uniqueDynamicObjects.add(new Ville(surterrain.get(index).x, surterrain.get(index).y, _myWorld));
+				_myWorld.uniqueDynamicObjects.add(new Ville(1,surterrain.get(index).x, surterrain.get(index).y, _myWorld));
 			}
         }
 
@@ -223,7 +223,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
             canvas.addMouseListener(__landscape);// register mouse callback functions
             canvas.addKeyListener(__landscape);// register keyboard callback functions
             frame.add(canvas);
-            frame.setSize(1024*2, 768*2);
+            frame.setSize(1024, 768);
             //frame.setSize(1280, 960);
             frame.setResizable(false);
             frame.addWindowListener(new WindowAdapter() {

@@ -10,6 +10,8 @@ import objects.UniqueDynamicObject;
 
 import applications.simpleworld.Structure;
 
+import util.Case;
+
 public class Ville extends UniqueDynamicObject{
 
 	private int nourriture;		//Quantité de nourriture, nécessaire à la création d'agents
@@ -22,7 +24,7 @@ public class Ville extends UniqueDynamicObject{
 	private ArrayList<Agent> agents;	 //Liste de tous les agents (fermiers, mineurs, bûcherons et soldats)
 	private ArrayList<Structure> structures; //Liste de tous les villages, fermes et mines
 	
-	private ArrayList<int[][]> frontiere;
+	private ArrayList<Case> frontiere;
 
 	public Ville(int num, int __x, int __y, World __world) 
 	{
@@ -37,8 +39,8 @@ public class Ville extends UniqueDynamicObject{
 		agents = new ArrayList<Agent>();
 		structures = new ArrayList<Structure>();
 
-		frontiere = new ArrayList<int[][]>();
-		frontiere.add(new int[__x][__y]);		//Cas de Base : la frontiere est la ville
+		frontiere = new ArrayList<Case>();
+		frontiere.add(new Case(__x,__y));		//Cas de Base : la frontiere est la ville
 		
 	}
 
