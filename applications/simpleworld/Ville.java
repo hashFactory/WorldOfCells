@@ -6,18 +6,19 @@ import worlds.World;
 
 import java.util.ArrayList;
 
-import objects.UniqueDynamicObject;
-
 import applications.simpleworld.Structure;
 
 import util.Case;
 
-public class Ville extends UniqueDynamicObject{
+public class Ville extends Agent{
+
+	private Case coordoVille;	//coordonnées de la ville
 
 	private int nourriture;		//Quantité de nourriture, nécessaire à la création d'agents
 	private int bois;		//Quantité de bois, nécessaire à la création de villages
 	private int fer;		//Quantité de fer, nécessaire à la création de soldats
 	private int or;			//Quantité d'or, sert de monnais, obtenus dans les mines, ou par transactions avec d'autres villes
+	private int nbAgents;
 
 	private int numero;		//identifiant de la ville
 
@@ -29,13 +30,15 @@ public class Ville extends UniqueDynamicObject{
 	public Ville(int num, int __x, int __y, World __world) 
 	{
 		super(__x,__y,__world);
-
+		
+		coordoVille = new Case(__x,__y);
 		numero = num;
 
 		nourriture = 10; 
 		bois = 0;
 		fer = 0;
 		
+		nbAgents = 0;
 		agents = new ArrayList<Agent>();
 		structures = new ArrayList<Structure>();
 

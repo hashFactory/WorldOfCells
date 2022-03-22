@@ -4,10 +4,8 @@ import com.jogamp.opengl.GL2;
 
 import worlds.World;
 
-import objects.UniqueDynamicObject;
 
-
-public class Structure extends UniqueDynamicObject{
+public class Structure extends Agent{
 
 	public Structure ( int __x , int __y, World __world )
 	{
