@@ -71,6 +71,16 @@ public class WorldOfTrees extends World {
     	uniqueDynamicObjects.add(new Agent(64,64,this));
     	
     }
+
+	public void setCell(int num, float[] color,int x,int y){
+		//préparation couleur
+		color[0] = 0.6f;
+		color[1] = 1.f;
+		color[2] = 1.f;
+
+		this.cellsColorValues.setCellState(x, y, color);
+		cellularAutomata.setCellState(x,y,num);
+	}
     
     protected void initCellularAutomata(int __dxCA, int __dyCA, double[][] landscape)
     {

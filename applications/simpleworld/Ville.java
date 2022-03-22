@@ -10,6 +10,8 @@ import applications.simpleworld.Structure;
 
 import util.Case;
 
+import applications.simpleworld.WorldOfTrees;
+
 public class Ville extends Agent{
 
 	private Case coordoVille;	//coordonnées de la ville
@@ -21,18 +23,24 @@ public class Ville extends Agent{
 	private int nbAgents;
 
 	private int numero;		//identifiant de la ville
+	private float[] color;
 
 	private ArrayList<Agent> agents;	 //Liste de tous les agents (fermiers, mineurs, bûcherons et soldats)
 	private ArrayList<Structure> structures; //Liste de tous les villages, fermes et mines
 	
 	private ArrayList<Case> frontiere;
 
-	public Ville(int num, int __x, int __y, World __world) 
+	private WorldOfTrees world;
+
+	private int cpt;
+
+	public Ville(int num, int __x, int __y, WorldOfTrees __world) 
 	{
 		super(__x,__y,__world);
 		
 		coordoVille = new Case(__x,__y);
 		numero = num;
+		color = new float[3];
 
 		nourriture = 10; 
 		bois = 0;
@@ -45,16 +53,26 @@ public class Ville extends Agent{
 		frontiere = new ArrayList<Case>();
 		frontiere.add(new Case(__x,__y));		//Cas de Base : la frontiere est la ville
 		
+		world = __world;
+
+		cpt=0;
 	}
 
 	//fonction récupère ressource
 
 	public void step(){
+
+	world.setCell(numero,color,1,1);
+
+	if(cpt<=1000){
+		world.setCell(5,color,1,1);
+	}
+	System.out.println("new Cell Value = "+world.getCellValue(1,1));
 	
 	//toutes les X itérations, récupère les ressources + étendre influence si possible (étendre l'influence doit coûter qqch) + nourrir population
 
 	//condition si envahie -> détruire ville, le vainqueur récupère villages, fermes et mines
-		
+		cpt++;
 	}
 	
 	public void displayUniqueObject(World myWorld, GL2 gl, int offsetCA_x, int offsetCA_y, float offset, float stepX, float stepY, float lenX, float lenY, float normalizeHeight ){
