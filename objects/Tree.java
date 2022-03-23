@@ -17,13 +17,13 @@ public class Tree extends CommonObject {
         switch ( cellState )
         {
         	case 1:
-        		gl.glColor3f(0.f,0.6f-(float)(0.2*Math.random()),0.f);
+        		gl.glColor3f(0.f,0.6f-(float)(0.1*Math.random()),0.f);
         		break;
         	case 2:
-        		gl.glColor3f(1.f-(float)(0.2*Math.random()),0.f,0.f);
+        		gl.glColor3f(1.f-(float)(0.1*Math.random()),0.f,0.f);
         		break;
         	case 3:
-        		gl.glColor3f(0.f+(float)(0.2*Math.random()),0.f+(float)(0.2*Math.random()),0.f+(float)(0.2*Math.random()));
+        		gl.glColor3f(0.f+(float)(0.1*Math.random()),0.f+(float)(0.1*Math.random()),0.f+(float)(0.2*Math.random()));
         		break;
         }
         
@@ -32,18 +32,20 @@ public class Tree extends CommonObject {
     		float altitude = (float)height * normalizeHeight ;
     		
     		//float heightFactor, double heightBooster, float smoothFactor[]
-    		
-    		// maj: 2020-02-13
-    		
-            gl.glVertex3f( offset+x*stepX-lenY/16.f, offset+y*stepY+lenY/2.f, altitude + 4.f );
-    		gl.glVertex3f( offset+x*stepX, offset+y*stepY, altitude );
-            gl.glVertex3f( offset+x*stepX+lenY/16.f, offset+y*stepY-lenY/2.f, altitude + 4.f );
-            gl.glVertex3f( offset+x*stepX, offset+y*stepY, altitude );
 
-            gl.glVertex3f( offset+x*stepX-lenY/2.f, offset+y*stepY+lenY/16.f, altitude + 4.f );
-    		gl.glVertex3f( offset+x*stepX, offset+y*stepY, altitude );
-            gl.glVertex3f( offset+x*stepX+lenY/2.f, offset+y*stepY-lenY/16.f, altitude + 4.f );
-            gl.glVertex3f( offset+x*stepX, offset+y*stepY, altitude );
+            float xx = offset+(x*stepX);
+            float yy = offset+(y*stepY);
+
+            // correction de l'ordre des vecteurs
+            gl.glVertex3f(xx-lenX/8.f, yy, altitude);
+            gl.glVertex3f(xx-lenX/8.f, yy, altitude+3.f);
+            gl.glVertex3f(xx+lenX/8.f, yy, altitude+3.f);
+            gl.glVertex3f(xx+lenX/8.f, yy, altitude);
+
+            gl.glVertex3f(xx, yy-lenY/6.f, altitude);
+            gl.glVertex3f(xx, yy-lenY/6.f, altitude+2.f);
+            gl.glVertex3f(xx, yy+lenY/6.f, altitude);
+            gl.glVertex3f(xx, yy+lenY/6.f, altitude+2.f);
         }
     }
 

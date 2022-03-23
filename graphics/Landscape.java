@@ -6,6 +6,7 @@ package graphics;
 
 import applications.simpleworld.Ville;
 
+import applications.simpleworld.WorldOfTrees;
 import util.Case;
 import worlds.*;
 
@@ -55,13 +56,13 @@ import landscapegenerator.PerlinNoiseLandscapeGenerator;
  */
 public class Landscape implements GLEventListener, KeyListener, MouseListener{
 	
-		private World _myWorld; 
+		private WorldOfTrees _myWorld;
 	
 		private static GLCapabilities caps;  // GO FAST ???
 	
 		static boolean MY_LIGHT_RENDERING = false; // true: nicer but slower
 		
-		final static boolean SMOOTH_AT_BORDER = true; // nicer (but wrong) rendering at border (smooth altitudes)
+		final static boolean SMOOTH_AT_BORDER = false; // nicer (but wrong) rendering at border (smooth altitudes)
 		
 		//final static double landscapeAltitudeRatio = 0.6; // 0.5: half mountain, half water ; 0.3: fewer water
 		
@@ -131,7 +132,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         /**
          * 
          */
-        public Landscape (World __myWorld, int __dx, int __dy, double scaling, double landscapeAltitudeRatio)
+        public Landscape (WorldOfTrees __myWorld, int __dx, int __dy, double scaling, double landscapeAltitudeRatio)
         {
     		_myWorld = __myWorld;
 
@@ -146,8 +147,8 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 			ArrayList<Case> surterrain = new ArrayList<>();
 
 			// recuperer liste de cases au dessus de l'eau
-			for (int i = 0; i < __dx; i++) {
-				for (int j = 0; j < __dy; j++) {
+			for (int i = 0; i < __dx-1; i++) {
+				for (int j = 0; j < __dy-1; j++) {
 					if (landscape[i][j] >= 0.0) {
 						surterrain.add(new Case(i, j));
 					}
@@ -161,14 +162,14 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 				color[0] = 1.f; color[1] = 0.2f; color[2] = 1.0f;
 
 				_myWorld.cellsColorValues.setCellState(surterrain.get(index).x, surterrain.get(index).y, color);
-				_myWorld.uniqueDynamicObjects.add(new Ville(1,surterrain.get(index).x, surterrain.get(index).y, _myWorld));
+				_myWorld.uniqueDynamicObjects.add(new Ville(i*10,surterrain.get(index).x, surterrain.get(index).y, _myWorld));
 			}
         }
 
         /**
          * 
          */
-        public Landscape (World __myWorld, String __filename, double scaling, double landscapeAltitudeRatio)
+        public Landscape (WorldOfTrees __myWorld, String __filename, double scaling, double landscapeAltitudeRatio)
         {
     		_myWorld = __myWorld;
 
@@ -211,11 +212,11 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
          */
         public static Landscape run(Landscape __landscape)
         {
-    		caps = new GLCapabilities(null); //!n
+    		caps = new GLCapabilities(GLProfile.getMaximum(true)); //!n
+			System.out.println(GLProfile.glAvailabilityToString());
     		//20210202-caps.setDoubleBuffered(true);  //!n
-    		
-    		final GLCanvas canvas = new GLCanvas(caps); // original
-    		
+			final GLCanvas canvas = new GLCanvas(caps); // original
+
             final Frame frame = new Frame("World Of Cells");
             animator = new Animator(canvas);
             //Landscape myLandscape = new Landscape(dx,dy,myWorld);
@@ -261,7 +262,6 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
                 // ? gl.setSwapInterval(1);
                 // END of GO FAST ???
 
-
                 gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
                 gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
                 gl.glClearDepth(1.0f);
@@ -270,12 +270,11 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
                 gl.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
                 
                 // Culling - display only triangles facing the screen
-                gl.glCullFace(GL.GL_FRONT);
-                gl.glEnable(GL.GL_CULL_FACE);
+                //gl.glCullFace(GL.GL_FRONT);
+                //gl.glEnable(GL.GL_CULL_FACE);
 
                 // trucs d'alex
                 gl.glEnable(GL.GL_DITHER);
-                
                 
         }
         
@@ -408,7 +407,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         		// ** draw everything
 
             	gl.glBegin(GL2.GL_QUADS);
-                
+
                 //movingX = movingIt;// it; // was: it
                 //movingY = 0; // was: it
                 
