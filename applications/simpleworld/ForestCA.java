@@ -33,6 +33,7 @@ public class ForestCA extends CellularAutomataInteger {
 					if (Math.random() < 0.53) {// was: 0.71 {
 						//this.setCellState(x, y, 1); // tree
 						this.world.setCell(1, Couleur.intToCouleur(1).toArray(), x, y);
+						this.setCellState(x, y, 1);
 					}
     				else
     					this.setCellState(x, y, 0); // empty
@@ -54,6 +55,8 @@ public class ForestCA extends CellularAutomataInteger {
     		{
 				boolean changed = false;
 				int state = this.getCellState(i,j) % 100;
+				int code_ville = 100 * ((this.getCellState(i,j) / 100));
+				int nouveau_state = 0;
     			if ( state >= 0 && state < 4 )
     			{
 	    			if ( state == 1 ) // tree?
@@ -66,18 +69,18 @@ public class ForestCA extends CellularAutomataInteger {
 	    						this.getCellState( i , (j+_dy-1)%(_dy) ) % 100 == 2
 	    					)
 	    				{
-	    					this.setCellState(i,j,2);
+							nouveau_state = code_ville + 2;
 							changed = true;
 	    				}
 	    				else
 	    					if ( Math.random() < 0.00001 ) // spontaneously take fire ?
 	    					{
-	    						this.setCellState(i,j,2);
+								nouveau_state = code_ville + 2;
 								changed = true;
 	    					}
 	    					else
 	    					{
-	    						this.setCellState(i,j,this.getCellState(i,j)); // copied unchanged
+								nouveau_state = code_ville + state; // copied unchanged
 								changed = true;
 							}
 	    			}
@@ -85,56 +88,28 @@ public class ForestCA extends CellularAutomataInteger {
 	    			{
 	        				if ( state == 2 ) // burning?
 	        				{
-	        					this.setCellState(i,j,3); // burnt
+								nouveau_state = code_ville + 3; // burnt
 								changed = true;
-	        				}
+							}
 	        				else
 	        				{
-	        					this.setCellState(i,j,this.getCellState(i,j)); // copied unchanged
-	        				}
-	    			}
+								nouveau_state = code_ville + state; // copied unchanged
+								changed = true;
+							}
+					}
+					changed = true;
 	    			
 	    			float color[] = new float[3];
-/*
-	    			switch ( this.getCellState(i, j) % 100 )
-	    			{
-	    				case 0:
-	    					break;
-	    				case 1:
-	    					color[0] = 0.f;
-	    					color[1] = 0.3f;
-	    					color[2] = 0.f;
-	    					break;
-	    				case 2: // burning tree
-	    					color[0] = 1.f;
-	    					color[1] = 0.f;
-	    					color[2] = 0.f;
-	    					break;
-	    				case 3: // burnt tree
-	    					color[0] = 0.f;
-	    					color[1] = 0.f;
-	    					color[2] = 0.f;
-	    					break;
-						case 33:
-							color[0] = 1.0f;
-							color[1] = 0.2f;
-							color[2] = 1.0f;
-							break;
-	    				default:
-	    					color[0] = 0.5f;
-	    					color[1] = 0.5f;
-	    					color[2] = 0.5f;
-	    					System.out.print("cannot interpret CA state: " + this.getCellState(i, j));
-	    					System.out.println(" (at: " + i + "," + j + " -- height: " + this.world.getCellHeight(i,j) + " )");
-	    			}	   */
 
 					if (changed) {
-						color = Couleur.intToCouleur(this.getCellState(i, j)).toArray();
+						color = Couleur.intToCouleur(nouveau_state).toArray();
+						this.setCellState(i,j,nouveau_state);
 						this.world.cellsColorValues.setCellState(i, j, color);
 					}
     			}
     		}
     	this.swapBuffer();
+		this.world.cellsColorValues.swapBuffer();
 	}
 
 	
