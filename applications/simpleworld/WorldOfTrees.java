@@ -7,6 +7,7 @@ package applications.simpleworld;
 import com.jogamp.opengl.GL2;
 
 import objects.*;
+import util.Couleur;
 import worlds.World;
 
 public class WorldOfTrees extends World {
@@ -40,13 +41,13 @@ public class WorldOfTrees extends World {
 					color[0] = height / ( (float)this.getMaxEverHeight() );
 					color[1] = 0.9f + 0.1f * height / ( (float)this.getMaxEverHeight() );
 					color[2] = height / ( (float)this.getMaxEverHeight() );
+					this.setCellValue(x, y, 0);
 					/**/
 
 					// sand
 					if (height <= 0.05) {
-						color[0] = 1.f;
-						color[1] = 1.f;
-						color[2] = 0.5f;
+						color = Couleur.intToCouleur(4).toArray();
+						this.setCellValue(x, y, 4);
 					}
 		        }
 		        else
@@ -55,6 +56,7 @@ public class WorldOfTrees extends World {
 					color[0] = -height;
 					color[1] = -height;
 					color[2] = 1.f;
+					this.setCellValue(x, y, 5);
 		        }
 		        this.cellsColorValues.setCellState(x, y, color);
     		}
@@ -72,14 +74,18 @@ public class WorldOfTrees extends World {
     	
     }
 
-	public void setCell(int num, float[] color,int x,int y){
-		//préparation couleur
-		color[0] = 0.6f;
-		color[1] = 1.f;
-		color[2] = 1.f;
+	public void setCell(int num, int x, int y) {
+		//this.cellsColorValues.setCellState();
+	}
 
-		this.cellsColorValues.setCellState(x, y, color);
+	public void setCell(int num, float[] color, int x,int y){
+		//préparation couleur
+		/*color[0] = 0.6f;
+		color[1] = 1.f;
+		color[2] = 1.f;*/
+
 		cellularAutomata.setCellState(x,y,num);
+		this.cellsColorValues.setCellState(x, y, color);
 	}
     
     protected void initCellularAutomata(int __dxCA, int __dyCA, double[][] landscape)
@@ -118,7 +124,7 @@ public class WorldOfTrees extends World {
 			float stepX, float stepY, float lenX, float lenY,
 			float normalizeHeight) 
 	{
-		switch ( cellState )
+		switch ( cellState % 100 )
 		{
 		case 1: // trees: green, fire, burnt
 		case 2:

@@ -16,6 +16,7 @@ public class Tree extends CommonObject {
         
         switch ( cellState )
         {
+            /*
         	case 1:
         		gl.glColor3f(0.f,0.6f-(float)(0.1*Math.random()),0.f);
         		break;
@@ -24,9 +25,9 @@ public class Tree extends CommonObject {
         		break;
         	case 3:
         		gl.glColor3f(0.f+(float)(0.1*Math.random()),0.f+(float)(0.1*Math.random()),0.f+(float)(0.2*Math.random()));
-        		break;
+        		break;*/
         }
-        
+
         if ( cellState > 0 )
         {
     		float altitude = (float)height * normalizeHeight ;

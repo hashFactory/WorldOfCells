@@ -136,7 +136,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         {
     		_myWorld = __myWorld;
 
-			int nombreDeVilles = 2;
+			int nombreDeVilles = 30;
 
     		landscape = PerlinNoiseLandscapeGenerator.generatePerlinNoiseLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,10); // 11
     		//landscape = PolynomialLandscapeGenerator.generatePolynomialLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,nombreDeVilles); // 11
@@ -147,8 +147,8 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 			ArrayList<Case> surterrain = new ArrayList<>();
 
 			// recuperer liste de cases au dessus de l'eau
-			for (int i = 0; i < __dx-1; i++) {
-				for (int j = 0; j < __dy-1; j++) {
+			for (int i = 2; i < __dx-3; i++) {
+				for (int j = 2; j < __dy-3; j++) {
 					if (landscape[i][j] >= 0.0) {
 						surterrain.add(new Case(i, j));
 					}
@@ -162,7 +162,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 				color[0] = 1.f; color[1] = 0.2f; color[2] = 1.0f;
 
 				_myWorld.cellsColorValues.setCellState(surterrain.get(index).x, surterrain.get(index).y, color);
-				_myWorld.uniqueDynamicObjects.add(new Ville(i*10,surterrain.get(index).x, surterrain.get(index).y, _myWorld));
+				_myWorld.uniqueDynamicObjects.add(new Ville(i,surterrain.get(index).x, surterrain.get(index).y, _myWorld));
 			}
         }
 
@@ -492,7 +492,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
                         // TODO+: diplayObjectAt(x,y,...) ==> on y gagne quoi? les smoothFactors. C'est tout. Donc on externalise?
                         
                         if ( DISPLAY_OBJECTS == true) // calls my world with the enough info to display anything at this location.
-                        {
+						{
                         	float normalizeHeight = ( smoothFactor[0] + smoothFactor[1] + smoothFactor[2] + smoothFactor[3] ) / 4.f * (float)heightBooster * heightFactor;
                         	_myWorld.displayObjectAt(_myWorld,gl,cellState, x, y, height, offset, stepX, stepY, lenX, lenY, normalizeHeight);
                         }

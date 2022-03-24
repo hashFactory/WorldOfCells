@@ -74,8 +74,8 @@ public abstract class World {
 				{
 					color = new float[]{(float) height * 4.0f, 1.0f - (float) height * 0.3f, (float) height * 2.0f};
 					// sand
-					if (height <= 0.4)
-						color = new float[]{ 1.f, 1.f, 0.5f };
+					//if (height <= 0.4)
+					//	color = new float[]{ 1.f, 1.f, 0.5f };
 				}
     	        else
     	        {

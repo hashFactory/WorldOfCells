@@ -6,15 +6,16 @@ package applications.simpleworld;
 
 import cellularautomata.CellularAutomataDouble;
 import cellularautomata.CellularAutomataInteger;
+import util.Couleur;
 import worlds.World;
 
 public class ForestCA extends CellularAutomataInteger {
 
 	CellularAutomataDouble _cellsHeightValuesCA;
 	
-	World world;
+	WorldOfTrees world;
 	
-	public ForestCA ( World __world, int __dx , int __dy, CellularAutomataDouble cellsHeightValuesCA )
+	public ForestCA ( WorldOfTrees __world, int __dx , int __dy, CellularAutomataDouble cellsHeightValuesCA )
 	{
 		super(__dx,__dy,true ); // buffering must be true.
 		
@@ -28,16 +29,18 @@ public class ForestCA extends CellularAutomataInteger {
 		for ( int x = 0 ; x != _dx ; x++ )
     		for ( int y = 0 ; y != _dy ; y++ )
     		{
-    			if ( _cellsHeightValuesCA.getCellState(x,y) >= 0.05 )
-    			{
-    				if ( Math.random() < 0.53 ) // was: 0.71
-    					this.setCellState(x, y, 1); // tree
+    			if ( _cellsHeightValuesCA.getCellState(x,y) >= 0.05 ) {
+					if (Math.random() < 0.53) {// was: 0.71 {
+						//this.setCellState(x, y, 1); // tree
+						this.world.setCell(1, Couleur.intToCouleur(1).toArray(), x, y);
+					}
     				else
     					this.setCellState(x, y, 0); // empty
+						//this.world.setCell(0, Couleur.intToCouleur())
     			}
     			else
     			{
-    				this.setCellState(x, y, -1); // water (ignore)
+    				this.setCellState(x, y, 4); // water (ignore)
     			}
     		}
     	this.swapBuffer();
@@ -49,45 +52,51 @@ public class ForestCA extends CellularAutomataInteger {
     	for ( int i = 0 ; i != _dx ; i++ )
     		for ( int j = 0 ; j != _dy ; j++ )
     		{
-    			if ( this.getCellState(i, j) == 1 || this.getCellState(i, j) == 2 || this.getCellState(i, j) == 3 )
+				boolean changed = false;
+				int state = this.getCellState(i,j) % 100;
+    			if ( state >= 0 && state < 4 )
     			{
-	    			if ( this.getCellState(i,j) == 1 ) // tree?
+	    			if ( state == 1 ) // tree?
 	    			{
 	    				// check if neighbors are burning
 	    				if ( 
-	    						this.getCellState( (i+_dx-1)%(_dx) , j ) == 2 ||
-	    						this.getCellState( (i+_dx+1)%(_dx) , j ) == 2 ||
-	    						this.getCellState( i , (j+_dy+1)%(_dy) ) == 2 ||
-	    						this.getCellState( i , (j+_dy-1)%(_dy) ) == 2
+	    						this.getCellState( (i+_dx-1)%(_dx) , j ) % 100 == 2 ||
+	    						this.getCellState( (i+_dx+1)%(_dx) , j ) % 100 == 2 ||
+	    						this.getCellState( i , (j+_dy+1)%(_dy) ) % 100 == 2 ||
+	    						this.getCellState( i , (j+_dy-1)%(_dy) ) % 100 == 2
 	    					)
 	    				{
 	    					this.setCellState(i,j,2);
-	
+							changed = true;
 	    				}
 	    				else
 	    					if ( Math.random() < 0.00001 ) // spontaneously take fire ?
 	    					{
 	    						this.setCellState(i,j,2);
+								changed = true;
 	    					}
 	    					else
 	    					{
-	    						this.setCellState(i,j,1); // copied unchanged
-	    					}
+	    						this.setCellState(i,j,this.getCellState(i,j)); // copied unchanged
+								changed = true;
+							}
 	    			}
 	    			else
 	    			{
-	        				if ( this.getCellState( i , j ) == 2 ) // burning?
+	        				if ( state == 2 ) // burning?
 	        				{
 	        					this.setCellState(i,j,3); // burnt
+								changed = true;
 	        				}
 	        				else
 	        				{
-	        					this.setCellState(i,j, this.getCellState(i,j) ); // copied unchanged
+	        					this.setCellState(i,j,this.getCellState(i,j)); // copied unchanged
 	        				}
 	    			}
 	    			
 	    			float color[] = new float[3];
-	    			switch ( this.getCellState(i, j) )
+/*
+	    			switch ( this.getCellState(i, j) % 100 )
 	    			{
 	    				case 0:
 	    					break;
@@ -117,8 +126,12 @@ public class ForestCA extends CellularAutomataInteger {
 	    					color[2] = 0.5f;
 	    					System.out.print("cannot interpret CA state: " + this.getCellState(i, j));
 	    					System.out.println(" (at: " + i + "," + j + " -- height: " + this.world.getCellHeight(i,j) + " )");
-	    			}	   
-	    			this.world.cellsColorValues.setCellState(i, j, color);
+	    			}	   */
+
+					if (changed) {
+						color = Couleur.intToCouleur(this.getCellState(i, j)).toArray();
+						this.world.cellsColorValues.setCellState(i, j, color);
+					}
     			}
     		}
     	this.swapBuffer();
