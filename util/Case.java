@@ -3,10 +3,12 @@ package util;
 public class Case {
     public int x;
     public int y;
+	public boolean libre;
 
-    public Case(int _x, int _y) {
+    public Case(int _x, int _y,boolean l) {
         this.x = _x;
         this.y = _y;
+		this.libre=l;
     }
 
     public double distance(int _x, int _y) {
@@ -16,4 +18,8 @@ public class Case {
     public double distance(Case l) {
         return this.distance(l.x, l.y);
     }
+
+	public void setLibre(boolean l){
+		this.libre = l;
+	}
 }

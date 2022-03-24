@@ -44,7 +44,7 @@ public class Ville extends Agent{
 	{
 		super(__x,__y,__world);
 		
-		coordoVille = new Case(__x,__y);
+		coordoVille = new Case(__x,__y,false);
 		numero = num;
 		color = new float[3];
 		c = Couleur.rand();
@@ -59,7 +59,7 @@ public class Ville extends Agent{
 		structures = new ArrayList<Structure>();
 
 		frontiere = new ArrayList<Case>();
-		frontiere.add(new Case(__x,__y));		//Cas de Base : la frontiere est la ville
+		frontiere.add(coordoVille);		//Cas de Base : la frontiere est la ville
 		
 		world = __world;
 
@@ -70,21 +70,53 @@ public class Ville extends Agent{
 
 	public void step(){
 
-	//world.setCell(numero,color,1,1);
+		//world.setCell(numero,color,1,1);
+		if(cpt == 100) {
+			Case plusProche=null;
+			//choix de la case la plus proche de la ville
+			double distanceMini = 50000;
+			for(int i=0; i < frontiere.size() ; i++ ){
+				//recherche du voisinage pour remove la case
+				Case voisin	= world.rechercheVoisin(numero,frontiere.get(i));
 
-	if(cpt == 2) {
-		world.setCell(numero * 100, c.mix(new Couleur(0.f, 0.4f, 0.f)).toArray(), this.coordoVille.x, this.coordoVille.y);
-		for (int i = -2; i <= 2; i++) {
-			for (int j = -2; j <= 2; j++) {
-				int val = world.getCellValue(this.coordoVille.x + i, this.coordoVille.y + j);
-				world.setCell((val % 100) + numero * 100, Couleur.mix(Couleur.intToCouleur(val),c,0.8f).toArray(), this.coordoVille.x + i, this.coordoVille.y + j);
+				
+				//System.out.println(voisin);
+				if(voisin == null){
+					System.out.println("frontière removed");
+					frontiere.remove(i);
+					i--;
+				}
+				else {
+					//geCellState + check numero pour savoir si c'est libre ou non (à faire quand le problème avec ForestCA est fixé)
+					for(int j=0; j < frontiere.size() ; j++ ){
+						if((voisin.x == frontiere.get(j).x) && (voisin.y == frontiere.get(j).y)){
+							voisin.setLibre(false);
+							break;
+						}
+					}
+					//System.out.println(voisin.libre+"distanceMini"++"        "+);
+					if((voisin.libre) && (distanceMini > frontiere.get(i).distance(coordoVille))){
+						System.out.println("distance");
+						distanceMini = voisin.distance(coordoVille);
+						System.out.println("i = "+i+"       "+distanceMini);
+						plusProche = voisin;
+					}
+				}
 			}
+			
+			if(plusProche != null){
+				
+				//System.out.println("couleur changer");
+				world.setCell(numero,new float[]{0.f,0.f,0.f},plusProche.x,plusProche.y);
+				plusProche.setLibre(false);
+				frontiere.add(plusProche);
+			}
+			cpt = 0;
 		}
-		//System.out.println("new Cell Value = "+world.getCellValue(this.coordoVille.x,this.coordoVille.y) + " cpt=" + cpt);
-	}
-	//toutes les X itérations, récupère les ressources + étendre influence si possible (étendre l'influence doit coûter qqch) + nourrir population
+		//toutes les X itérations, récupère les ressources + étendre influence si possible (étendre l'influence doit coûter qqch) + nourrir population
 
-	//condition si envahie -> détruire ville, le vainqueur récupère villages, fermes et mines
+		//condition si envahie -> détruire ville, le vainqueur récupère villages, fermes et mines
+		
 		cpt++;
 	}
 	

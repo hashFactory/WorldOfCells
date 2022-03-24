@@ -150,7 +150,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 			for (int i = 2; i < __dx-3; i++) {
 				for (int j = 2; j < __dy-3; j++) {
 					if (landscape[i][j] >= 0.0) {
-						surterrain.add(new Case(i, j));
+						surterrain.add(new Case(i, j,true));
 					}
 				}
 			}

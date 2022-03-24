@@ -7,6 +7,7 @@ package applications.simpleworld;
 import com.jogamp.opengl.GL2;
 
 import objects.*;
+import util.Case;
 import util.Couleur;
 import worlds.World;
 
@@ -88,6 +89,81 @@ public class WorldOfTrees extends World {
 		this.cellsColorValues.setCellState(x, y, color);
 	}
     
+	public Case rechercheVoisin(int numero, Case c){
+		numero *=100;
+		int resX = -1;
+		int resY = -1;
+		boolean libre = false;
+		int currentCell = cellularAutomata.getCellState((c.x+1)%dxCA,(c.y)%dyCA);
+		System.out.println("Cell State :"+currentCell);
+		if((currentCell < numero) || (currentCell > numero+99)){
+		//	System.out.println("x+1");
+			if(currentCell < 100){
+				//System.out.println("neutre");
+				resX = (c.x+1)%dxCA;
+				resY = (c.y)%dyCA;
+				libre = true;
+			} else {
+				if(!libre){
+					resX = (c.x+1)%dxCA;
+					resY = (c.y)%dyCA;
+				}
+			}
+		}
+
+		currentCell = cellularAutomata.getCellState((c.x)%dxCA,(c.y+1)%dyCA);
+		if((currentCell < numero) || (currentCell > numero+99)){
+		//	System.out.println("y+1");
+			if(currentCell < 100){
+			//	System.out.println("neutre");
+				resX = (c.x)%dxCA;
+				resY = (c.y+1)%dyCA;
+				libre = true;
+			} else {
+				if(!libre){
+					resX = (c.x)%dxCA;
+					resY = (c.y+1)%dyCA;
+				}
+			}
+		}
+
+		currentCell = cellularAutomata.getCellState((c.x-1)%dxCA,(c.y)%dyCA);
+		if((currentCell < numero) || (currentCell > numero+99)){
+			//System.out.println("x-1");
+			if(currentCell < 100){
+				//System.out.println("neutre");
+				resX = (c.x-1)%dxCA;
+				resY = (c.y)%dyCA;
+				libre = true;
+			} else {
+				if(!libre){
+					resX = (c.x-1)%dxCA;
+					resY = (c.y)%dyCA;
+				}
+			}
+		}
+
+		currentCell = cellularAutomata.getCellState((c.x)%dxCA,(c.y-1)%dyCA);
+		if((currentCell < numero) || (currentCell > numero+99)){
+		//	System.out.println("y-1");
+			if(currentCell < 100){
+			//	System.out.println("neutre");
+				resX = (c.x)%dxCA;
+				resY = (c.y-1)%dyCA;
+				libre = true;
+			} else {
+				if(!libre){
+					resX = (c.x)%dxCA;
+					resY = (c.y-1)%dyCA;
+				}
+			}
+		}
+		System.out.println(resX);
+		if(resX == -1){
+			return null;
+		} 
+		return new Case(resX,resY,libre);
+	}
     protected void initCellularAutomata(int __dxCA, int __dyCA, double[][] landscape)
     {
     	cellularAutomata = new ForestCA(this,__dxCA,__dyCA,cellsHeightValuesCA);
