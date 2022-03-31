@@ -48,6 +48,11 @@ public class ForestCA extends CellularAutomataInteger {
 
 	}
 
+	public int getCellState2(int x, int y)
+	{
+		return this.getCurrentBuffer()[x][y];
+	}
+
 	public void step()
 	{
     	for ( int i = 0 ; i != _dx ; i++ )
@@ -108,8 +113,8 @@ public class ForestCA extends CellularAutomataInteger {
 					}
     			}
     		}
-    	this.swapBuffer();
-		this.world.cellsColorValues.swapBuffer();
+    	//this.swapBuffer();
+		//this.world.cellsColorValues.swapBuffer();
 	}
 
 	

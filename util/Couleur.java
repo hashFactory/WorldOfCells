@@ -5,7 +5,7 @@ import applications.simpleworld.Ville;
 public class Couleur {
     public static final Couleur[] tableCouleurs = {
             new Couleur(0.0f, 0.8f, 0.1f),       // 0: couleur ville
-            new Couleur(0.f, 0.6f, 0.f),        // 1: arbre
+            new Couleur(0.0f, 0.6f, 0.0f),        // 1: arbre
             new Couleur(1.f, 0.1f, 0.1f),       // 2: feu
             new Couleur(0.05f, 0.05f, 0.05f),   // 3: mort
             new Couleur(1.f, 1.f, 0.5f),        // 4: sable
@@ -74,8 +74,8 @@ public class Couleur {
     }
 
     public static Couleur intToCouleur(int id) {
-        if (id >= 100 && Ville.tableCouleurs.size() >= id / 100)
-            return Couleur.mix(tableCouleurs[id%100], Ville.tableCouleurs.get(id/100), 0.8f);
+        if (id >= 100 && Ville.mapCouleurs.containsKey((id/100)*100))
+            return Couleur.mix(tableCouleurs[id%100], Ville.mapCouleurs.get((id/100)*100), 0.97f);
         return tableCouleurs[id%100];
     }
 }

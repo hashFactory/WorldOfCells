@@ -51,8 +51,8 @@ public abstract class World {
     	this.cellsColorValues = new CellularAutomataColor(__dxCA,__dyCA,false);
     	
     	// init altitude and color related information
-    	for ( int x = 0 ; x != dxCA ; x++ )
-    		for ( int y = 0 ; y != dyCA ; y++ )
+    	for ( int x = 0 ; x != dxCA-1 ; x++ )
+    		for ( int y = 0 ; y != dyCA-1 ; y++ )
     		{
     			// compute height values (and amplitude) from the landscape for this CA cell 
     			double minHeightValue = Math.min(Math.min(landscape[x][y],landscape[x+1][y]),Math.min(landscape[x][y+1],landscape[x+1][y+1]));
@@ -93,8 +93,8 @@ public abstract class World {
     
     public void step()
     {
-    	stepCellularAutomata();
-    	stepAgents();
+		stepCellularAutomata();
+		stepAgents();
     	iteration++;
     }
     

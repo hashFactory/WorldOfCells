@@ -3,6 +3,8 @@ package util;
 public class Case {
     public int x;
     public int y;
+    public static int dxCA;
+    public static int dyCA;
 	public boolean libre;
 
     public Case(int _x, int _y,boolean l) {

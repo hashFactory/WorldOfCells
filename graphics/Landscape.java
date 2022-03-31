@@ -136,7 +136,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         {
     		_myWorld = __myWorld;
 
-			int nombreDeVilles = 60;
+			int nombreDeVilles = 20;
 
     		landscape = PerlinNoiseLandscapeGenerator.generatePerlinNoiseLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,10); // 11
     		//landscape = PolynomialLandscapeGenerator.generatePolynomialLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,nombreDeVilles); // 11
@@ -162,7 +162,8 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 				color[0] = 1.f; color[1] = 0.2f; color[2] = 1.0f;
 
 				_myWorld.cellsColorValues.setCellState(surterrain.get(index).x, surterrain.get(index).y, color);
-				_myWorld.uniqueDynamicObjects.add(new Ville(i,surterrain.get(index).x, surterrain.get(index).y, _myWorld));
+				_myWorld.setCellValue(surterrain.get(index).x, surterrain.get(index).y, (i+1)*100);
+				_myWorld.uniqueDynamicObjects.add(new Ville(i+1,surterrain.get(index).x, surterrain.get(index).y, _myWorld));
 			}
         }
 
@@ -188,7 +189,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 
     		System.out.println("Landscape contains " + dxView*dyView + " tiles. (" + dxView + "x" + dyView +")");
         	
-    		_myWorld.init(dxView-1,dyView-1,landscape);
+    		_myWorld.init(dxView,dyView,landscape);
     		
     		heightFactor = 16.0f; //64.0f; // was: 32.0f;
             heightBooster = 3.0; // default: 2.0 // 6.0 makes nice high mountains.

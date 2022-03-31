@@ -5,6 +5,7 @@ import com.jogamp.opengl.GL2;
 import worlds.World;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import applications.simpleworld.Structure;
 
@@ -17,7 +18,7 @@ import javax.swing.plaf.metal.MetalIconFactory;
 
 public class Ville extends Agent{
 
-	public static ArrayList<Couleur> tableCouleurs = new ArrayList<>();
+	public static HashMap<Integer, Couleur> mapCouleurs = new HashMap<>();
 
 	private Case coordoVille;	//coordonnées de la ville
 
@@ -49,7 +50,7 @@ public class Ville extends Agent{
 		numero = num*100;
 		color = new float[3];
 		c = Couleur.rand();
-		Ville.tableCouleurs.add(c);
+		Ville.mapCouleurs.put(numero, c);
 
 		nourriture = 10; 
 		bois = 0;
@@ -81,35 +82,37 @@ public class Ville extends Agent{
 			for(int i=0; i < frontiere.size() ; i++ ){
 				voisin = world.rechercheVoisin(numero,frontiere.get(i));
 				//remove
-				if(voisin == null){
+				if(voisin.x == -1){
 					System.out.println("frontière removed");
 					frontiere.remove(i);
 					i--;
 				}
-
 				else{//distance
-					if(distanceMini > frontiere.get(i).distance(coordoVille)){
-						distanceMini = frontiere.get(i).distance(coordoVille);
-						plusProche = frontiere.get(i);
+					if(distanceMini > voisin.distance(coordoVille)){
+						distanceMini = voisin.distance(coordoVille);
+						plusProche = new Case(voisin.x, voisin.y, voisin.libre);
 					}
 				}
 				
-				voisin = null;
+				//voisin = null;
 			}
 				
 			//recherche du voisinage pour remove la case
-			voisin = world.rechercheVoisin(numero,plusProche);
+			if (plusProche.x != -1)
+				voisin = plusProche;
 			System.out.println("ville = "+coordoVille.x+"   "+coordoVille.y+"        voisin = "+voisin.x+"   "+voisin.y);
-			
-				
-			if(voisin != null){
-				System.out.println("qzd");
-				world.setCell(numero,Couleur.intToCouleur(numero).toArray(),voisin.x,voisin.y);
-				voisin.setLibre(false);
-				frontiere.add(voisin);
-			}
 
-			System.out.println("Cell Value = "+world.getCellValue(voisin.x,voisin.y));
+			int val = world.cellularAutomata.getCellState2(plusProche.x, plusProche.y);
+			if(voisin.x != -1){
+				System.out.println("qzd");
+				world.setCell(val+numero,Couleur.intToCouleur(val+numero).toArray(),voisin.x,voisin.y);
+				voisin.setLibre(false);
+				frontiere.add(new Case(voisin.x, voisin.y, false));
+				System.out.println("new Cell Value = " + numero + " at (" + voisin.x + ", " + voisin.y + ")");
+			}
+			else {
+				System.out.println("Pas de voisin trouve");
+			}
 			cpt = 0;
 		}
 		//toutes les X itérations, récupère les ressources + étendre influence si possible (étendre l'influence doit coûter qqch) + nourrir population

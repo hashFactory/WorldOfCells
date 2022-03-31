@@ -20,6 +20,9 @@ public class WorldOfTrees extends World {
     	super.init(__dxCA, __dyCA, landscape);
     	
     	// add colors
+
+		Case.dxCA = __dxCA;
+		Case.dyCA = __dyCA;
     	
     	for ( int x = 0 ; x < __dxCA ; x++ )
     		for ( int y = 0 ; y < __dyCA ; y++ )
@@ -67,12 +70,12 @@ public class WorldOfTrees extends World {
     	for ( int i = 0 ; i < 11 ; i++ )
     	{
     		if ( i%10 == 0 )
-    			uniqueObjects.add(new Monolith(110,110+i,this));
+    			uniqueObjects.add(new Monolith(5,5+i,this));
     		else
-    			uniqueObjects.add(new BridgeBlock(110,110+i,this));
+    			uniqueObjects.add(new BridgeBlock(10,10+i,this));
     	}
     	
-    	uniqueDynamicObjects.add(new Agent(64,64,this));
+    	uniqueDynamicObjects.add(new Agent(62,62,this));
     	
     }
 
@@ -91,79 +94,86 @@ public class WorldOfTrees extends World {
 	}
     
 	public Case rechercheVoisin(int numero, Case c){
-		numero *=100;
 		int resX = -1;
 		int resY = -1;
 		boolean libre = false;
-		int currentCell = cellularAutomata.getCellState((c.x+1)%dxCA,(c.y)%dyCA);
-		System.out.println("Cell State :"+currentCell);
+		int coordoX = c.x+dxCA;
+		int coordoY = c.y+dyCA;
+		int currentCell = cellularAutomata.getCellState2((coordoX+1)%dxCA,(coordoY)%dyCA);
+		//libre = currentCell < 100;
+		System.out.println("Cell State :"+currentCell + ", numero: " + numero);
 		if((currentCell < numero) || (currentCell > numero+99)){
 		//	System.out.println("x+1");
 			if(currentCell < 100){
 				//System.out.println("neutre");
-				resX = (c.x+1)%dxCA;
-				resY = (c.y)%dyCA;
+				resX = (coordoX+1)%dxCA;
+				resY = (coordoY)%dyCA;
 				libre = true;
+				return new Case(resX, resY, libre);
 			} else {
-				if(!libre){
-					resX = (c.x+1)%dxCA;
-					resY = (c.y)%dyCA;
+				if(resX == -1 && !libre){
+					resX = (coordoX+1)%dxCA;
+					resY = (coordoY)%dyCA;
 				}
 			}
 		}
 
-		currentCell = cellularAutomata.getCellState((c.x)%dxCA,(c.y+1)%dyCA);
+		currentCell = cellularAutomata.getCellState2((coordoX)%dxCA,(coordoY+1)%dyCA);
+		//libre = currentCell < 100;
 		if((currentCell < numero) || (currentCell > numero+99)){
 		//	System.out.println("y+1");
 			if(currentCell < 100){
 			//	System.out.println("neutre");
-				resX = (c.x)%dxCA;
-				resY = (c.y+1)%dyCA;
+				resX = (coordoX)%dxCA;
+				resY = (coordoY+1)%dyCA;
 				libre = true;
+				return new Case(resX, resY, libre);
 			} else {
-				if(!libre){
-					resX = (c.x)%dxCA;
-					resY = (c.y+1)%dyCA;
+				if(resX == -1 && !libre){
+					resX = (coordoX)%dxCA;
+					resY = (coordoY+1)%dyCA;
 				}
 			}
 		}
 
-		currentCell = cellularAutomata.getCellState((c.x-1)%dxCA,(c.y)%dyCA);
+		currentCell = cellularAutomata.getCellState2((coordoX-1)%dxCA,(coordoY)%dyCA);
+		//libre = currentCell < 100;
 		if((currentCell < numero) || (currentCell > numero+99)){
 			//System.out.println("x-1");
 			if(currentCell < 100){
 				//System.out.println("neutre");
-				resX = (c.x-1)%dxCA;
-				resY = (c.y)%dyCA;
+				resX = (coordoX-1)%dxCA;
+				resY = (coordoY)%dyCA;
 				libre = true;
+				return new Case(resX, resY, libre);
 			} else {
-				if(!libre){
-					resX = (c.x-1)%dxCA;
-					resY = (c.y)%dyCA;
+				if(resX == -1 && !libre){
+					resX = (coordoX-1)%dxCA;
+					resY = (coordoY)%dyCA;
 				}
 			}
 		}
 
-		currentCell = cellularAutomata.getCellState((c.x)%dxCA,(c.y-1)%dyCA);
+		currentCell = cellularAutomata.getCellState2((coordoX)%dxCA,(coordoY-1)%dyCA);
+		//libre = currentCell < 100;
 		if((currentCell < numero) || (currentCell > numero+99)){
 		//	System.out.println("y-1");
 			if(currentCell < 100){
 			//	System.out.println("neutre");
-				resX = (c.x)%dxCA;
-				resY = (c.y-1)%dyCA;
+				resX = (coordoX)%dxCA;
+				resY = (coordoY-1)%dyCA;
 				libre = true;
+				return new Case(resX, resY, libre);
 			} else {
-				if(!libre){
-					resX = (c.x)%dxCA;
-					resY = (c.y-1)%dyCA;
+				if(resX == -1 && !libre){
+					resX = (coordoX)%dxCA;
+					resY = (coordoY-1)%dyCA;
 				}
 			}
 		}
 		System.out.println(resX);
-		if(resX == -1){
-			return null;
-		} 
-		return new Case(resX,resY,libre);
+		return new Case(resX, resY, libre);
+		//return new Case(resX,resY,libre);
 	}
     protected void initCellularAutomata(int __dxCA, int __dyCA, double[][] landscape)
     {
@@ -173,9 +183,12 @@ public class WorldOfTrees extends World {
     
     protected void stepCellularAutomata()
     {
-    	if (iteration == 10)
-    		cellularAutomata.step();
-    }
+    	if (iteration % 10 == 0) {
+			cellularAutomata.step();
+		}
+		this.cellularAutomata.swapBuffer();
+
+	}
     
     protected void stepAgents()
     {
@@ -185,8 +198,7 @@ public class WorldOfTrees extends World {
     		this.uniqueDynamicObjects.get(i).step();
 			//this.cellularAutomata.swapBuffer();
     	}
-		//this.cellularAutomata.swapBuffer();
-    }
+	}
 
     public int getCellValue(int x, int y) // used by the visualization code to call specific object display.
     {
