@@ -40,12 +40,13 @@ public class Ville extends Agent{
 
 	private int cpt;
 
+
 	public Ville(int num, int __x, int __y, WorldOfTrees __world) 
 	{
 		super(__x,__y,__world);
 		
 		coordoVille = new Case(__x,__y,false);
-		numero = num;
+		numero = num*100;
 		color = new float[3];
 		c = Couleur.rand();
 		Ville.tableCouleurs.add(c);
@@ -75,42 +76,40 @@ public class Ville extends Agent{
 			Case plusProche=null;
 			//choix de la case la plus proche de la ville
 			double distanceMini = 50000;
+			Case voisin=null;
+			
 			for(int i=0; i < frontiere.size() ; i++ ){
-				//recherche du voisinage pour remove la case
-				Case voisin	= world.rechercheVoisin(numero,frontiere.get(i));
-
-				
-				//System.out.println(voisin);
+				voisin = world.rechercheVoisin(numero,frontiere.get(i));
+				//remove
 				if(voisin == null){
 					System.out.println("frontière removed");
 					frontiere.remove(i);
 					i--;
 				}
-				else {
-					//geCellState + check numero pour savoir si c'est libre ou non (à faire quand le problème avec ForestCA est fixé)
-					for(int j=0; j < frontiere.size() ; j++ ){
-						if((voisin.x == frontiere.get(j).x) && (voisin.y == frontiere.get(j).y)){
-							voisin.setLibre(false);
-							break;
-						}
-					}
-					//System.out.println(voisin.libre+"distanceMini"++"        "+);
-					if((voisin.libre) && (distanceMini > frontiere.get(i).distance(coordoVille))){
-						System.out.println("distance");
-						distanceMini = voisin.distance(coordoVille);
-						System.out.println("i = "+i+"       "+distanceMini);
-						plusProche = voisin;
+
+				else{//distance
+					if(distanceMini > frontiere.get(i).distance(coordoVille)){
+						distanceMini = frontiere.get(i).distance(coordoVille);
+						plusProche = frontiere.get(i);
 					}
 				}
-			}
-			
-			if(plusProche != null){
 				
-				//System.out.println("couleur changer");
-				world.setCell(numero*100,Couleur.intToCouleur(numero * 100).toArray(),plusProche.x,plusProche.y);
-				plusProche.setLibre(false);
-				frontiere.add(plusProche);
+				voisin = null;
 			}
+				
+			//recherche du voisinage pour remove la case
+			voisin = world.rechercheVoisin(numero,plusProche);
+			System.out.println("ville = "+coordoVille.x+"   "+coordoVille.y+"        voisin = "+voisin.x+"   "+voisin.y);
+			
+				
+			if(voisin != null){
+				System.out.println("qzd");
+				world.setCell(numero,Couleur.intToCouleur(numero).toArray(),voisin.x,voisin.y);
+				voisin.setLibre(false);
+				frontiere.add(voisin);
+			}
+
+			System.out.println("Cell Value = "+world.getCellValue(voisin.x,voisin.y));
 			cpt = 0;
 		}
 		//toutes les X itérations, récupère les ressources + étendre influence si possible (étendre l'influence doit coûter qqch) + nourrir population
