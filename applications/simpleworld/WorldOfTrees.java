@@ -26,7 +26,8 @@ public class WorldOfTrees extends World {
     		{
 	        	float color[] = new float[3];
 
-	        	float height = (float) this.getCellHeight(x, y);
+	        	//float height = (float) this.getCellHeight(x, y);
+				float height = (float)landscape[x][y];
 		    	
 		        if ( height >= 0 )
 		        {
@@ -85,7 +86,7 @@ public class WorldOfTrees extends World {
 		color[1] = 1.f;
 		color[2] = 1.f;*/
 
-		cellularAutomata.setCellState(x,y,num);
+		this.cellularAutomata.setCellState(x, y, num);
 		this.cellsColorValues.setCellState(x, y, color);
 	}
     
@@ -172,7 +173,7 @@ public class WorldOfTrees extends World {
     
     protected void stepCellularAutomata()
     {
-    	if ( iteration%10 == 0 )
+    	if (iteration == 10)
     		cellularAutomata.step();
     }
     
@@ -182,7 +183,9 @@ public class WorldOfTrees extends World {
     	for ( int i = 0 ; i < this.uniqueDynamicObjects.size() ; i++ )
     	{
     		this.uniqueDynamicObjects.get(i).step();
+			//this.cellularAutomata.swapBuffer();
     	}
+		//this.cellularAutomata.swapBuffer();
     }
 
     public int getCellValue(int x, int y) // used by the visualization code to call specific object display.
@@ -200,7 +203,8 @@ public class WorldOfTrees extends World {
 			float stepX, float stepY, float lenX, float lenY,
 			float normalizeHeight) 
 	{
-		switch ( cellState % 100 )
+		int val = cellState % 100;
+		switch ( val )
 		{
 		case 1: // trees: green, fire, burnt
 		case 2:

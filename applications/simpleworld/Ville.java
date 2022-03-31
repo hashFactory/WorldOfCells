@@ -107,7 +107,7 @@ public class Ville extends Agent{
 			if(plusProche != null){
 				
 				//System.out.println("couleur changer");
-				world.setCell(numero,new float[]{0.f,0.f,0.f},plusProche.x,plusProche.y);
+				world.setCell(numero*100,Couleur.intToCouleur(numero * 100).toArray(),plusProche.x,plusProche.y);
 				plusProche.setLibre(false);
 				frontiere.add(plusProche);
 			}

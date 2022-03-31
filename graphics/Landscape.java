@@ -136,7 +136,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         {
     		_myWorld = __myWorld;
 
-			int nombreDeVilles = 30;
+			int nombreDeVilles = 60;
 
     		landscape = PerlinNoiseLandscapeGenerator.generatePerlinNoiseLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,10); // 11
     		//landscape = PolynomialLandscapeGenerator.generatePolynomialLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,nombreDeVilles); // 11
@@ -224,7 +224,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
             canvas.addMouseListener(__landscape);// register mouse callback functions
             canvas.addKeyListener(__landscape);// register keyboard callback functions
             frame.add(canvas);
-            frame.setSize(1024, 768);
+            frame.setSize(1600, 1200);
             //frame.setSize(1280, 960);
             frame.setResizable(false);
             frame.addWindowListener(new WindowAdapter() {
@@ -257,9 +257,9 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
                 // double buffer
                 gl.glEnable(GL2.GL_DOUBLEBUFFER);
                 glDrawable.setAutoSwapBufferMode(true);
-                
+
                 // Enable VSync
-                // ? gl.setSwapInterval(1);
+                //gl.setSwapInterval(1);
                 // END of GO FAST ???
 
                 gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
@@ -494,7 +494,8 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
                         if ( DISPLAY_OBJECTS == true) // calls my world with the enough info to display anything at this location.
 						{
                         	float normalizeHeight = ( smoothFactor[0] + smoothFactor[1] + smoothFactor[2] + smoothFactor[3] ) / 4.f * (float)heightBooster * heightFactor;
-                        	_myWorld.displayObjectAt(_myWorld,gl,cellState, x, y, height, offset, stepX, stepY, lenX, lenY, normalizeHeight);
+							//gl.glColor3f(color[0],color[1],color[2]);
+							_myWorld.displayObjectAt(_myWorld,gl,cellState, x, y, height, offset, stepX, stepY, lenX, lenY, normalizeHeight);
                         }
                 	}
 	            
