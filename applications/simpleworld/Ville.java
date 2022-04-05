@@ -36,6 +36,7 @@ public class Ville extends Agent{
 	private ArrayList<Structure> structures; //Liste de tous les villages, fermes et mines
 	
 	private ArrayList<Case> frontiere;
+	private ArrayList<Case>	territoire;
 
 	private WorldOfTrees world;
 
@@ -63,63 +64,61 @@ public class Ville extends Agent{
 		frontiere = new ArrayList<Case>();
 		frontiere.add(coordoVille);		//Cas de Base : la frontiere est la ville
 		
+		territoire = new ArrayList<Case>();
+
 		world = __world;
 
 		cpt=0;
 	}
 
-	//fonction récupère ressource
+	public void etendreFrontiere(){
+		Case plusProche=null;
+		//choix de la case la plus proche de la ville
+		double distanceMini = 50000;
+		Case voisin=null;
+			
+		for(int i=0; i < frontiere.size() ; i++ ){
+			voisin = world.rechercheVoisin(numero,frontiere.get(i));
+			//remove
+			if(voisin.x == -1){
+				System.out.println("frontière removed");
+				territoire.add(frontiere.get(i));
+				frontiere.remove(i);
+				i--;
+			}
+			else{//distance
+				if(distanceMini > voisin.distance(coordoVille)){
+					distanceMini = voisin.distance(coordoVille);
+					plusProche = new Case(voisin.x, voisin.y, voisin.libre);
+				}
+			}
+			
+			
+		}
+			
+		if(plusProche!=null && plusProche.x != -1){
+			voisin = plusProche;
+			int val = world.cellularAutomata.getCellState2(plusProche.x, plusProche.y);
+			world.setCell(val+numero,Couleur.intToCouleur(val+numero).toArray(),voisin.x,voisin.y);
+			voisin.setLibre(false);
+			frontiere.add(new Case(voisin.x, voisin.y, false));
+		}
+	}
 
 	public void step(){
+		/*=========étendre territoire========*/
+		if(cpt == 5) {
+			if(frontiere.size() != 0){
+				this.etendreFrontiere();
+			}			
 
-		//world.setCell(numero,color,1,1);
-		if(cpt == 100) {
-			Case plusProche=null;
-			//choix de la case la plus proche de la ville
-			double distanceMini = 50000;
-			Case voisin=null;
-			
-			for(int i=0; i < frontiere.size() ; i++ ){
-				voisin = world.rechercheVoisin(numero,frontiere.get(i));
-				//remove
-				if(voisin.x == -1){
-					System.out.println("frontière removed");
-					frontiere.remove(i);
-					i--;
-				}
-				else{//distance
-					if(distanceMini > voisin.distance(coordoVille)){
-						distanceMini = voisin.distance(coordoVille);
-						plusProche = new Case(voisin.x, voisin.y, voisin.libre);
-					}
-				}
-				
-				//voisin = null;
-			}
-				
-			//recherche du voisinage pour remove la case
-			if (plusProche.x != -1)
-				voisin = plusProche;
-			System.out.println("ville = "+coordoVille.x+"   "+coordoVille.y+"        voisin = "+voisin.x+"   "+voisin.y);
-
-			int val = world.cellularAutomata.getCellState2(plusProche.x, plusProche.y);
-			if(voisin.x != -1){
-				System.out.println("qzd");
-				world.setCell(val+numero,Couleur.intToCouleur(val+numero).toArray(),voisin.x,voisin.y);
-				voisin.setLibre(false);
-				frontiere.add(new Case(voisin.x, voisin.y, false));
-				System.out.println("new Cell Value = " + numero + " at (" + voisin.x + ", " + voisin.y + ")");
-			}
-			else {
-				System.out.println("Pas de voisin trouve");
-			}
 			cpt = 0;
-		}
-		//toutes les X itérations, récupère les ressources + étendre influence si possible (étendre l'influence doit coûter qqch) + nourrir population
 
-		//condition si envahie -> détruire ville, le vainqueur récupère villages, fermes et mines
-		
+		}
 		cpt++;
+
+		/*=========placement de structure (si possible)=========*/
+		
 	}
 	
 	public void displayUniqueObject(World myWorld, GL2 gl, int offsetCA_x, int offsetCA_y, float offset, float stepX, float stepY, float lenX, float lenY, float normalizeHeight ){
