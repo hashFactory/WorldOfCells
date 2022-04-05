@@ -78,7 +78,7 @@ public class ForestCA extends CellularAutomataInteger {
 							changed = true;
 	    				}
 	    				else
-	    					if ( Math.random() < 0.00001 ) // spontaneously take fire ?
+	    					if ( Math.random() < 0.001 ) // spontaneously take fire ?
 	    					{
 								nouveau_state = code_ville + 2;
 								changed = true;
@@ -113,7 +113,7 @@ public class ForestCA extends CellularAutomataInteger {
 					}
     			}
     		}
-    	//this.swapBuffer();
+    	this.swapBuffer();
 		//this.world.cellsColorValues.swapBuffer();
 	}
 

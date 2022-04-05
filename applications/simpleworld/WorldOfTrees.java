@@ -100,80 +100,55 @@ public class WorldOfTrees extends World {
 		int coordoX = c.x+dxCA;
 		int coordoY = c.y+dyCA;
 		int currentCell = cellularAutomata.getCellState2((coordoX+1)%dxCA,(coordoY)%dyCA);
-		//libre = currentCell < 100;
-		System.out.println("Cell State :"+currentCell + ", numero: " + numero);
-		if((currentCell < numero) || (currentCell > numero+99)){
-		//	System.out.println("x+1");
+	
 			if(currentCell < 100){
 				//System.out.println("neutre");
 				resX = (coordoX+1)%dxCA;
 				resY = (coordoY)%dyCA;
 				libre = true;
 				return new Case(resX, resY, libre);
-			} else {
-				if(resX == -1 && !libre){
-					resX = (coordoX+1)%dxCA;
-					resY = (coordoY)%dyCA;
-				}
 			}
-		}
+			
 
 		currentCell = cellularAutomata.getCellState2((coordoX)%dxCA,(coordoY+1)%dyCA);
-		//libre = currentCell < 100;
-		if((currentCell < numero) || (currentCell > numero+99)){
-		//	System.out.println("y+1");
+		
 			if(currentCell < 100){
 			//	System.out.println("neutre");
 				resX = (coordoX)%dxCA;
 				resY = (coordoY+1)%dyCA;
 				libre = true;
 				return new Case(resX, resY, libre);
-			} else {
-				if(resX == -1 && !libre){
-					resX = (coordoX)%dxCA;
-					resY = (coordoY+1)%dyCA;
-				}
 			}
-		}
+			
 
 		currentCell = cellularAutomata.getCellState2((coordoX-1)%dxCA,(coordoY)%dyCA);
-		//libre = currentCell < 100;
-		if((currentCell < numero) || (currentCell > numero+99)){
-			//System.out.println("x-1");
+		
 			if(currentCell < 100){
 				//System.out.println("neutre");
 				resX = (coordoX-1)%dxCA;
 				resY = (coordoY)%dyCA;
 				libre = true;
 				return new Case(resX, resY, libre);
-			} else {
-				if(resX == -1 && !libre){
-					resX = (coordoX-1)%dxCA;
-					resY = (coordoY)%dyCA;
-				}
 			}
-		}
+		
 
 		currentCell = cellularAutomata.getCellState2((coordoX)%dxCA,(coordoY-1)%dyCA);
-		//libre = currentCell < 100;
-		if((currentCell < numero) || (currentCell > numero+99)){
-		//	System.out.println("y-1");
+	
 			if(currentCell < 100){
 			//	System.out.println("neutre");
 				resX = (coordoX)%dxCA;
 				resY = (coordoY-1)%dyCA;
 				libre = true;
 				return new Case(resX, resY, libre);
-			} else {
-				if(resX == -1 && !libre){
-					resX = (coordoX)%dxCA;
-					resY = (coordoY-1)%dyCA;
-				}
 			}
-		}
-		System.out.println(resX);
+			
+
 		return new Case(resX, resY, libre);
 		//return new Case(resX,resY,libre);
+	}
+	//1 = ferme
+	int checkConstructionStructure(int x,int y){
+		return 0;
 	}
     protected void initCellularAutomata(int __dxCA, int __dyCA, double[][] landscape)
     {
