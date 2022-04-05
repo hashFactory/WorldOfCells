@@ -62,7 +62,7 @@ public class ForestCA extends CellularAutomataInteger {
 				int state = this.getCellState(i,j) % 100;
 				int code_ville = 100 * ((this.getCellState(i,j) / 100));
 				int nouveau_state = 0;
-    			if ( state >= 0 && state < 4 )
+    			if ( state >= 1 && state < 4 )
     			{
 	    			if ( state == 1 ) // tree?
 	    			{
