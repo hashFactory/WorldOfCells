@@ -33,7 +33,9 @@ public abstract class World {
 	private double maxEverHeightValue = Double.NEGATIVE_INFINITY;
 	private double minEverHeightValue = Double.POSITIVE_INFINITY;
 
-	private double heure = 8.0;
+	private double heure;
+
+	private int jour;
 
     public World( )
     {
@@ -46,6 +48,9 @@ public abstract class World {
     	dyCA = __dyCA;
     	
     	iteration = 0;
+	
+	heure = 8.0;
+	jour = 1;
 
     	this.cellsHeightValuesCA = new CellularAutomataDouble (__dxCA,__dyCA,false);
     	this.cellsHeightAmplitudeCA = new CellularAutomataDouble (__dxCA,__dyCA,false);
@@ -161,7 +166,7 @@ public abstract class World {
 		return this.heure;
 	}
 
-	public void setHeure(double heure) {
-		this.heure = heure;
+	public int getJour() {
+		return this.jour;
 	}
 }
