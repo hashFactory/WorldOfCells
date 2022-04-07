@@ -110,7 +110,6 @@ public class Ville extends Agent{
 		ArrayList<Case> caseNum = new ArrayList<Case>();
 
 		for(int i = 0 ; i < territoire.size() ; i++){
-			System.out.println(world.cellularAutomata.getCellState2(territoire.get(i).x,territoire.get(i).y));
 			if((world.cellularAutomata.getCellState2(territoire.get(i).x,territoire.get(i).y) % 100) == num){
 				caseNum.add(territoire.get(i));
 			}
@@ -118,6 +117,7 @@ public class Ville extends Agent{
 		
 		if(caseNum.size() != 0){
 			int random = (int)Math.random()*(caseNum.size());
+			//System.out.println(caseNum.get(random).x+"    "+caseNum.get(random).y);
 			return caseNum.get(random);
 		}
 		else {
@@ -134,11 +134,10 @@ public class Ville extends Agent{
 			}			
 
 			cpt = 0;
-
+		System.out.println(agents.size());
 		}
 		cpt++;
 		if(cptExtention == 50){
-			System.out.println("Ferme Creer");
 			Ferme f =new Ferme(this.numero+11,(coordoVille.x+2)%world.getWidth(),(coordoVille.y+2)%world.getWidth(),world);
 			structures.add(f);
 			world.uniqueDynamicObjects.add(f);
