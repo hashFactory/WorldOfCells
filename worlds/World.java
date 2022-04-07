@@ -33,6 +33,8 @@ public abstract class World {
 	private double maxEverHeightValue = Double.NEGATIVE_INFINITY;
 	private double minEverHeightValue = Double.POSITIVE_INFINITY;
 
+	private double heure = 8.0;
+
     public World( )
     {
     	// ... cf. init() for initialization
@@ -154,6 +156,12 @@ public abstract class World {
 
 	public double getMaxEverHeight() { return this.maxEverHeightValue; }
 	public double getMinEverHeight() { return this.minEverHeightValue; }
-	
 
+	public double getHeure() {
+		return this.heure;
+	}
+
+	public void setHeure(double heure) {
+		this.heure = heure;
+	}
 }

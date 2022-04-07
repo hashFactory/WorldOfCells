@@ -23,6 +23,8 @@ public class WorldOfTrees extends World {
 
 		Case.dxCA = __dxCA;
 		Case.dyCA = __dyCA;
+
+		float maxEverHeight = (float)this.getMaxEverHeight();
     	
     	for ( int x = 0 ; x < __dxCA ; x++ )
     		for ( int y = 0 ; y < __dyCA ; y++ )
@@ -43,9 +45,9 @@ public class WorldOfTrees extends World {
 
 					// green mountains
 					/**/
-					color[0] = height / ( (float)this.getMaxEverHeight() );
-					color[1] = 0.9f + 0.1f * height / ( (float)this.getMaxEverHeight() );
-					color[2] = height / ( (float)this.getMaxEverHeight() );
+					color[0] = height / maxEverHeight;
+					color[1] = 0.9f + 0.1f * height / maxEverHeight;
+					color[2] = height / maxEverHeight;
 					this.setCellValue(x, y, 0);
 					/**/
 
@@ -79,10 +81,6 @@ public class WorldOfTrees extends World {
     	
     }
 
-	public void setCell(int num, int x, int y) {
-		//this.cellsColorValues.setCellState();
-	}
-
 	public void setCell(int num, float[] color, int x,int y){
 		//préparation couleur
 		/*color[0] = 0.6f;
@@ -100,55 +98,51 @@ public class WorldOfTrees extends World {
 		int coordoX = c.x+dxCA;
 		int coordoY = c.y+dyCA;
 		int currentCell = cellularAutomata.getCellState2((coordoX+1)%dxCA,(coordoY)%dyCA);
-	
-			if(currentCell < 100){
-				//System.out.println("neutre");
-				resX = (coordoX+1)%dxCA;
-				resY = (coordoY)%dyCA;
-				libre = true;
-				return new Case(resX, resY, libre);
-			}
-			
+		//libre = currentCell < 100;
+		System.out.println("Cell State :"+currentCell + ", numero: " + numero);
+		//	System.out.println("x+1");
+		if(currentCell < 100){
+			//System.out.println("neutre");
+			resX = (coordoX+1)%dxCA;
+			resY = (coordoY)%dyCA;
+			libre = true;
+			return new Case(resX, resY, libre);
+		}
 
 		currentCell = cellularAutomata.getCellState2((coordoX)%dxCA,(coordoY+1)%dyCA);
-		
-			if(currentCell < 100){
-			//	System.out.println("neutre");
-				resX = (coordoX)%dxCA;
-				resY = (coordoY+1)%dyCA;
-				libre = true;
-				return new Case(resX, resY, libre);
-			}
-			
+		//	System.out.println("y+1");
+		if(currentCell < 100){
+		//	System.out.println("neutre");
+			resX = (coordoX)%dxCA;
+			resY = (coordoY+1)%dyCA;
+			libre = true;
+			return new Case(resX, resY, libre);
+		}
 
 		currentCell = cellularAutomata.getCellState2((coordoX-1)%dxCA,(coordoY)%dyCA);
-		
-			if(currentCell < 100){
-				//System.out.println("neutre");
-				resX = (coordoX-1)%dxCA;
-				resY = (coordoY)%dyCA;
-				libre = true;
-				return new Case(resX, resY, libre);
-			}
-		
+		//libre = currentCell < 100;
+		//System.out.println("x-1");
+		if(currentCell < 100){
+			//System.out.println("neutre");
+			resX = (coordoX-1)%dxCA;
+			resY = (coordoY)%dyCA;
+			libre = true;
+			return new Case(resX, resY, libre);
+		}
 
 		currentCell = cellularAutomata.getCellState2((coordoX)%dxCA,(coordoY-1)%dyCA);
-	
-			if(currentCell < 100){
-			//	System.out.println("neutre");
-				resX = (coordoX)%dxCA;
-				resY = (coordoY-1)%dyCA;
-				libre = true;
-				return new Case(resX, resY, libre);
-			}
-			
+		//	System.out.println("y-1");
+		if(currentCell < 100){
+		//	System.out.println("neutre");
+			resX = (coordoX)%dxCA;
+			resY = (coordoY-1)%dyCA;
+			libre = true;
+			return new Case(resX, resY, libre);
+		}
 
+		System.out.println(resX);
 		return new Case(resX, resY, libre);
 		//return new Case(resX,resY,libre);
-	}
-	//1 = ferme
-	int checkConstructionStructure(int x,int y){
-		return 0;
 	}
     protected void initCellularAutomata(int __dxCA, int __dyCA, double[][] landscape)
     {
@@ -158,11 +152,10 @@ public class WorldOfTrees extends World {
     
     protected void stepCellularAutomata()
     {
-    	if (iteration % 10 == 0) {
+    	if (iteration % 2 == 0) {
 			cellularAutomata.step();
 		}
 		this.cellularAutomata.swapBuffer();
-
 	}
     
     protected void stepAgents()
@@ -173,6 +166,7 @@ public class WorldOfTrees extends World {
     		this.uniqueDynamicObjects.get(i).step();
 			//this.cellularAutomata.swapBuffer();
     	}
+		//this.cellularAutomata.swapBuffer();
 	}
 
     public int getCellValue(int x, int y) // used by the visualization code to call specific object display.

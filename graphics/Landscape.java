@@ -136,7 +136,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         {
     		_myWorld = __myWorld;
 
-			int nombreDeVilles = 60;
+			int nombreDeVilles = 30;
 
     		landscape = PerlinNoiseLandscapeGenerator.generatePerlinNoiseLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,10); // 11
     		//landscape = PolynomialLandscapeGenerator.generatePolynomialLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,nombreDeVilles); // 11
@@ -307,7 +307,8 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         		// ** clean screen
         		
         		final GL2 gl = gLDrawable.getGL().getGL2();
-                gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+				gl.glClearColor(0.1f, 0.1f, 0.7f, 1.f);
+				gl.glClear(GL.GL_COLOR_BUFFER_BIT);
                 gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
                 gl.glLoadIdentity();
 
@@ -568,7 +569,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			landscape = PerlinNoiseLandscapeGenerator.generatePerlinNoiseLandscape(256,256,1,0.25,1); // 11
+			landscape = PerlinNoiseLandscapeGenerator.generatePerlinNoiseLandscape(dxView,dyView,1,0.25,1); // 11
 
 			initLandscape();
 		}
