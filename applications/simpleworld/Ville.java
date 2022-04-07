@@ -41,6 +41,7 @@ public class Ville extends Agent{
 	private WorldOfTrees world;
 
 	private int cpt;
+	private int cptExtention;
 
 
 	public Ville(int num, int __x, int __y, WorldOfTrees __world) 
@@ -68,7 +69,8 @@ public class Ville extends Agent{
 
 		world = __world;
 
-		cpt=0;
+		cpt = 0;
+		cptExtention = 0;
 	}
 
 	public void etendreFrontiere(){
@@ -81,7 +83,6 @@ public class Ville extends Agent{
 			voisin = world.rechercheVoisin(numero,frontiere.get(i));
 			//remove
 			if(voisin.x == -1){
-				System.out.println("frontière removed");
 				territoire.add(frontiere.get(i));
 				frontiere.remove(i);
 				i--;
@@ -105,11 +106,25 @@ public class Ville extends Agent{
 		}
 	}
 
+	public Case rechercheRandomCaseParNumero(int num){
+		ArrayList<Case> caseNum = new ArrayList<Case>();
+
+		for(int i = 0 ; i < territoire.size() ; i++){
+			if(world.cellularAutomata.getCellState2(territoire.get(i).x,territoire.get(i).y) == num){
+				caseNum.add(territoire.get(i));
+			}
+		}
+		
+		int random = (int)Math.random()*(caseNum.size());
+		return caseNum.get(random);
+	}
+
 	public void step(){
 		/*=========étendre territoire========*/
-		if(cpt == 5) {
-			if(frontiere.size() != 0){
+		if(cpt == 10) {
+			if((frontiere.size() != 0) && (cptExtention < 100)){
 				this.etendreFrontiere();
+				cptExtention++;
 			}			
 
 			cpt = 0;

@@ -35,6 +35,19 @@ public class Agent extends UniqueDynamicObject{
 		}
 	}
 
+	public void goTo(int _x,int _y,int numero){
+		if(_x < this.x)
+			this.x = ( this.x - 1 ) % this.world.getWidth() ;
+		else {
+			this.x = ( this.x + 1 ) % this.world.getWidth() ;
+		}
+		if(_y < this.x)
+			this.y = ( this.y - 1 ) % this.world.getWidth() ;
+		else {
+			this.y = ( this.y + 1 ) % this.world.getWidth() ;
+		}
+	}
+
     public void displayUniqueObject(World myWorld, GL2 gl, int offsetCA_x, int offsetCA_y, float offset, float stepX, float stepY, float lenX, float lenY, float normalizeHeight)
     {
 
