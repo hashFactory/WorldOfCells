@@ -14,7 +14,7 @@ public class Village extends Structure{
 
 	private ArrayList<int[][]> frontiere;	//Frontière du village
 
-	public Village (int __x, int __y, World __world) 
+	public Village (int __x, int __y, WorldOfTrees __world) 
 	{
 		super(__x,__y,__world);
 

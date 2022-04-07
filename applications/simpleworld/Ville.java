@@ -110,13 +110,19 @@ public class Ville extends Agent{
 		ArrayList<Case> caseNum = new ArrayList<Case>();
 
 		for(int i = 0 ; i < territoire.size() ; i++){
-			if(world.cellularAutomata.getCellState2(territoire.get(i).x,territoire.get(i).y) == num){
+			System.out.println(world.cellularAutomata.getCellState2(territoire.get(i).x,territoire.get(i).y));
+			if((world.cellularAutomata.getCellState2(territoire.get(i).x,territoire.get(i).y) % 100) == num){
 				caseNum.add(territoire.get(i));
 			}
 		}
 		
-		int random = (int)Math.random()*(caseNum.size());
-		return caseNum.get(random);
+		if(caseNum.size() != 0){
+			int random = (int)Math.random()*(caseNum.size());
+			return caseNum.get(random);
+		}
+		else {
+			return null;
+		}
 	}
 
 	public void step(){
@@ -131,7 +137,15 @@ public class Ville extends Agent{
 
 		}
 		cpt++;
-
+		if(cptExtention == 50){
+			System.out.println("Ferme Creer");
+			Ferme f =new Ferme(this.numero+11,(coordoVille.x+2)%world.getWidth(),(coordoVille.y+2)%world.getWidth(),world);
+			structures.add(f);
+			world.uniqueDynamicObjects.add(f);
+			Bucheron b =new Bucheron(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this);
+			agents.add(b);
+			world.uniqueDynamicObjects.add(b);
+		}
 		/*=========placement de structure (si possible)=========*/
 		
 	}
@@ -169,5 +183,6 @@ public class Ville extends Agent{
 		gl.glVertex3f( offset+x2*stepX-lenX, offset+y2*stepY+lenY, height*normalizeHeight + 5.f);
 		gl.glVertex3f( offset+x2*stepX+lenX, offset+y2*stepY+lenY, height*normalizeHeight + 5.f);
 		gl.glVertex3f( offset+x2*stepX+lenX, offset+y2*stepY-lenY, height*normalizeHeight + 5.f);
+
 	}
 }

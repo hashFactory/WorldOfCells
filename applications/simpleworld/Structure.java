@@ -7,7 +7,7 @@ import worlds.World;
 
 public class Structure extends Agent{
 
-	public Structure ( int __x , int __y, World __world )
+	public Structure ( int __x , int __y, WorldOfTrees __world )
 	{
 		super(__x,__y,__world);
 	}

@@ -15,7 +15,7 @@ public class Mine extends Structure{
 
 	static final int STOCKMAX = 100;	
 	
-	public Mine(int __x, int __y, World __world) 
+	public Mine(int __x, int __y, WorldOfTrees __world) 
 	{
 		super(__x,__y,__world);
 
