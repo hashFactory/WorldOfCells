@@ -83,6 +83,7 @@ public class Couleur {
             case 2 -> new Couleur(1.f - (float) (0.1 * Math.random()), 0.f, 0.f);
             case 3 ->
                     new Couleur(0.f + (float) (0.1 * Math.random()), 0.f + (float) (0.1 * Math.random()), 0.f + (float) (0.2 * Math.random()));
+            case 4 -> new Couleur(1.f - (float) (0.1 * Math.random()), 1.f - (float) (0.1 * Math.random()), 0.5f);
             default -> tableCouleurs[id % 100];
         };
     }
