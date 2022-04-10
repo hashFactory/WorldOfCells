@@ -22,6 +22,7 @@ public class ForestCA extends CellularAutomataInteger {
 		_cellsHeightValuesCA = cellsHeightValuesCA;
 		
 		this.world = __world;
+		Couleur.world = this.world;
 	}
 	
 	public void init()
@@ -32,20 +33,21 @@ public class ForestCA extends CellularAutomataInteger {
     			if ( _cellsHeightValuesCA.getCellState(x,y) >= 0.05 ) {
 					if (Math.random() < 0.53) {// was: 0.71 {
 						//this.setCellState(x, y, 1); // tree
-						this.world.setCell(1, Couleur.intToCouleur(1).toArray(), x, y);
-						this.setCellState(x, y, 1);
+						this.world.setCell(1, Couleur.intToCouleur(1, x, y).toArray(), x, y);
+						//this.setCellState(x, y, 1);
 					}
-    				else
-    					this.setCellState(x, y, 0); // empty
-						//this.world.setCell(0, Couleur.intToCouleur())
+    				else {
+						this.world.setCell(0, Couleur.intToCouleur(0, x, y).toArray(), x, y);
+						//this.setCellState(x, y, 0); // empty
+					}
     			}
     			else
     			{
     				this.setCellState(x, y, 4); // water (ignore)
     			}
     		}
-    	this.swapBuffer();
 
+    	this.swapBuffer();
 	}
 
 	public int getCellState2(int x, int y)
@@ -61,8 +63,8 @@ public class ForestCA extends CellularAutomataInteger {
 				boolean changed = false;
 				int state = this.getCellState(i,j) % 100;
 				int code_ville = 100 * ((this.getCellState(i,j) / 100));
-				int nouveau_state = 0;
-    			if ( state >= 1 && state < 4 )
+				int nouveau_state = state + code_ville;
+    			if ( state >= 0 && state < 4 )
     			{
 	    			if ( state == 1 ) // tree?
 	    			{
@@ -78,7 +80,7 @@ public class ForestCA extends CellularAutomataInteger {
 							changed = true;
 	    				}
 	    				else
-	    					if ( Math.random() < 0.001 ) // spontaneously take fire ?
+	    					if ( Math.random() < 0.0001 ) // spontaneously take fire ?
 	    					{
 								nouveau_state = code_ville + 2;
 								changed = true;
@@ -86,9 +88,19 @@ public class ForestCA extends CellularAutomataInteger {
 	    					else
 	    					{
 								nouveau_state = code_ville + state; // copied unchanged
-								changed = true;
+								changed = false;
 							}
 	    			}
+					else if (state == 3) {
+						if (Math.random() < 0.0001) {
+							nouveau_state = code_ville;
+							changed = true;
+						}
+						else {
+							nouveau_state = code_ville + 3;
+							changed = false;
+						}
+					}
 	    			else
 	    			{
 	        				if ( state == 2 ) // burning?
@@ -99,7 +111,7 @@ public class ForestCA extends CellularAutomataInteger {
 	        				else
 	        				{
 								nouveau_state = code_ville + state; // copied unchanged
-								changed = true;
+								changed = false;
 							}
 					}
 					changed = true;
@@ -107,9 +119,10 @@ public class ForestCA extends CellularAutomataInteger {
 	    			float color[] = new float[3];
 
 					if (changed) {
-						color = Couleur.intToCouleur(nouveau_state).toArray();
-						this.setCellState(i,j,nouveau_state);
-						this.world.cellsColorValues.setCellState(i, j, color);
+						color = Couleur.intToCouleur(nouveau_state, i, j).toArray();
+						//this.setCellState(i,j,nouveau_state);
+						this.world.setCell(nouveau_state, i, j);
+						//this.world.cellsColorValues.setCellState(i, j, color);
 					}
     			}
     		}

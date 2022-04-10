@@ -99,9 +99,17 @@ public abstract class World {
     
     
     public void step()
-    {
+	{
 		stepCellularAutomata();
 		stepAgents();
+		heure += 0.1;
+		if (heure >= 24.0) {
+			heure %= 24.0;
+			jour++;
+		}
+		if (jour > 12) {
+			jour = 0;
+		}
     	iteration++;
     }
     

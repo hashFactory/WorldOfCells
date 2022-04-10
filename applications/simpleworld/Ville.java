@@ -68,6 +68,7 @@ public class Ville extends Agent{
 		territoire = new ArrayList<Case>();
 
 		world = __world;
+		//this.world.setCell(numero, color, __x, __y);
 
 		cpt = 0;
 		cptExtention = 0;
@@ -125,16 +126,26 @@ public class Ville extends Agent{
 		}
 	}
 
+	public Case rechercheRandomCase(){
+
+		if(territoire.size() != 0){
+			int random = (int)(Math.random()*(territoire.size()));
+			//System.out.println(caseNum.get(random).x+"    "+caseNum.get(random).y);
+			return territoire.get(random);
+		}
+		else {
+			return null;
+		}
+	}
+
 	public void step(){
 		/*=========étendre territoire========*/
-		if(cpt == 10) {
-			if((frontiere.size() != 0) && (cptExtention < 100)){
+		if(cpt % 10 == 9) {
+			if((frontiere.size() != 0) && (cptExtention < 150)){
 				this.etendreFrontiere();
 				cptExtention++;
-			}			
-
-			cpt = 0;
-		System.out.println(agents.size());
+			}
+			//System.out.println(agents.size());
 		}
 		cpt++;
 		if(cptExtention == 50){
@@ -144,6 +155,7 @@ public class Ville extends Agent{
 			Bucheron b =new Bucheron(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this);
 			agents.add(b);
 			world.uniqueDynamicObjects.add(b);
+			cptExtention++;
 		}
 		/*=========placement de structure (si possible)=========*/
 		

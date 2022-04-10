@@ -24,7 +24,7 @@ public class WorldOfTrees extends World {
 		Case.dxCA = __dxCA;
 		Case.dyCA = __dyCA;
 
-		float maxEverHeight = (float)this.getMaxEverHeight();
+		Couleur.world = this;
     	
     	for ( int x = 0 ; x < __dxCA ; x++ )
     		for ( int y = 0 ; y < __dyCA ; y++ )
@@ -45,15 +45,16 @@ public class WorldOfTrees extends World {
 
 					// green mountains
 					/**/
-					color[0] = height / maxEverHeight;
-					color[1] = 0.9f + 0.1f * height / maxEverHeight;
-					color[2] = height / maxEverHeight;
+					//color[0] = height / (float)this.getMaxEverHeight();
+					//color[1] = 0.9f + 0.1f * height / (float)this.getMaxEverHeight();
+					//color[2] = height / (float)this.getMaxEverHeight();
+					color = Couleur.intToCouleur(0, x, y).toArray();
 					this.setCellValue(x, y, 0);
 					/**/
 
 					// sand
 					if (height <= 0.05) {
-						color = Couleur.intToCouleur(4).toArray();
+						color = Couleur.intToCouleur(4, x, y).toArray();
 						this.setCellValue(x, y, 4);
 					}
 		        }
@@ -78,8 +79,13 @@ public class WorldOfTrees extends World {
     	}
     	
     	uniqueDynamicObjects.add(new Agent(62,62,this));
-    	
     }
+
+	public void setCell(int num, int x, int y) {
+		this.cellularAutomata.setCellState(x, y, num);
+		Couleur c = Couleur.intToCouleur(num, x, y);
+		this.cellsColorValues.setCellState(x, y, c.toArray());
+	}
 
 	public void setCell(int num, float[] color, int x,int y){
 		//préparation couleur
@@ -166,7 +172,7 @@ public class WorldOfTrees extends World {
     		this.uniqueDynamicObjects.get(i).step();
 			//this.cellularAutomata.swapBuffer();
     	}
-		//this.cellularAutomata.swapBuffer();
+		this.cellularAutomata.swapBuffer();
 	}
 
     public int getCellValue(int x, int y) // used by the visualization code to call specific object display.
