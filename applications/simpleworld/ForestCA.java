@@ -6,6 +6,7 @@ package applications.simpleworld;
 
 import cellularautomata.CellularAutomataDouble;
 import cellularautomata.CellularAutomataInteger;
+import util.Case;
 import util.Couleur;
 import worlds.World;
 
@@ -31,7 +32,7 @@ public class ForestCA extends CellularAutomataInteger {
     		for ( int y = 0 ; y != _dy ; y++ )
     		{
     			if ( _cellsHeightValuesCA.getCellState(x,y) >= 0.05 ) {
-					if (Math.random() < 0.53) {// was: 0.71 {
+					if (Math.random() < 0.53) {
 						//this.setCellState(x, y, 1); // tree
 						this.world.setCell(1, Couleur.intToCouleur(1, x, y).toArray(), x, y);
 						//this.setCellState(x, y, 1);
@@ -66,58 +67,54 @@ public class ForestCA extends CellularAutomataInteger {
 				int nouveau_state = state + code_ville;
     			if ( state >= 0 && state < 4 )
     			{
-	    			if ( state == 1 ) // tree?
-	    			{
+					/*switch (state) {
+						case 1:
+							if (
+									this.getCellState( (i+_dx-1)%(_dx) , j ) % 100 == 2 ||
+									this.getCellState( (i+_dx+1)%(_dx) , j ) % 100 == 2 ||
+									this.getCellState( i , (j+_dy+1)%(_dy) ) % 100 == 2 ||
+									this.getCellState( i , (j+_dy-1)%(_dy) ) % 100 == 2
+							   )
+								nouveau_state = code_ville + 2;
+							break;
+						case 2:
+
+					}*/
+					// si case est un arbre, si case voisine de von neumann brule, alors elle brule aussi
+					// sinon petite chance que ca prenne feu
+	    			if (state == 1) {
 	    				// check if neighbors are burning
 	    				if (this.world.rechercheVonNeumann(2, new Case(i, j)) != null)
 							nouveau_state = code_ville + 2;
-							changed = true;
-	    				}
-	    				else
-	    					if ( Math.random() < 0.0001 ) // spontaneously take fire ?
-	    					{
-								nouveau_state = code_ville + 2;
-								changed = true;
-	    					}
-	    					else
-	    					{
-								nouveau_state = code_ville + state; // copied unchanged
-								changed = false;
-							}
+	    				else if ( Math.random() < 0.0001 )
+							nouveau_state = code_ville + 2;
 	    			}
+					// si case est brulee, elle peut se decomposer
 					else if (state == 3) {
-						if (Math.random() < 0.0001) {
+						if (Math.random() < 0.001)
 							nouveau_state = code_ville;
-							changed = true;
-						}
-						else {
-							nouveau_state = code_ville + 3;
-							changed = false;
-						}
+					}
+					// si case est vide, il peut y avoir un arbre
+					else if (state == 0) {
+						if (Math.random() < 0.001)
+							nouveau_state += 1;
+					}
+					// si case brule, alors arbre devient mort
+					else if (state == 2) {
+						nouveau_state += 1;
 					}
 	    			else
 	    			{
-	        				if ( state == 2 ) // burning?
-	        				{
-								nouveau_state = code_ville + 3; // burnt
-								changed = true;
-							}
-	        				else
-	        				{
-								nouveau_state = code_ville + state; // copied unchanged
-								changed = false;
-							}
+						nouveau_state = code_ville + state; // copied unchanged
 					}
 					changed = true;
 	    			
 	    			float color[] = new float[3];
 
-					if (changed) {
-						color = Couleur.intToCouleur(nouveau_state, i, j).toArray();
-						//this.setCellState(i,j,nouveau_state);
-						this.world.setCell(nouveau_state, i, j);
-						//this.world.cellsColorValues.setCellState(i, j, color);
-					}
+					color = Couleur.intToCouleur(nouveau_state, i, j).toArray();
+					//this.setCellState(i,j,nouveau_state);
+					this.world.setCell(nouveau_state, i, j);
+					//this.world.cellsColorValues.setCellState(i, j, color);
     			}
     		}
     	this.swapBuffer();

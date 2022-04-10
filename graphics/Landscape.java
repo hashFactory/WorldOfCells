@@ -47,9 +47,6 @@ import landscapegenerator.PerlinNoiseLandscapeGenerator;
 */
 
 
-
-
-
 /**
  * Self-contained code 
  * displaying a landscape generated with Perlin noise
@@ -227,7 +224,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
             frame.add(canvas);
             frame.setSize(1600, 1200);
             //frame.setSize(1280, 960);
-            frame.setResizable(false);
+            frame.setResizable(true);
             frame.addWindowListener(new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
                             animator.stop();
@@ -251,17 +248,10 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         //@Override
         public void init(GLAutoDrawable glDrawable) {
                 GL2 gl = glDrawable.getGL().getGL2();
-
-                // Enable front face culling (can speed up code, but is not always 
-                // GO FAST ???
                 
                 // double buffer
                 gl.glEnable(GL2.GL_DOUBLEBUFFER);
                 glDrawable.setAutoSwapBufferMode(true);
-
-                // Enable VSync
-                //gl.setSwapInterval(1);
-                // END of GO FAST ???
 
                 gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
                 gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -276,7 +266,6 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 
                 // trucs d'alex
                 gl.glEnable(GL.GL_DITHER);
-                
         }
         
         
@@ -387,7 +376,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
                 else
                 {
                     // continuous rotation (default view) 
-                    gl.glTranslatef(0.0f, -44.0f, -130.0f); // 0,0,-5
+                    gl.glTranslatef(0.0f, -50.f, -200.0f); // 0,0,-5
                     gl.glRotatef(rotateX, 0.0f, 1.0f, 0.0f);
                     gl.glRotatef(-90.f, 1.0f, 0.0f, 0.0f);
                 }
@@ -413,8 +402,8 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
                 //movingX = movingIt;// it; // was: it
                 //movingY = 0; // was: it
                 
-                for ( int x = 0 ; x < dxView-1 ; x++ )
-                	for ( int y = 0 ; y < dyView-1 ; y++ )
+                for ( int x = 0 ; x < dxView ; x++ )
+                	for ( int y = 0 ; y < dyView ; y++ )
                 	{
            			 	
 		                double height = _myWorld.getCellHeight(x+movingX,y+movingY);
@@ -518,14 +507,9 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
   
                 //gl.glFlush(); // GO FAST ???
             	//gLDrawable.swapBuffers(); // GO FAST ???  // should be done at the end (http://stackoverflow.com/questions/1540928/jogl-double-buffering)
-            	
 
         }
-        
 
-        
- 
-        
         /**
          * 
          */
@@ -555,16 +539,6 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         //@Override
         public void dispose(GLAutoDrawable gLDrawable) {
         }
- 
-
-        /*
-		public static void main(String[] args) {
-
-        	initLandscape(200,200, new WorldOfTrees());
-
-        }
-        */
-
 
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
