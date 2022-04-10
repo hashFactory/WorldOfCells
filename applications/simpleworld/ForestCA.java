@@ -69,13 +69,7 @@ public class ForestCA extends CellularAutomataInteger {
 	    			if ( state == 1 ) // tree?
 	    			{
 	    				// check if neighbors are burning
-	    				if ( 
-	    						this.getCellState( (i+_dx-1)%(_dx) , j ) % 100 == 2 ||
-	    						this.getCellState( (i+_dx+1)%(_dx) , j ) % 100 == 2 ||
-	    						this.getCellState( i , (j+_dy+1)%(_dy) ) % 100 == 2 ||
-	    						this.getCellState( i , (j+_dy-1)%(_dy) ) % 100 == 2
-	    					)
-	    				{
+	    				if (this.world.rechercheVonNeumann(2, new Case(i, j)) != null)
 							nouveau_state = code_ville + 2;
 							changed = true;
 	    				}

@@ -13,6 +13,11 @@ public class Case {
 		this.libre=l;
     }
 
+    public Case(int _x, int _y) {
+        this.x = _x;
+        this.y = _y;
+        this.libre = false;
+    }
     public double distance(int _x, int _y) {
         double lowest = dxCA * dyCA;
 

@@ -49,8 +49,8 @@ public abstract class World {
     	
     	iteration = 0;
 	
-	heure = 8.0;
-	jour = 1;
+		heure = 8.0;
+		jour = 1;
 
     	this.cellsHeightValuesCA = new CellularAutomataDouble (__dxCA,__dyCA,false);
     	this.cellsHeightAmplitudeCA = new CellularAutomataDouble (__dxCA,__dyCA,false);

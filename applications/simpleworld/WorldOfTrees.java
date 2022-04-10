@@ -36,23 +36,11 @@ public class WorldOfTrees extends World {
 		    	
 		        if ( height >= 0 )
 		        {
-		        	// snowy mountains
-		        	/*
-		        	color[0] = height / (float)this.getMaxEverHeight();
-					color[1] = height / (float)this.getMaxEverHeight();
-					color[2] = height / (float)this.getMaxEverHeight();
-					/**/
-
-					// green mountains
-					/**/
-					//color[0] = height / (float)this.getMaxEverHeight();
-					//color[1] = 0.9f + 0.1f * height / (float)this.getMaxEverHeight();
-					//color[2] = height / (float)this.getMaxEverHeight();
+					// montagnes vertes
 					color = Couleur.intToCouleur(0, x, y).toArray();
 					this.setCellValue(x, y, 0);
-					/**/
 
-					// sand
+					// sable
 					if (height <= 0.05) {
 						color = Couleur.intToCouleur(4, x, y).toArray();
 						this.setCellValue(x, y, 4);
@@ -60,12 +48,13 @@ public class WorldOfTrees extends World {
 		        }
 		        else
 		        {
-		        	// water
+		        	// sinon, c'est de l'eau
 					color[0] = -height;
 					color[1] = -height;
 					color[2] = 1.f;
 					this.setCellValue(x, y, 5);
 		        }
+				// on affecte la couleur des cases aux cellules
 		        this.cellsColorValues.setCellState(x, y, color);
     		}
     	
@@ -82,19 +71,32 @@ public class WorldOfTrees extends World {
     }
 
 	public void setCell(int num, int x, int y) {
+		// si on connait que le num et la couleur est deterministe
 		this.cellularAutomata.setCellState(x, y, num);
 		Couleur c = Couleur.intToCouleur(num, x, y);
 		this.cellsColorValues.setCellState(x, y, c.toArray());
 	}
 
 	public void setCell(int num, float[] color, int x,int y){
-		//préparation couleur
-		/*color[0] = 0.6f;
-		color[1] = 1.f;
-		color[2] = 1.f;*/
-
+		// si on connait deja le num et la couleur, on l'affecte dans automate etat et couleur
 		this.cellularAutomata.setCellState(x, y, num);
 		this.cellsColorValues.setCellState(x, y, color);
+	}
+
+	public Case rechercheVonNeumann(int numero, Case c) {
+		// retourne la case voisine de c et null sinon
+		// si numero < 100 alors la methode retourne le resultat peu importe la ville
+		// si numero >= 100 la methode est stricte et retourne que si type case et ville sont egaux
+		int mod = (numero >= 100) ? 1 : 100;
+
+		for (int i = -1; i <= 1; i+=2) {
+			 if (this.cellularAutomata.getCellState( (c.x+dxCA+i)%(dxCA) , c.y) % mod == numero)
+				 return new Case((c.x+dxCA+i)%(dxCA), c.y, true);
+			 if (this.cellularAutomata.getCellState(c.x, (c.y+dyCA+i)%(dyCA)) % mod == numero)
+				 return new Case(c.x, (c.y+dyCA+i)%(dyCA), true);
+		}
+
+		return null;
 	}
     
 	public Case rechercheVoisin(int numero, Case c){
@@ -103,47 +105,42 @@ public class WorldOfTrees extends World {
 		boolean libre = false;
 		int coordoX = c.x+dxCA;
 		int coordoY = c.y+dyCA;
+
+		// on commence par regarder a droite
 		int currentCell = cellularAutomata.getCellState2((coordoX+1)%dxCA,(coordoY)%dyCA);
-		//libre = currentCell < 100;
-		System.out.println("Cell State :"+currentCell + ", numero: " + numero);
-		//	System.out.println("x+1");
+		//System.out.println("Cell State :"+currentCell + ", numero: " + numero);
 		if(currentCell < 100){
 			//System.out.println("neutre");
 			resX = (coordoX+1)%dxCA;
 			resY = (coordoY)%dyCA;
-			libre = true;
-			return new Case(resX, resY, libre);
+			return new Case(resX, resY, true);
 		}
 
+		// ensuite en haut
 		currentCell = cellularAutomata.getCellState2((coordoX)%dxCA,(coordoY+1)%dyCA);
 		//	System.out.println("y+1");
 		if(currentCell < 100){
-		//	System.out.println("neutre");
 			resX = (coordoX)%dxCA;
 			resY = (coordoY+1)%dyCA;
-			libre = true;
-			return new Case(resX, resY, libre);
+			return new Case(resX, resY, true);
 		}
 
+		// et a gauche
 		currentCell = cellularAutomata.getCellState2((coordoX-1)%dxCA,(coordoY)%dyCA);
-		//libre = currentCell < 100;
 		//System.out.println("x-1");
 		if(currentCell < 100){
 			//System.out.println("neutre");
 			resX = (coordoX-1)%dxCA;
 			resY = (coordoY)%dyCA;
-			libre = true;
-			return new Case(resX, resY, libre);
+			return new Case(resX, resY, true);
 		}
 
+		// et enfin en bas
 		currentCell = cellularAutomata.getCellState2((coordoX)%dxCA,(coordoY-1)%dyCA);
-		//	System.out.println("y-1");
 		if(currentCell < 100){
-		//	System.out.println("neutre");
 			resX = (coordoX)%dxCA;
 			resY = (coordoY-1)%dyCA;
-			libre = true;
-			return new Case(resX, resY, libre);
+			return new Case(resX, resY, true);
 		}
 
 		System.out.println(resX);
