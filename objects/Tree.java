@@ -15,8 +15,8 @@ public class Tree extends CommonObject {
     {
         //float smoothFactorAvg = ( smoothFactor[0] + smoothFactor[1] + smoothFactor[2] + smoothFactor[3] ) / 4.f;
 
-        //Couleur c = Couleur.getBaseColor(cellState);
-        //gl.glColor3f(c.r, c.g, c.b);
+        Couleur c = Couleur.tableCouleurs[cellState % 100];
+        gl.glColor3f(c.r, c.g, c.b);
         if ( cellState > 0 )
         {
     		float altitude = (float)height * normalizeHeight ;
