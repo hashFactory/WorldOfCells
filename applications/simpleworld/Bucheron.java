@@ -45,14 +45,14 @@ public class Bucheron extends Agent{
 
 	public void step(){
 		if(cptVie == 100){
-			this.vie--;			
+			this.vie--;
 			cptVie = 0;
 		}
 		if(cpt == 5){
 			if(tree == null){	
 				//tree = this.ville.rechercheRandomCase();
 				tree = this.ville.rechercheRandomCaseParNumero(1);
-				System.out.println("x = "+tree.x+"     y = "+tree.y);
+				//System.out.println("x = "+tree.x+"     y = "+tree.y);
 			}
 			else{
 				if (Math.random() < 0.1) {
@@ -78,9 +78,10 @@ public class Bucheron extends Agent{
 	}
 
 	public void displayUniqueObject(World myWorld, GL2 gl, int offsetCA_x, int offsetCA_y, float offset, float stepX, float stepY, float lenX, float lenY, float normalizeHeight ){
-		Couleur c = new Couleur(Ville.mapCouleurs.get(numero));
-		c = Couleur.mix(c, new Couleur(0.5f, 0.5f, 0.5f), 0.2f);
+		Couleur c = Couleur.getBaseColor(11); // couleur ferme
+		c = Couleur.mix(c, new Couleur(0.2f, 0.2f, 0.2f), 0.2f);
 		gl.glColor3f(c.r,c.g,c.b);
+		Couleur.setGLCouleur(gl, c);
 
 		int x2 = (x-(offsetCA_x%myWorld.getWidth()));
 		if ( x2 < 0) x2+=myWorld.getWidth();
@@ -88,31 +89,41 @@ public class Bucheron extends Agent{
 		if ( y2 < 0) y2+=myWorld.getHeight();
 
 		float height = Math.max ( 0 , (float)myWorld.getCellHeight(x, y) );
+		float altitude = height * normalizeHeight;
 
-		
-		gl.glVertex3f( offset+x2*stepX-lenX, offset+y2*stepY-lenY, height*normalizeHeight);
-		gl.glVertex3f( offset+x2*stepX-lenX, offset+y2*stepY-lenY, height*normalizeHeight + 4.f);
-		gl.glVertex3f( offset+x2*stepX+lenX, offset+y2*stepY-lenY, height*normalizeHeight + 4.f);
-		gl.glVertex3f( offset+x2*stepX+lenX, offset+y2*stepY-lenY, height*normalizeHeight);
+		float xx = offset+x2*stepX;
+		float yy = offset+y2*stepY;
 
-		gl.glVertex3f( offset+x2*stepX+lenX, offset+y2*stepY+lenY, height*normalizeHeight);
-		gl.glVertex3f( offset+x2*stepX+lenX, offset+y2*stepY+lenY, height*normalizeHeight + 4.f);
-		gl.glVertex3f( offset+x2*stepX-lenX, offset+y2*stepY+lenY, height*normalizeHeight + 4.f);
-		gl.glVertex3f( offset+x2*stepX-lenX, offset+y2*stepY+lenY, height*normalizeHeight);
+		lenX /= 2.f;
+		lenY /= 2.f;
 
-		gl.glVertex3f( offset+x2*stepX+lenX, offset+y2*stepY-lenY, height*normalizeHeight);
-		gl.glVertex3f( offset+x2*stepX+lenX, offset+y2*stepY-lenY, height*normalizeHeight + 4.f);
-		gl.glVertex3f( offset+x2*stepX+lenX, offset+y2*stepY+lenY, height*normalizeHeight + 4.f);
-		gl.glVertex3f( offset+x2*stepX+lenX, offset+y2*stepY+lenY, height*normalizeHeight);
+		gl.glVertex3f( xx-lenX, yy-lenY, altitude);
+		gl.glVertex3f( xx-lenX, yy-lenY, altitude + 4.f);
+		gl.glVertex3f( xx+lenX, yy-lenY, altitude + 4.f);
+		gl.glVertex3f( xx+lenX, yy-lenY, altitude);
 
-		gl.glVertex3f( offset+x2*stepX-lenX, offset+y2*stepY+lenY, height*normalizeHeight);
-		gl.glVertex3f( offset+x2*stepX-lenX, offset+y2*stepY+lenY, height*normalizeHeight + 4.f);
-		gl.glVertex3f( offset+x2*stepX-lenX, offset+y2*stepY-lenY, height*normalizeHeight + 4.f);
-		gl.glVertex3f( offset+x2*stepX-lenX, offset+y2*stepY-lenY, height*normalizeHeight);
+		gl.glVertex3f( xx+lenX, yy+lenY, altitude);
+		gl.glVertex3f( xx+lenX, yy+lenY, altitude + 4.f);
+		gl.glVertex3f( xx-lenX, yy+lenY, altitude + 4.f);
+		gl.glVertex3f( xx-lenX, yy+lenY, altitude);
 
-		gl.glVertex3f( offset+x2*stepX-lenX, offset+y2*stepY-lenY, height*normalizeHeight + 5.f);
-		gl.glVertex3f( offset+x2*stepX-lenX, offset+y2*stepY+lenY, height*normalizeHeight + 5.f);
-		gl.glVertex3f( offset+x2*stepX+lenX, offset+y2*stepY+lenY, height*normalizeHeight + 5.f);
-		gl.glVertex3f( offset+x2*stepX+lenX, offset+y2*stepY-lenY, height*normalizeHeight + 5.f);
+		gl.glVertex3f( xx+lenX, yy-lenY, altitude);
+		gl.glVertex3f( xx+lenX, yy-lenY, altitude + 4.f);
+		gl.glVertex3f( xx+lenX, yy+lenY, altitude + 4.f);
+		gl.glVertex3f( xx+lenX, yy+lenY, altitude);
+
+		gl.glVertex3f( xx-lenX, yy+lenY, altitude);
+		gl.glVertex3f( xx-lenX, yy+lenY, altitude + 4.f);
+		gl.glVertex3f( xx-lenX, yy-lenY, altitude + 4.f);
+		gl.glVertex3f( xx-lenX, yy-lenY, altitude);
+
+		c = new Couleur(Ville.mapCouleurs.get(numero));
+		gl.glColor3f(c.r,c.g,c.b);
+		Couleur.setGLCouleur(gl, c);
+
+		gl.glVertex3f( xx-lenX, yy-lenY, altitude + 4.f);
+		gl.glVertex3f( xx-lenX, yy+lenY, altitude + 4.f);
+		gl.glVertex3f( xx+lenX, yy+lenY, altitude + 4.f);
+		gl.glVertex3f( xx+lenX, yy-lenY, altitude + 4.f);
 	}
 }

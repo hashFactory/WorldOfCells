@@ -120,7 +120,7 @@ public class Ville extends Agent{
 		
 		if(caseNum.size() != 0){
 			System.out.println(caseNum.size());
-			int random = (int)Math.random()*(caseNum.size());
+			int random = (int)(Math.random()*(caseNum.size()));
 			//System.out.println(caseNum.get(random).x+"    "+caseNum.get(random).y);
 			return caseNum.get(random);
 		}
@@ -155,6 +155,7 @@ public class Ville extends Agent{
 			Ferme f =new Ferme(this.numero+11,(coordoVille.x+2)%world.getWidth(),(coordoVille.y+2)%world.getWidth(),world);
 			structures.add(f);
 			world.uniqueDynamicObjects.add(f);
+			world.setCell(this.numero+11, (coordoVille.x+2)%world.getWidth(), (coordoVille.y+2)%world.getWidth());
 			Bucheron b =new Bucheron(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this);
 			agents.add(b);
 			world.uniqueDynamicObjects.add(b);
@@ -170,9 +171,15 @@ public class Ville extends Agent{
 		int y2 = (y-(offsetCA_y%myWorld.getHeight()));
 		if ( y2 < 0) y2+=myWorld.getHeight();
 
+		gl.glColor3f(c.r, c.g, c.b);
+
+		if ( true )
+		{
+			Couleur.setGLCouleur(gl, c);
+		}
+
 		float height = Math.max ( 0 , (float)myWorld.getCellHeight(x, y) );
 
-		gl.glColor3f(c.r, c.g, c.b);
 		gl.glVertex3f( offset+x2*stepX-lenX, offset+y2*stepY-lenY, height*normalizeHeight);
 		gl.glVertex3f( offset+x2*stepX-lenX, offset+y2*stepY-lenY, height*normalizeHeight + 4.f);
 		gl.glVertex3f( offset+x2*stepX+lenX, offset+y2*stepY-lenY, height*normalizeHeight + 4.f);
