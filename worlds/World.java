@@ -35,7 +35,11 @@ public abstract class World {
 
 	private double heure;
 
+	private double rate;
+
 	private int jour;
+
+	private boolean enPause;
 
     public World( )
     {
@@ -50,7 +54,10 @@ public abstract class World {
     	iteration = 0;
 	
 		heure = 8.0;
+		rate = 0.1;
 		jour = 1;
+
+		enPause = false;
 
     	this.cellsHeightValuesCA = new CellularAutomataDouble (__dxCA,__dyCA,false);
     	this.cellsHeightAmplitudeCA = new CellularAutomataDouble (__dxCA,__dyCA,false);
@@ -75,23 +82,23 @@ public abstract class World {
 			}
     	
     	initCellularAutomata(__dxCA,__dyCA,landscape);
-
     }
-    
-    
+
     public void step()
 	{
-		stepCellularAutomata();
-		stepAgents();
-		heure += 0.1;
-		if (heure >= 24.0) {
-			heure %= 24.0;
-			jour++;
+		if (!enPause) {
+			stepCellularAutomata();
+			stepAgents();
+			heure += rate;
+			if (heure >= 24.0) {
+				heure %= 24.0;
+				jour++;
+			}
+			if (jour > 12) {
+				jour = 0;
+			}
+			iteration++;
 		}
-		if (jour > 12) {
-			jour = 0;
-		}
-    	iteration++;
     }
     
     public int getIteration()
@@ -158,4 +165,12 @@ public abstract class World {
 	public int getJour() {
 		return this.jour;
 	}
+
+	public boolean estJour() { return this.heure < 7.0 || this.heure > 19.0; }
+
+	public double getRate() { return this.rate; }
+
+	public void setRate(double _rate) { this.rate = _rate; }
+
+	public void togglePause() { this.enPause = !this.enPause; }
 }

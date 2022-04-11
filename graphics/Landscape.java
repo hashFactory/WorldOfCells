@@ -64,7 +64,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 	
 		static boolean MY_LIGHT_RENDERING = true; // true: nicer but slower
 		
-		final static boolean SMOOTH_AT_BORDER = false; // nicer (but wrong) rendering at border (smooth altitudes)
+		final static boolean SMOOTH_AT_BORDER = true; // nicer (but wrong) rendering at border (smooth altitudes)
 		
 		//final static double landscapeAltitudeRatio = 0.6; // 0.5: half mountain, half water ; 0.3: fewer water
 		
@@ -97,7 +97,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 		
 		private float rotateX = 0.0f;
 		
-		private float rotationVelocity = 0.2f; // 0.2f
+		private float rotationVelocity = 0.0f; // 0.2f
 
         int it = 0;
         int movingIt = 0;
@@ -124,6 +124,8 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 		float stepY;
 		float lenX;
 		float lenY;
+
+		float zoom;
 		
         float smoothFactor[];
         int smoothingDistanceThreshold;
@@ -201,6 +203,8 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
     		stepY = (-offset*2.0f) / dxView;
     		lenX = stepX / 2f;
     		lenY = stepY / 2f;
+
+			zoom = 1.f;
     		
             smoothFactor = new float[4];
             for ( int i = 0 ; i < 4 ; i++ )
@@ -387,8 +391,9 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
                 }
                 else
                 {
-                    // continuous rotation (default view) 
-                    gl.glTranslatef(0.0f, -50.f, -200.0f); // 0,0,-5
+                    // continuous rotation (default view)
+
+                    gl.glTranslatef(0.0f, -50.f * zoom, -200.0f * zoom); // 0,0,-5
                     gl.glRotatef(rotateX, 0.0f, 1.0f, 0.0f);
                     gl.glRotatef(-90.f, 1.0f, 0.0f, 0.0f);
                 }
@@ -556,9 +561,9 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			landscape = PerlinNoiseLandscapeGenerator.generatePerlinNoiseLandscape(dxView,dyView,1,0.25,1); // 11
+			//landscape = PerlinNoiseLandscapeGenerator.generatePerlinNoiseLandscape(dxView,dyView,1,0.25,1); // 11
 
-			initLandscape();
+			//initLandscape();
 		}
 
 
@@ -659,6 +664,15 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 						" [cursor keys] navigate\n"
 						);
 				break;
+				case KeyEvent.VK_SPACE:
+					this._myWorld.togglePause();
+					break;
+				case KeyEvent.VK_0:
+					zoom*=1.05;
+					break;
+				case KeyEvent.VK_9:
+					zoom/=1.05;
+					break;
 			default:
 				break;
 			}
