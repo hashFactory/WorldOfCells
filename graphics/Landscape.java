@@ -33,6 +33,7 @@ import objects.Monolith;
 import landscapegenerator.LoadFromFileLandscape;
 import landscapegenerator.PerlinNoiseLandscapeGenerator;
 
+import static util.Couleur.heureToCouleur;
 import static util.Couleur.world;
 
 /*
@@ -61,7 +62,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 	
 		private static GLCapabilities caps;  // GO FAST ???
 	
-		static boolean MY_LIGHT_RENDERING = false; // true: nicer but slower
+		static boolean MY_LIGHT_RENDERING = true; // true: nicer but slower
 		
 		final static boolean SMOOTH_AT_BORDER = false; // nicer (but wrong) rendering at border (smooth altitudes)
 		
@@ -163,7 +164,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 				color[0] = 1.f; color[1] = 0.2f; color[2] = 1.0f;
 
 				_myWorld.cellsColorValues.setCellState(surterrain.get(index).x, surterrain.get(index).y, color);
-				_myWorld.setCellValue(surterrain.get(index).x, surterrain.get(index).y, (i+1)*100);
+				_myWorld.setCellValue(surterrain.get(index).x, surterrain.get(index).y, (i+1)*100+10);
 				_myWorld.uniqueDynamicObjects.add(new Ville(i+1,surterrain.get(index).x, surterrain.get(index).y, _myWorld));
 			}
         }
@@ -302,8 +303,10 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         		
         		final GL2 gl = gLDrawable.getGL().getGL2();
 
+				double heure = _myWorld.getHeure();
+
 				// color le ciel
-				Couleur ciel = Couleur.heureToCouleur(_myWorld.getHeure());
+				Couleur ciel = Couleur.heureToCouleur(heure);
 				gl.glClearColor(ciel.r, ciel.g, ciel.b, 1.f);
 
 				gl.glClear(GL.GL_COLOR_BUFFER_BIT);
@@ -335,11 +338,11 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 	                //float[] lightPos = {40.f, 0.f, -300.f, SHINE_ALL_DIRECTIONS};
 	                float[] lightPos = {0.f, 40.f, -100.f, SHINE_ALL_DIRECTIONS};
 	                //float[] lightColorAmbient = {0.2f, 0.2f, 0.2f, 1f};
-	                float[] lightColorAmbient = {0.5f, 0.5f, 0.5f, 1f};
-	                float[] lightColorSpecular = {0.8f, 0.8f, 0.8f, 1f};
+					float intensite = (ciel.r + ciel.g + ciel.b) / 2.f + 0.4f;
+	                float[] lightColorAmbient = {intensite, intensite, intensite, 1f};
+	                float[] lightColorSpecular = {intensite*0.6f, intensite*0.6f, intensite*0.6f, 1f};
 	
 	                // Set light parameters.
-	                
 	                gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_POSITION, lightPos, 0);
 	                gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_AMBIENT, lightColorAmbient, 0);
 	                gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_SPECULAR, lightColorSpecular, 0);
@@ -510,7 +513,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 	            	_myWorld.displayUniqueObjects(_myWorld,gl,movingX,movingY,offset,stepX,stepY,lenX,lenY,normalizeHeight); 
 	            }
 
-	            gl.glEnd();      		
+	            gl.glEnd();
 
                 // increasing rotation for the next iteration                   
                 rotateX += rotationVelocity; 

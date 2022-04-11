@@ -16,10 +16,11 @@ public class Tree extends CommonObject {
         //float smoothFactorAvg = ( smoothFactor[0] + smoothFactor[1] + smoothFactor[2] + smoothFactor[3] ) / 4.f;
 
         Couleur c = Couleur.tableCouleurs[cellState % 100];
-        gl.glColor3f(c.r, c.g, c.b);
+        Couleur.setGLCouleur(gl, c);
+
         if ( cellState > 0 )
         {
-    		float altitude = (float)height * normalizeHeight ;
+    		float altitude = (float)height * normalizeHeight;
     		
     		//float heightFactor, double heightBooster, float smoothFactor[]
 
@@ -27,15 +28,15 @@ public class Tree extends CommonObject {
             float yy = offset+(y*stepY);
 
             // correction de l'ordre des vecteurs
-            gl.glVertex3f(xx-lenX/8.f, yy, altitude);
-            gl.glVertex3f(xx-lenX/8.f, yy, altitude+3.f);
-            gl.glVertex3f(xx+lenX/8.f, yy, altitude+3.f);
-            gl.glVertex3f(xx+lenX/8.f, yy, altitude);
+            gl.glVertex3f(xx-lenX/4.f, yy, altitude);
+            gl.glVertex3f(xx-lenX/4.f, yy, altitude+3.f);
+            gl.glVertex3f(xx+lenX/4.f, yy, altitude+3.f);
+            gl.glVertex3f(xx+lenX/4.f, yy, altitude);
 
-            gl.glVertex3f(xx, yy-lenY/6.f, altitude);
-            gl.glVertex3f(xx, yy-lenY/6.f, altitude+2.f);
-            gl.glVertex3f(xx, yy+lenY/6.f, altitude);
-            gl.glVertex3f(xx, yy+lenY/6.f, altitude+2.f);
+            gl.glVertex3f(xx, yy-lenY/3.f, altitude);
+            gl.glVertex3f(xx, yy-lenY/3.f, altitude+2.f);
+            gl.glVertex3f(xx, yy+lenY/3.f, altitude);
+            gl.glVertex3f(xx, yy+lenY/3.f, altitude+2.f);
         }
     }
 

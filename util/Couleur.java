@@ -3,6 +3,8 @@ package util;
 import applications.simpleworld.Ville;
 import applications.simpleworld.WorldOfTrees;
 import cellularautomata.CellularAutomataDouble;
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GL2;
 
 public class Couleur {
     public static final Couleur[] tableCouleurs = {
@@ -11,7 +13,13 @@ public class Couleur {
             new Couleur(0.9f, 0.f, 0.f),       // 2: feu
             new Couleur(0.05f, 0.05f, 0.05f),   // 3: mort
             new Couleur(1.f, 1.f, 0.5f),        // 4: sable
-            new Couleur(0.f, 0.f, 0.8f)         // 5: eau
+            new Couleur(0.f, 0.f, 0.8f),         // 5: eau
+            new Couleur(0.f, 0.f, 0.f),         // 6: --
+            new Couleur(0.f, 0.f, 0.f),         // 7: --
+            new Couleur(0.f, 0.f, 0.f),         // 8: --
+            new Couleur(0.f, 0.f, 0.f),         // 9: --
+            new Couleur(0.f, 0.f, 0.f),         // 10: ville
+            new Couleur(0.2f, 0.04f, 0.05f)         // 11: ferme
     };
 
     public static WorldOfTrees world;
@@ -75,6 +83,16 @@ public class Couleur {
 
     public static Couleur rand() {
         return new Couleur((float) Math.random(), (float) Math.random(), (float) Math.random());
+    }
+
+    public static void setGLCouleur(GL2 gl, Couleur c) {
+        gl.glColor3f(c.r, c.g, c.b);
+        gl.glMaterialfv( GL.GL_FRONT_AND_BACK, GL2.GL_AMBIENT, c.toArray(), 0 );
+        gl.glMaterialfv( GL.GL_FRONT_AND_BACK, GL2.GL_DIFFUSE, c.toArray(), 0 );
+        gl.glMaterialfv( GL.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, c.toArray(), 0 );
+        gl.glMateriali( GL.GL_FRONT_AND_BACK, GL2.GL_SHININESS, 4 );
+        float[] colorBlack  = {0.0f,0.0f,0.0f,1.0f};
+        gl.glMaterialfv( GL.GL_FRONT_AND_BACK, GL2.GL_EMISSION, colorBlack, 0 );
     }
 
     public static Couleur heureToCouleur(double heure) {

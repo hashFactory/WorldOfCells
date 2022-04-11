@@ -129,7 +129,6 @@ public class WorldOfTrees extends World {
 			return new Case(resX, resY, true);
 		}
 
-		System.out.println(resX);
 		return new Case(resX, resY, libre);
 		//return new Case(resX,resY,libre);
 	}
