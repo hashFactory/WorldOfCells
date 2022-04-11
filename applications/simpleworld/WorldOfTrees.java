@@ -15,6 +15,8 @@ public class WorldOfTrees extends World {
 
     protected ForestCA cellularAutomata;
 
+	protected EauCA eauCA;
+
     public void init ( int __dxCA, int __dyCA, double[][] landscape )
     {
     	super.init(__dxCA, __dyCA, landscape);
@@ -82,22 +84,6 @@ public class WorldOfTrees extends World {
 		this.cellularAutomata.setCellState(x, y, num);
 		this.cellsColorValues.setCellState(x, y, color);
 	}
-
-	public Case rechercheVonNeumann(int numero, Case c) {
-		// retourne la case voisine de c et null sinon
-		// si numero < 100 alors la methode retourne le resultat peu importe la ville
-		// si numero >= 100 la methode est stricte et retourne que si type case et ville sont egaux
-		int mod = (numero >= 100) ? 1 : 100;
-
-		for (int i = -1; i <= 1; i+=2) {
-			 if (this.cellularAutomata.getCellState( (c.x+dxCA+i)%(dxCA) , c.y) % mod == numero)
-				 return new Case((c.x+dxCA+i)%(dxCA), c.y, true);
-			 if (this.cellularAutomata.getCellState(c.x, (c.y+dyCA+i)%(dyCA)) % mod == numero)
-				 return new Case(c.x, (c.y+dyCA+i)%(dyCA), true);
-		}
-
-		return null;
-	}
     
 	public Case rechercheVoisin(int numero, Case c){
 		int resX = -1;
@@ -151,14 +137,19 @@ public class WorldOfTrees extends World {
     {
     	cellularAutomata = new ForestCA(this,__dxCA,__dyCA,cellsHeightValuesCA);
     	cellularAutomata.init();
+
+		eauCA = new EauCA(this, __dxCA, __dyCA, cellsHeightValuesCA, cellularAutomata);
+		eauCA.init();
     }
     
     protected void stepCellularAutomata()
     {
     	if (iteration % 2 == 0) {
 			cellularAutomata.step();
+			eauCA.step();
 		}
-		this.cellularAutomata.swapBuffer();
+		//this.eauCA.swapBuffer();
+		//this.cellularAutomata.swapBuffer();
 	}
     
     protected void stepAgents()
@@ -169,6 +160,7 @@ public class WorldOfTrees extends World {
     		this.uniqueDynamicObjects.get(i).step();
 			//this.cellularAutomata.swapBuffer();
     	}
+		//this.eauCA.swapBuffer();
 		this.cellularAutomata.swapBuffer();
 	}
 
@@ -176,6 +168,11 @@ public class WorldOfTrees extends World {
     {
     	return cellularAutomata.getCellState(x%dxCA,y%dyCA);
     }
+
+	public int getWaterValue(int x, int y)
+	{
+		return eauCA.getCellState(x%dxCA,y%dyCA);
+	}
 
     public void setCellValue(int x, int y, int state)
     {
@@ -200,6 +197,23 @@ public class WorldOfTrees extends World {
 
 		default:
 			// nothing to display at this location.
+		}
+	}
+
+	public void displayWaterAt(World _myWorld, GL2 gl, int cellState, int x,
+		int y, double height, float offset,
+		float stepX, float stepY, float lenX, float lenY,
+		float normalizeHeight)
+	{
+		int val = cellState % 100;
+		switch ( val )
+		{
+			case 1: // eau stagnante
+			case 2: // eau coulante
+				Eau.displayObjectAt(_myWorld,gl,cellState, x, y, height, offset, stepX, stepY, lenX, lenY, normalizeHeight);
+				break;
+			default:
+
 		}
 	}
 

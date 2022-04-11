@@ -407,7 +407,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
                 	{
            			 	
 		                double height = _myWorld.getCellHeight(x+movingX,y+movingY);
-           			 	int cellState = _myWorld.getCellValue(x+movingX,y+movingY);	
+           			 	int cellState = _myWorld.getCellValue(x+movingX,y+movingY);
            			 	float[] color = _myWorld.getCellColorValue(x+movingX,y+movingY);
 
 	                	// compute CA-based coloring
@@ -487,7 +487,8 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
                         	float normalizeHeight = ( smoothFactor[0] + smoothFactor[1] + smoothFactor[2] + smoothFactor[3] ) / 4.f * (float)heightBooster * heightFactor;
 							//gl.glColor3f(color[0],color[1],color[2]);
 							_myWorld.displayObjectAt(_myWorld,gl,cellState, x, y, height, offset, stepX, stepY, lenX, lenY, normalizeHeight);
-                        }
+                        	_myWorld.displayWaterAt(_myWorld,gl,_myWorld.getWaterValue(x+movingX, y+movingY), x, y, height, offset, stepX, stepY, lenX, lenY, normalizeHeight);
+						}
                 	}
 	            
 	            /**/

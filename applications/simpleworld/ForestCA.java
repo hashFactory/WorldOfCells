@@ -15,6 +15,8 @@ public class ForestCA extends CellularAutomataInteger {
 	CellularAutomataDouble _cellsHeightValuesCA;
 	
 	WorldOfTrees world;
+
+	boolean lancement;
 	
 	public ForestCA ( WorldOfTrees __world, int __dx , int __dy, CellularAutomataDouble cellsHeightValuesCA )
 	{
@@ -24,6 +26,7 @@ public class ForestCA extends CellularAutomataInteger {
 		
 		this.world = __world;
 		Couleur.world = this.world;
+		this.lancement = true;
 	}
 	
 	public void init()
@@ -32,15 +35,10 @@ public class ForestCA extends CellularAutomataInteger {
     		for ( int y = 0 ; y != _dy ; y++ )
     		{
     			if ( _cellsHeightValuesCA.getCellState(x,y) >= 0.05 ) {
-					if (Math.random() < 0.53) {
-						//this.setCellState(x, y, 1); // tree
-						this.world.setCell(1, Couleur.intToCouleur(1, x, y).toArray(), x, y);
-						//this.setCellState(x, y, 1);
-					}
-    				else {
-						this.world.setCell(0, Couleur.intToCouleur(0, x, y).toArray(), x, y);
-						//this.setCellState(x, y, 0); // empty
-					}
+					if (Math.random() < 0.53)
+						this.world.setCell(1, x, y); // arbre
+    				else
+						this.world.setCell(0, x, y); // vide
     			}
     			else
     			{
@@ -84,14 +82,14 @@ public class ForestCA extends CellularAutomataInteger {
 					// sinon petite chance que ca prenne feu
 	    			if (state == 1) {
 	    				// check if neighbors are burning
-	    				if (this.world.rechercheVonNeumann(2, new Case(i, j)) != null)
+	    				if (Case.rechercheVonNeumann(2, new Case(i, j), this.world.cellularAutomata) != null)
 							nouveau_state = code_ville + 2;
 	    				else if ( Math.random() < 0.0001 )
 							nouveau_state = code_ville + 2;
 	    			}
 					// si case est brulee, elle peut se decomposer
 					else if (state == 3) {
-						if (Math.random() < 0.001)
+						if (Math.random() < 0.01)
 							nouveau_state = code_ville;
 					}
 					// si case est vide, il peut y avoir un arbre
@@ -111,12 +109,19 @@ public class ForestCA extends CellularAutomataInteger {
 	    			
 	    			float color[] = new float[3];
 
-					color = Couleur.intToCouleur(nouveau_state, i, j).toArray();
-					//this.setCellState(i,j,nouveau_state);
-					this.world.setCell(nouveau_state, i, j);
+					if (nouveau_state != code_ville + state || lancement) {
+						//color = Couleur.intToCouleur(nouveau_state, i, j).toArray();
+						//this.setCellState(i,j,nouveau_state);
+						this.world.setCell(nouveau_state, i, j);
+					}
+					else {
+						this.world.setCellValue(i, j, nouveau_state);
+					}
 					//this.world.cellsColorValues.setCellState(i, j, color);
     			}
     		}
+		if (lancement)
+			lancement = false;
     	this.swapBuffer();
 		//this.world.cellsColorValues.swapBuffer();
 	}
