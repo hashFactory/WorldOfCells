@@ -21,18 +21,12 @@ public class Eau extends CommonObject {
             float xx = offset + (x * stepX);
             float yy = offset + (y * stepY);
 
+            // TODO: calculer altitude dans les coins
             // correction de l'ordre des vecteurs
             gl.glVertex3f(xx - lenX, yy - lenY, altitude + 0.1f);
             gl.glVertex3f(xx - lenX, yy + lenY, altitude + 0.1f);
             gl.glVertex3f(xx + lenX, yy + lenY, altitude + 0.1f);
             gl.glVertex3f(xx + lenX, yy - lenY, altitude + 0.1f);
-/*
-            gl.glVertex3f(xx, yy - lenY / 6.f, altitude);
-            gl.glVertex3f(xx, yy - lenY / 6.f, altitude + 2.f);
-            gl.glVertex3f(xx, yy + lenY / 6.f, altitude);
-            gl.glVertex3f(xx, yy + lenY / 6.f, altitude + 2.f);
-
- */
         }
     }
 }
