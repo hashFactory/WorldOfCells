@@ -8,10 +8,12 @@ import applications.simpleworld.Ville;
 
 import applications.simpleworld.WorldOfTrees;
 import util.Case;
+import util.Couleur;
 import worlds.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import com.jogamp.opengl.*;
@@ -30,6 +32,8 @@ import objects.Monolith;
 
 import landscapegenerator.LoadFromFileLandscape;
 import landscapegenerator.PerlinNoiseLandscapeGenerator;
+
+import static util.Couleur.world;
 
 /*
  * TODO
@@ -274,8 +278,9 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
          */
         //@Override
         public void display(GLAutoDrawable gLDrawable) {
-           
-        		// ** compute FPS
+				DecimalFormat df = new DecimalFormat("#.00");
+
+				// ** compute FPS
         		
         		if ( System.currentTimeMillis() - lastTimeStamp >= 1000 )
         		{
@@ -296,7 +301,11 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         		// ** clean screen
         		
         		final GL2 gl = gLDrawable.getGL().getGL2();
-				gl.glClearColor(0.1f, 0.1f, 0.7f, 1.f);
+
+				// color le ciel
+				Couleur ciel = Couleur.heureToCouleur(_myWorld.getHeure());
+				gl.glClearColor(ciel.r, ciel.g, ciel.b, 1.f);
+
 				gl.glClear(GL.GL_COLOR_BUFFER_BIT);
                 gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
                 gl.glLoadIdentity();
@@ -310,8 +319,8 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 	                gl.glWindowPos2d(0, 728);
 	                GLUT glut = new GLUT();
 	                gl.glTranslatef(0, 0, 0);
-	                glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "fps: " + lastFpsValue);
-	                gl.glPopMatrix();
+	                glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "fps: " + lastFpsValue + "    heure: " + new DecimalFormat("##.##").format(_myWorld.getHeure()));
+					gl.glPopMatrix();
 	            }
         	
                 // ** render all

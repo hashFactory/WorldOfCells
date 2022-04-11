@@ -77,6 +77,19 @@ public class Couleur {
         return new Couleur((float) Math.random(), (float) Math.random(), (float) Math.random());
     }
 
+    public static Couleur heureToCouleur(double heure) {
+        if (heure < 6)
+            return new Couleur(0.f, 0.f, 0.1f);
+        else if (heure < 8)
+            return new Couleur(0.f, 0.f, 0.7f - (float)((8.0 - heure) / 4.0));
+        else if (heure < 18)
+            return new Couleur(0.f, 0.f, 0.7f);
+        else if (heure < 20)
+            return new Couleur(0.f, 0.f, 0.1f + (float)((20.0 - heure) / 4.0));
+        else
+            return new Couleur(0.f, 0.f, 0.1f);
+    }
+
     public static Couleur getBaseColor(int id) {
         return switch (id % 100) {
             case 1 -> new Couleur(0.f, 0.6f - (float) (0.1 * Math.random()), 0.f);
