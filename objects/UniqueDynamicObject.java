@@ -7,13 +7,14 @@ package objects;
 import com.jogamp.opengl.GL2;
 
 import worlds.World;
+import applications.simpleworld.WorldOfTrees;
 
 abstract public class UniqueDynamicObject // UniqueObject are object defined with particular, unique, properties (ex.: particular location)
 {
 	protected int x,y;
-	protected World world;
+	protected WorldOfTrees world;
 	
-	public UniqueDynamicObject(int __x, int __y, World __world) 
+	public UniqueDynamicObject(int __x, int __y, WorldOfTrees __world) 
 	{
 		this.x = __x;
 		this.y = __y;

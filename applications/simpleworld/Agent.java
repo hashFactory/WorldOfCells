@@ -9,10 +9,11 @@ import com.jogamp.opengl.GL2;
 import objects.UniqueDynamicObject;
 
 import worlds.World;
+import applications.simpleworld.WorldOfTrees;
 
 public class Agent extends UniqueDynamicObject{
 	
-	public Agent ( int __x , int __y, World __world )
+	public Agent ( int __x , int __y, WorldOfTrees __world )
 	{
 		super(__x,__y,__world);
 	}

@@ -16,6 +16,11 @@ public class Bucheron extends Agent{
 	int vie;
 
 	int cptVie;
+	
+	int cpt;
+	
+	int cptBois;
+	int bois;
 
 	Ville ville;
 
@@ -32,6 +37,10 @@ public class Bucheron extends Agent{
 		this.tree = null;
 
 		cptVie = 0;
+		cpt = 0;
+		
+		bois = 0;
+		cptBois = 0;
 	}
 
 	public void step(){
@@ -39,20 +48,33 @@ public class Bucheron extends Agent{
 			this.vie--;			
 			cptVie = 0;
 		}
-		if(tree == null){
-			tree = this.ville.rechercheRandomCase();
-			//tree = this.ville.rechercheRandomCaseParNumero(11);
-		}
-		else{
-			if (Math.random() < 0.1) {
-				//System.out.println("num: " + numero + ", distance: " + tree.distance(this.x, this.y));
-				if (tree.distance(this.x, this.y) < 1.0)
-					tree = null;
-				else
-					this.goTo(tree.x, tree.y, numero);
+		if(cpt == 5){
+			if(tree == null){	
+				//tree = this.ville.rechercheRandomCase();
+				tree = this.ville.rechercheRandomCaseParNumero(1);
+				System.out.println("x = "+tree.x+"     y = "+tree.y);
 			}
-		}
-		
+			else{
+				if (Math.random() < 0.1) {
+					//System.out.println("num: " + numero + ", distance: " + tree.distance(this.x, this.y));
+					if (tree.distance(this.x, this.y) < 1.0)
+						if(cptBois != 5){
+							bois+=10;
+							cptBois++;
+						}
+						else {
+							tree = null;
+							cptBois = 0;
+							world.setCell(numero,x,y);
+						}
+					else
+						this.goTo(tree.x, tree.y, numero);
+					}
+				}
+				cpt =0;
+			}
+		cpt++;
+		cptVie++;
 	}
 
 	public void displayUniqueObject(World myWorld, GL2 gl, int offsetCA_x, int offsetCA_y, float offset, float stepX, float stepY, float lenX, float lenY, float normalizeHeight ){

@@ -111,12 +111,15 @@ public class Ville extends Agent{
 		ArrayList<Case> caseNum = new ArrayList<Case>();
 
 		for(int i = 0 ; i < territoire.size() ; i++){
+			//System.out.println(world.cellularAutomata.getCellState2(territoire.get(i).x,territoire.get(i).y) % 100)
 			if((world.cellularAutomata.getCellState2(territoire.get(i).x,territoire.get(i).y) % 100) == num){
+				//System.out.println("case trouver");
 				caseNum.add(territoire.get(i));
 			}
 		}
 		
 		if(caseNum.size() != 0){
+			System.out.println(caseNum.size());
 			int random = (int)Math.random()*(caseNum.size());
 			//System.out.println(caseNum.get(random).x+"    "+caseNum.get(random).y);
 			return caseNum.get(random);
@@ -141,7 +144,7 @@ public class Ville extends Agent{
 	public void step(){
 		/*=========étendre territoire========*/
 		if(cpt % 10 == 9) {
-			if((frontiere.size() != 0) && (cptExtention < 150)){
+			if((frontiere.size() != 0) ){
 				this.etendreFrontiere();
 				cptExtention++;
 			}
