@@ -1,5 +1,9 @@
 package util;
 
+import cellularautomata.CellularAutomata;
+import cellularautomata.CellularAutomataDouble;
+import cellularautomata.CellularAutomataInteger;
+
 public class Case {
     public int x;
     public int y;
@@ -28,6 +32,22 @@ public class Case {
             }
         }
         return lowest;
+    }
+
+    public static Case rechercheVonNeumann(int numero, Case c, CellularAutomataInteger ca) {
+        // retourne la case voisine de c et null sinon
+        // si numero < 100 alors la methode retourne le resultat peu importe la ville
+        // si numero >= 100 la methode est stricte et retourne que si type case et ville sont egaux
+        int mod = (numero >= 100) ? 1 : 100;
+
+        for (int i = -1; i <= 1; i+=2) {
+            if (ca.getCellState( (c.x+dxCA+i)%(dxCA), c.y) % mod == numero)
+                return new Case((c.x+dxCA+i)%(dxCA), c.y, true);
+            if (ca.getCellState(c.x, (c.y+dyCA+i)%(dyCA)) % mod == numero)
+                return new Case(c.x, (c.y+dyCA+i)%(dyCA), true);
+        }
+
+        return null;
     }
 
     public double distance(Case l) {
