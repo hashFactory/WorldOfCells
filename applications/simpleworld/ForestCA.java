@@ -43,7 +43,7 @@ public class ForestCA extends CellularAutomataInteger {
     			}
     			else
     			{
-    				this.setCellState(x, y, 4); // water (ignore)
+    				this.setCellState(x, y, 5); // water (ignore)
     			}
     		}
 
@@ -71,7 +71,12 @@ public class ForestCA extends CellularAutomataInteger {
 					switch (state) {
 						// si case est vide, il peut y avoir un arbre
 						case 0:
-							if (this.world.estJour() && Math.random() < (((world.getMaxEverHeight() - height) / world.getMaxEverHeight()) / 20.0) * world.getRate())
+							if (this.world.estJour() && Math.random() < (
+									((world.getMaxEverHeight() - height) / world.getMaxEverHeight()) / 20.0) *
+									world.getRate() *
+									(
+											((double)Case.compteCaseRayon(1, 4, new Case(i, j), this))) / 25.0
+									)
 								nouveau_state = code_ville + 1;
 						break;
 

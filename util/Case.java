@@ -34,6 +34,18 @@ public class Case {
         return lowest;
     }
 
+    public static int compteCaseRayon(int numero, int rayon, Case c, CellularAutomataInteger ca) {
+        int mod = (numero >= 100) ? 1 : 100;
+        int count = 0;
+
+        for (int i = -rayon/2; i <= rayon/2; i++)
+            for (int j = -rayon/2; j <= rayon/2; j++)
+                if (ca.getCellState( (c.x+dxCA+i)%(dxCA), (c.y+dyCA+j)%(dyCA)) % mod == numero)
+                    count++;
+
+        return count;
+    }
+
     public static Case rechercheVonNeumann(int numero, Case c, CellularAutomataInteger ca) {
         // retourne la case voisine de c et null sinon
         // si numero < 100 alors la methode retourne le resultat peu importe la ville
