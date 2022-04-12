@@ -401,19 +401,11 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
                 //System.out.println("rotateT = " + rotateT );
                 
                 it++;
-                //if ( it % 30 == 0 )//&& it != 0)
-                //	movingIt++;
-                //movingIt=0;
-                
-                //movingIt=dxView+1;
                 
         		// ** update Cellular Automata
-            	
             	_myWorld.step();
-            	//System.out.println("Landscape [6,8] = " + landscape[6][8]);
 
         		// ** draw everything
-
             	gl.glBegin(GL2.GL_QUADS);
 
                 //movingX = movingIt;// it; // was: it
@@ -663,6 +655,9 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 						"           [2] increase altitude booster\n" +
 						" [cursor keys] navigate in the landscape\n" +
 						"         [q/d] rotation wrt landscape\n" +
+						"         [9/0] zoom out/in\n" +
+						"         [7/8] slow down / speed up time\n" +
+						"       [space] toggle pause/play of simulation\n" +
 						" [cursor keys] navigate\n"
 						);
 				break;
@@ -676,10 +671,10 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 					zoom/=1.05;
 					break;
 				case KeyEvent.VK_8:
-					this._myWorld.setRate(this._myWorld.getRate() * 0.95);
+					this._myWorld.setRate(this._myWorld.getRate() * 1.10);
 					break;
 				case KeyEvent.VK_7:
-					this._myWorld.setRate(this._myWorld.getRate() * 1.05);
+					this._myWorld.setRate(this._myWorld.getRate() * 0.90);
 					break;
 			default:
 				break;

@@ -61,13 +61,13 @@ public class WorldOfTrees extends World {
     		}
     	
     	// add some objects
-    	for ( int i = 0 ; i < 11 ; i++ )
+    	/*for ( int i = 0 ; i < 11 ; i++ )
     	{
     		if ( i%10 == 0 )
     			uniqueObjects.add(new Monolith(5,5+i,this));
     		else
     			uniqueObjects.add(new BridgeBlock(10,10+i,this));
-    	}
+    	}*/
     	
     	//uniqueDynamicObjects.add(new Agent(62,62,this));
     }
@@ -153,6 +153,7 @@ public class WorldOfTrees extends World {
     
     protected void stepAgents()
     {
+		this.cellularAutomata.sync();
     	// nothing to do.
     	for ( int i = 0 ; i < this.uniqueDynamicObjects.size() ; i++ )
     	{

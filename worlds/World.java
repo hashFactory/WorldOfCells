@@ -54,7 +54,7 @@ public abstract class World {
     	iteration = 0;
 	
 		heure = 8.0;
-		rate = 0.1;
+		rate = 0.05;
 		jour = 1;
 
 		enPause = false;
