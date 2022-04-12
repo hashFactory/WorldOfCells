@@ -69,7 +69,7 @@ public class WorldOfTrees extends World {
     			uniqueObjects.add(new BridgeBlock(10,10+i,this));
     	}
     	
-    	uniqueDynamicObjects.add(new Agent(62,62,this));
+    	//uniqueDynamicObjects.add(new Agent(62,62,this));
     }
 
 	public void setCell(int num, int x, int y) {

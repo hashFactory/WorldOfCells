@@ -28,15 +28,15 @@ public class Tree extends CommonObject {
             float yy = offset+(y*stepY);
 
             // correction de l'ordre des vecteurs
-            gl.glVertex3f(xx-lenX/4.f, yy, altitude);
-            gl.glVertex3f(xx-lenX/4.f, yy, altitude+3.f);
-            gl.glVertex3f(xx+lenX/4.f, yy, altitude+3.f);
-            gl.glVertex3f(xx+lenX/4.f, yy, altitude);
+            gl.glVertex3f(xx-lenX/3.f, yy, altitude);
+            gl.glVertex3f(xx-lenX/3.f, yy, altitude+3.f);
+            gl.glVertex3f(xx+lenX/3.f, yy, altitude+3.f);
+            gl.glVertex3f(xx+lenX/3.f, yy, altitude);
 
-            gl.glVertex3f(xx, yy-lenY/3.f, altitude);
-            gl.glVertex3f(xx, yy-lenY/3.f, altitude+2.f);
-            gl.glVertex3f(xx, yy+lenY/3.f, altitude);
-            gl.glVertex3f(xx, yy+lenY/3.f, altitude+2.f);
+            gl.glVertex3f(xx, yy-lenY/2.f, altitude);
+            gl.glVertex3f(xx, yy-lenY/2.f, altitude+2.f);
+            gl.glVertex3f(xx, yy+lenY/2.f, altitude);
+            gl.glVertex3f(xx, yy+lenY/2.f, altitude+2.f);
         }
     }
 

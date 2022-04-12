@@ -34,8 +34,9 @@ public class ForestCA extends CellularAutomataInteger {
 		for ( int x = 0 ; x != _dx ; x++ )
     		for ( int y = 0 ; y != _dy ; y++ )
     		{
-    			if ( _cellsHeightValuesCA.getCellState(x,y) >= 0.05 ) {
-					if (Math.random() < 0.53)
+				double height = _cellsHeightValuesCA.getCellState(x,y);
+    			if ( height >= 0.05 ) {
+					if (Math.random() < ((height) / world.getMaxEverHeight()) / 4.0)
 						this.world.setCell(1, x, y); // arbre
     				else
 						this.world.setCell(0, x, y); // vide
@@ -56,18 +57,21 @@ public class ForestCA extends CellularAutomataInteger {
 
 	public void step()
 	{
+		// pour chaque case de ForestCA
     	for ( int i = 0 ; i != _dx ; i++ )
     		for ( int j = 0 ; j != _dy ; j++ )
     		{
+				// on recupere l'etat neutre et le code de la ville
 				int state = this.getCellState(i,j) % 100;
 				int code_ville = 100 * ((this.getCellState(i,j) / 100));
 				int nouveau_state = state + code_ville;
+				double height = this._cellsHeightValuesCA.getCellState(i, j);
     			if ( state >= 0 && state < 4 )
     			{
 					switch (state) {
 						// si case est vide, il peut y avoir un arbre
 						case 0:
-							if (Math.random() < 0.001)
+							if (this.world.estJour() && Math.random() < (((world.getMaxEverHeight() - height) / world.getMaxEverHeight()) / 20.0) * world.getRate())
 								nouveau_state = code_ville + 1;
 						break;
 
@@ -76,7 +80,7 @@ public class ForestCA extends CellularAutomataInteger {
 						case 1:
 							if (Case.rechercheVonNeumann(2, new Case(i, j), this.world.cellularAutomata) != null)
 								nouveau_state += 1;
-							else if (Math.random() < 0.0001)
+							else if (Math.random() < 0.001 * world.getRate())
 								nouveau_state = code_ville + 2;
 						break;
 
@@ -87,7 +91,7 @@ public class ForestCA extends CellularAutomataInteger {
 
 						// si case est brulee, elle peut se decomposer
 						case 3:
-							if (Math.random() < 0.01)
+							if (Math.random() < world.getRate())
 								nouveau_state = code_ville;
 						break;
 

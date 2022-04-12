@@ -166,7 +166,7 @@ public abstract class World {
 		return this.jour;
 	}
 
-	public boolean estJour() { return this.heure < 7.0 || this.heure > 19.0; }
+	public boolean estJour() { return this.heure >= 7.0 && this.heure <= 19.0; }
 
 	public double getRate() { return this.rate; }
 

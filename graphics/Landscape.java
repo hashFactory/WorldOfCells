@@ -618,7 +618,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 				VIEW_FROM_ABOVE = !VIEW_FROM_ABOVE ;
 				break;
 			case KeyEvent.VK_R:
-				//MY_LIGHT_RENDERING = !MY_LIGHT_RENDERING;
+				MY_LIGHT_RENDERING = !MY_LIGHT_RENDERING;
 				break;
 			case KeyEvent.VK_O:
 				DISPLAY_OBJECTS = !DISPLAY_OBJECTS;
@@ -643,10 +643,12 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 				movingY = ( movingY + 1 ) % (dyView-1);
 				break; 
 			case KeyEvent.VK_Q:
-				rotationVelocity-=0.1;
+				//rotationVelocity-=0.1;
+				rotateX-=1.f;
 				break;
 			case KeyEvent.VK_D:
-				rotationVelocity+=0.1;
+				//rotationVelocity+=0.1;
+				rotateX+=1.f;
 				break;
 			case KeyEvent.VK_Z:
 				break;
@@ -672,6 +674,12 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 					break;
 				case KeyEvent.VK_9:
 					zoom/=1.05;
+					break;
+				case KeyEvent.VK_8:
+					this._myWorld.setRate(this._myWorld.getRate() * 0.95);
+					break;
+				case KeyEvent.VK_7:
+					this._myWorld.setRate(this._myWorld.getRate() * 1.05);
 					break;
 			default:
 				break;
