@@ -70,6 +70,15 @@ public class CellularAutomataInteger extends CellularAutomata {
 			}
 		}
 	}
+
+	public void sync() {
+		if (buffering && activeIndex == 0) {
+			Buffer1 = Buffer0.clone();
+		}
+		if (buffering && activeIndex == 1) {
+			Buffer0 = Buffer1.clone();
+		}
+	}
 	
 	public int[][] getCurrentBuffer()
 	{
