@@ -212,7 +212,7 @@ public class Ville extends Agent{
 		}
 		
 		/*=========placement de structure (si possible)=========*/
-		if(territoire.size() > 5 && (territoire.size() %10) == 0){
+		/*if(territoire.size() > 5 && (territoire.size() %10) == 0){
 			//System.out.println("test");
 			Case placeFerme = recherchePlaceFerme();
 			//System.out.println(placeFerme);
@@ -226,7 +226,7 @@ public class Ville extends Agent{
 
 		/*=========création des citoyens=========*/
 		
-		if(bois < 100 && nourriture > 200){
+		/*if(bois < 100 && nourriture > 200){
 			
 			Bucheron b = new Bucheron(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this);
 			citoyens.add(b);
@@ -253,16 +253,31 @@ public class Ville extends Agent{
 			}
 		}
 		cpt++;
-		/*if(cptExtention == 50){
-			Ferme f =new Ferme(this.numero+11,(coordoVille.x+2)%world.getWidth(),(coordoVille.y+2)%world.getWidth(),world);
-			fermes.add(f);
-			world.uniqueDynamicObjects.add(f);
+		if(cptExtention == 50){
+			System.out.println("test");
+			Ferme fe1 =new Ferme(this.numero+11,(coordoVille.x+2)%world.getWidth(),(coordoVille.y+2)%world.getWidth(),world);
+			fermes.add(fe1);
+			world.uniqueDynamicObjects.add(fe1);
+			Ferme fe2 =new Ferme(this.numero+11,(coordoVille.x-2)%world.getWidth(),(coordoVille.y-2)%world.getWidth(),world);
+			fermes.add(fe2);
+			world.uniqueDynamicObjects.add(fe2);
 			world.setCell(this.numero+11, (coordoVille.x+2)%world.getWidth(), (coordoVille.y+2)%world.getWidth());
-			Fermier b =new Fermier(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,f);
-			citoyens.add(b);
-			world.uniqueDynamicObjects.add(b);
-			cptExtention++;
-		}*/
+			world.setCell(this.numero+11, (coordoVille.x-2)%world.getWidth(), (coordoVille.y-2)%world.getWidth());
+			Fermier f1 =new Fermier(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,fe1);
+			citoyens.add(f1);
+			world.uniqueDynamicObjects.add(f1);
+			Fermier f2 =new Fermier(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,fe2);
+			citoyens.add(f2);
+			world.uniqueDynamicObjects.add(f2);
+			Bucheron b1 =new Bucheron(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this);
+			citoyens.add(b1);
+			world.uniqueDynamicObjects.add(b1);
+			Bucheron b2 =new Bucheron(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this);
+			citoyens.add(b2);
+			world.uniqueDynamicObjects.add(b2);
+			
+		}
+		cptExtention++;
 		
 		
 	}
