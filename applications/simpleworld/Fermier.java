@@ -58,7 +58,7 @@ public class Fermier extends Citoyen{
 	}
 	
 	public void step(){
-		System.out.println(this.nourritures);
+		//System.out.println(this.nourritures);
 		if(cptVie == 10){
 			this.vie--;
 			cptVie = 0;

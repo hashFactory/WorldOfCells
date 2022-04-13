@@ -47,6 +47,7 @@ public class Bucheron extends Citoyen{
 		int temp = this.bois;
 		this.bois = 0;
 		
+		System.out.println("temp "+temp);
 		return temp;
 	}
 	
@@ -64,7 +65,7 @@ public class Bucheron extends Citoyen{
 			cptVie = 0;
 		}
 		if(cpt == 5){
-			System.out.println(this.vie);
+			//System.out.println(this.vie);
 			if(world.estJour()){	//action pendant la journée
 			
 				if(tree == null){	//Si je n'ai pas d'arbre en vue, j'en trouve un
@@ -74,23 +75,23 @@ public class Bucheron extends Citoyen{
 				}
 				else{							// sinon
 						
-					if (tree.distance(this.x, this.y) < 1.0){	//Si je suis sur l'arbre, je le coupe
+					if (tree.distance(this.x, this.y) < 1.0){	//Si je suis sur l'arbre, je le coupe 10 fois
 						if(cptBois != 10){
-							bois+=2;
+							bois+=5;
 							cptBois++;
 						}
 							
-						else {
+						else {		//après avoir coupé 10 fois, l'arbre est détruit
 							tree = null;
 							cptBois = 0;
 							world.setCell(numero,x,y);
 						}
-					}else{
+					}else{			//Si je ne suis pas sur l'arbre, je me dirige vers lui
 						this.goTo(tree.x, tree.y);
 					}
 				}
 			}
-			else {	//action pendant la nuit
+			else {	//action pendant la nuit, ce diriger vers la ville (sauf si on y est déjà
 				if(this.x != ville.coordoVille.x ||	this.y != ville.coordoVille.y){
 					this.goTo(ville.coordoVille.x, ville.coordoVille.y);
 				}

@@ -19,7 +19,7 @@ public class Ferme extends Agent{
 	
 	boolean produit;
 
-	static final int STOCKMAX = 100;	
+	static final int STOCKMAX = 500;	
 	
 	public Ferme(int _num, int _x, int _y, WorldOfTrees _world)
 	{
@@ -55,7 +55,7 @@ public class Ferme extends Agent{
 	public void step(){
 		if(produit){
 			if( cpt == 5 ){
-				stockNourriture+=10;
+				stockNourriture+=20;
 				cpt=0;
 			}
 			cpt++;

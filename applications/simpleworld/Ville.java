@@ -40,6 +40,8 @@ public class Ville extends Agent{
 	private WorldOfTrees world;
 
 	private int cpt;
+	private int cpt2;
+	private int cptferme;
 	private int cptExtention;
 
 
@@ -71,6 +73,8 @@ public class Ville extends Agent{
 		//this.world.setCell(numero, color, __x, __y);
 
 		cpt = 0;
+		cpt2 = 0;
+		cptferme = 0;
 		cptExtention = 0;
 	}
 
@@ -159,101 +163,127 @@ public class Ville extends Agent{
 		
 		//System.out.println(this.nourriture +"          size "+citoyens.size());
 		
-		
-		for(int getV = 0; getV < citoyens.size(); getV++){
-			
-			/*=========potentiel mort des citoyens=========*/
+		if(cpt2 == 5){
+			for(int getV = 0; getV < citoyens.size(); getV++){
 				
-			if(citoyens.get(getV).getVie() <= 0){
-				for(int display = 0 ; display < world.uniqueDynamicObjects.size(); display ++){
-					if(world.uniqueDynamicObjects.get(display) == citoyens.get(getV)){
-						world.uniqueDynamicObjects.remove(display);
-						break;
+				/*=========potentiel mort des citoyens=========*/
+					
+				if(citoyens.get(getV).getVie() <= 0){
+					for(int display = 0 ; display < world.uniqueDynamicObjects.size(); display ++){
+						if(world.uniqueDynamicObjects.get(display) == citoyens.get(getV)){
+							world.uniqueDynamicObjects.remove(display);
+							break;
+						}
 					}
-				}
-				if(citoyens.get(getV) instanceof Fermier){
-					nbFermier--;
-				}
-				citoyens.remove(getV);
-				getV--;
-			}	
-		}
-		
-		/*=========récolte des ressources des citoyens=========*/
-		boolean nourris = false;
-		if(world.getHeure() > 20.0 && world.getHeure() < 20.1){
-			for(int getR = 0; getR < citoyens.size(); getR++){
-				//System.out.println("A");
-				if(citoyens.get(getR) instanceof Bucheron){
-					bois += citoyens.get(getR).getRessources();
-				}
-				else if(citoyens.get(getR) instanceof Fermier){
-					nourriture += citoyens.get(getR).getRessources();
-				}
-				
-				/*=========nourrir les citoyens=========*/
-				if(!nourris && this.nourriture > 0){
-					nourris = true;
-					int ration = 10;
-					for(int nour = 0; nour < citoyens.size();nour++){
-						if(this.nourriture - ration > 0){
-							nourriture -= ration;
-							citoyens.get(getR).nourrir(ration);
-						} else {
-							citoyens.get(getR).nourrir(nourriture);
-							nourriture = 0;
+					if(citoyens.get(getV) instanceof Fermier){
+						nbFermier--;
+					}
+					citoyens.remove(getV);
+					getV--;
+				}	
+			}
+			
+			/*=========récolte des ressources des citoyens=========*/
+			boolean nourris = false;
+			if(world.getHeure() > 20.0 && world.getHeure() < 20.1){
+				for(int getR = 0; getR < citoyens.size(); getR++){
+					
+					if(citoyens.get(getR) instanceof Bucheron){
+						bois += citoyens.get(getR).getRessources();
+					}
+					else if(citoyens.get(getR) instanceof Fermier){
+					//	System.out.println("A  "+citoyens.get(getR).getnourriture());
+						nourriture += citoyens.get(getR).getRessources();
+					//	System.out.println("B  "+citoyens.get(getR).getnourriture());
+					}
+					
+					/*=========nourrir les citoyens=========*/
+					if(!nourris){
+						nourris = true;
+						int ration = 10;
+						for(int nour = 0; nour < citoyens.size();nour++){
+							if(this.nourriture > 0){
+								if(this.nourriture - ration > 0){
+									nourriture -= ration;
+									citoyens.get(getR).nourrir(ration);
+								} else {
+									citoyens.get(getR).nourrir(nourriture);
+									nourriture = 0;
+								}
+							}
 						}
 					}
 				}
 			}
-		}
-		if(world.getHeure() > 20.1) {
-			nourris = false;
-		}
-		
-		/*=========placement de structure (si possible)=========*/
-		/*if(territoire.size() > 5 && (territoire.size() %10) == 0){
-			//System.out.println("test");
-			Case placeFerme = recherchePlaceFerme();
-			//System.out.println(placeFerme);
-			if( ((bois % 50) == 0) && (placeFerme != null)){
-				System.out.println("creation ferme");
-				Ferme fe = new Ferme(this.numero+11,(placeFerme.x)%world.getWidth(),(placeFerme.y)%world.getWidth(),world);
-				fermes.add(fe);
-				world.uniqueDynamicObjects.add(fe);
+			if(world.getHeure() > 20.1) {
+				nourris = false;
 			}
-		}
-
-		/*=========création des citoyens=========*/
-		
-		/*if(bois < 100 && nourriture > 200){
 			
-			Bucheron b = new Bucheron(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this);
-			citoyens.add(b);
-			world.uniqueDynamicObjects.add(b);
-			this.nourriture-=100;
+			/*=========placement de structure (si possible)=========*/
+			//System.out.println("cpt "+cptferme+"    territoire  "+territoire.size());
+			if(territoire.size() > 1 && cptferme == 20){
+			//	System.out.println("test");
+				Case placeFerme = recherchePlaceFerme();
+				//System.out.println(placeFerme);
+				if( ((bois % 50) == 0) && (placeFerme != null) && (bois >= 50)){
+					
+					Ferme fe = new Ferme(this.numero+11,(placeFerme.x)%world.getWidth(),(placeFerme.y)%world.getWidth(),world);
+					fermes.add(fe);
+					world.uniqueDynamicObjects.add(fe);
+					world.setCell(this.numero+11, (placeFerme.x)%world.getWidth(), (placeFerme.y)%world.getWidth());
+					bois-=50;
+					//System.out.println("creation ferme   "+this.nourriture+"   nbFermier = "+nbFermier+"     size = "+fermes.size());
+					if(this.nourriture > 0){
+						//System.out.println("fermier 1");
+						if((nbFermier < fermes.size()) && (this.nourriture > 50)){
+							System.out.println("creation fermier");
+							Fermier f = new Fermier(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,fermes.get(nbFermier));
+							citoyens.add(f);
+							world.uniqueDynamicObjects.add(f);
+							nbFermier++;
+							this.nourriture-=50;
+						}
+					}
+				}
+				cptferme = 0;
+			}
+			cptferme++;
+			/*=========création des citoyens=========*/
+			if(this.nourriture > 0){
+				if(nbFermier < fermes.size() && nourriture < 50){
+					//System.out.println("creation fermier");
+					Fermier f = new Fermier(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,fermes.get(nbFermier));
+					citoyens.add(f);
+					world.uniqueDynamicObjects.add(f);
+					nbFermier++;
+					this.nourriture-=50;
+				}
+				if(bois < 100 && nourriture > 200){
+				//	System.out.println("creation bucheron");
+					Bucheron b = new Bucheron(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this);
+					citoyens.add(b);
+					world.uniqueDynamicObjects.add(b);
+					this.nourriture-=50;
+				}
+				
+				
+			}
+			cpt2 = 0;
 		}
-		
-		if(nbFermier < fermes.size() && nourriture < 100){
-			Fermier f = new Fermier(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,fermes.get(nbFermier));
-			citoyens.add(f);
-			world.uniqueDynamicObjects.add(f);
-			nbFermier++;
-			this.nourriture-=100;
-		}
-		System.out.println("size = "+citoyens.size()+"        bois = "+bois+"    nourriture = "+nourriture);
+		cpt2++;
+		System.out.println("sizeCitoyens = "+citoyens.size()+"      sizeFermes = "+fermes.size()+"        bois = "+bois+"    nourriture = "+nourriture);
 		/*=========étendre territoire========*/
 		
-		if(cpt % 10 == 9 && bois > 10) {
+		if(cpt % 10 == 9 && bois > 5) {
 			
 			if((frontiere.size() != 0) ){
 				this.etendreFrontiere();
 				cptExtention++;
-				bois-=10;
+				bois-=5;
 			}
 		}
 		cpt++;
-		if(cptExtention == 50){
+		/*if(cptExtention == 50){
 			System.out.println("test");
 			Ferme fe1 =new Ferme(this.numero+11,(coordoVille.x+2)%world.getWidth(),(coordoVille.y+2)%world.getWidth(),world);
 			fermes.add(fe1);
@@ -277,7 +307,7 @@ public class Ville extends Agent{
 			world.uniqueDynamicObjects.add(b2);
 			
 		}
-		cptExtention++;
+		cptExtention++;*/
 		
 		
 	}
