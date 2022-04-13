@@ -7,7 +7,7 @@ import worlds.World;
 
 import objects.UniqueDynamicObject;
 
-public class Ferme extends Structure{
+public class Ferme extends Agent{
 
 
 	int stockNourriture;
@@ -16,6 +16,8 @@ public class Ferme extends Structure{
 	int codeVille;
 
 	int num;
+	
+	boolean produit;
 
 	static final int STOCKMAX = 100;	
 	
@@ -27,19 +29,37 @@ public class Ferme extends Structure{
 		cpt = 0;
 		num = _num;
 		codeVille = (_num / 100) * 100;
+		
+		produit = false;
 	}
 
-	public void resetStock(){
+	public int prendreStock(){
+		int temp = stockNourriture;
 		stockNourriture = 0;
+		
+		return temp;
+	}
+
+	public void setProduit(boolean b){
+		this.produit = b;
+	}
+	
+	public int getX(){
+		return this.x;
+	}
+	
+	public int getY(){
+		return this.y;
 	}
 
 	public void step(){
-
-		if(cpt==5){
-			stockNourriture++;
-			cpt=0;
+		if(produit){
+			if( cpt == 5 ){
+				stockNourriture++;
+				cpt=0;
+			}
+			cpt++;
 		}
-		cpt++;
 	}
 	
 	public void displayUniqueObject(World myWorld, GL2 gl, int offsetCA_x, int offsetCA_y, float offset, float stepX, float stepY, float lenX, float lenY, float normalizeHeight ){

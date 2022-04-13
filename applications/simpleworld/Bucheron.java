@@ -9,7 +9,7 @@ import com.jogamp.opengl.GL2;
 import util.Couleur;
 import worlds.World;
 
-public class Bucheron extends Agent{
+public class Bucheron extends Citoyen{
 	
 	int numero;
 
@@ -42,37 +42,61 @@ public class Bucheron extends Agent{
 		bois = 0;
 		cptBois = 0;
 	}
+	
+	public int getRessources(){
+		int temp = this.bois;
+		this.bois = 0;
+		
+		return temp;
+	}
+	
+	public int getVie(){
+		return this.vie;
+	}
+	
+	public void nourrir(int nourriture){
+		this.vie+=nourriture;
+	}
 
 	public void step(){
-		if(cptVie == 100){
+		if(cptVie == 10){
 			this.vie--;
 			cptVie = 0;
 		}
 		if(cpt == 5){
-			if(tree == null){	
-				//tree = this.ville.rechercheRandomCase();
-				tree = this.ville.rechercheRandomCaseParNumero(1);
-				//System.out.println("x = "+tree.x+"     y = "+tree.y);
-			}
-			else{
-				if (Math.random() < 0.1) {
-					//System.out.println("num: " + numero + ", distance: " + tree.distance(this.x, this.y));
-					if (tree.distance(this.x, this.y) < 1.0)
-						if(cptBois != 5){
-							bois+=10;
+			System.out.println(this.vie);
+			if(world.estJour()){	//action pendant la journée
+			
+				if(tree == null){	//Si je n'ai pas d'arbre en vue, j'en trouve un
+					
+					tree = this.ville.rechercheRandomCaseParNumero(1);
+					
+				}
+				else{							// sinon
+						
+					if (tree.distance(this.x, this.y) < 1.0){	//Si je suis sur l'arbre, je le coupe
+						if(cptBois != 10){
+							bois+=2;
 							cptBois++;
 						}
+							
 						else {
 							tree = null;
 							cptBois = 0;
 							world.setCell(numero,x,y);
 						}
-					else
-						this.goTo(tree.x, tree.y, numero);
+					}else{
+						this.goTo(tree.x, tree.y);
 					}
 				}
-				cpt =0;
 			}
+			else {	//action pendant la nuit
+				if(this.x != ville.coordoVille.x ||	this.y != ville.coordoVille.y){
+					this.goTo(ville.coordoVille.x, ville.coordoVille.y);
+				}
+			}
+			cpt = 0;
+		}
 		cpt++;
 		cptVie++;
 	}

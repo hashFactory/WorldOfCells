@@ -7,7 +7,7 @@ import worlds.World;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import applications.simpleworld.Structure;
+import applications.simpleworld.Citoyen;
 
 import util.Case;
 import util.Couleur;
@@ -20,20 +20,20 @@ public class Ville extends Agent{
 
 	public static HashMap<Integer, Couleur> mapCouleurs = new HashMap<>();
 
-	private Case coordoVille;	//coordonnées de la ville
+	public Case coordoVille;	//coordonnées de la ville
 
 	private int nourriture;		//Quantité de nourriture, nécessaire à la création d'agents
 	private int bois;		//Quantité de bois, nécessaire à la création de villages
 	private int fer;		//Quantité de fer, nécessaire à la création de soldats
 	private int or;			//Quantité d'or, sert de monnais, obtenus dans les mines, ou par transactions avec d'autres villes
-	private int nbAgents;
+	private int nbFermier;
 
 	private int numero;		//identifiant de la ville
 	private float[] color;
 	private Couleur c;
 
-	private ArrayList<Agent> agents;	 //Liste de tous les agents (fermiers, mineurs, bûcherons et soldats)
-	private ArrayList<Structure> structures; //Liste de tous les villages, fermes et mines
+	private ArrayList<Citoyen> citoyens;	 //Liste de tous les citoyens (fermiers et bûcherons)
+	private ArrayList<Ferme> fermes; //Liste des fermes
 	
 	private ArrayList<Case> frontiere;
 	private ArrayList<Case>	territoire;
@@ -54,13 +54,13 @@ public class Ville extends Agent{
 		c = Couleur.rand();
 		Ville.mapCouleurs.put(numero, c);
 
-		nourriture = 10; 
+		nourriture = 10000; 
 		bois = 0;
 		fer = 0;
 		
-		nbAgents = 0;
-		agents = new ArrayList<Agent>();
-		structures = new ArrayList<Structure>();
+		nbFermier = 0;
+		citoyens = new ArrayList<Citoyen>();
+		fermes = new ArrayList<Ferme>();
 
 		frontiere = new ArrayList<Case>();
 		frontiere.add(coordoVille);		//Cas de Base : la frontiere est la ville
@@ -119,7 +119,7 @@ public class Ville extends Agent{
 		}
 		
 		if(caseNum.size() != 0){
-			System.out.println(caseNum.size());
+			//System.out.println(caseNum.size());
 			int random = (int)(Math.random()*(caseNum.size()));
 			//System.out.println(caseNum.get(random).x+"    "+caseNum.get(random).y);
 			return caseNum.get(random);
@@ -140,28 +140,106 @@ public class Ville extends Agent{
 			return null;
 		}
 	}
+	
+	public Case recherchePlaceFerme(){
+		/*recherche case sans arbre (liste)*/
+		
+		/*random dans la liste*/
+		
+		/*checker si il n'y a pas de voisin (en Moore, avec une fonction dans WorldOfTrees), si il y en a un, refaire un random*/
+		
+		return null;
+	}
 
 	public void step(){
+		
+		//System.out.println(this.nourriture +"          size "+citoyens.size());
+		
+		
+		for(int getV = 0; getV < citoyens.size(); getV++){
+			
+			/*=========potentiel mort des citoyens=========*/
+				
+			if(citoyens.get(getV).getVie() <= 0){
+				for(int display = 0 ; display < world.uniqueDynamicObjects.size(); display ++){
+					if(world.uniqueDynamicObjects.get(display) == citoyens.get(getV)){
+						world.uniqueDynamicObjects.remove(display);
+						break;
+					}
+				}
+				if(citoyens.get(getV) instanceof Fermier){
+					nbFermier--;
+				}
+				citoyens.remove(getV);
+				getV--;
+			}	
+		}
+		
+		/*=========récolte des ressources des citoyens=========*/
+		boolean nourris = false;
+		if(world.getHeure() > 20.0 && world.getHeure() < 20.1){
+			for(int getR = 0; getR < citoyens.size(); getR++){
+				//System.out.println("A");
+				if(citoyens.get(getR) instanceof Bucheron){
+					bois += citoyens.get(getR).getRessources();
+				}
+				else if(citoyens.get(getR) instanceof Fermier){
+					nourriture += citoyens.get(getR).getRessources();
+				}
+				
+				/*=========nourrir les citoyens=========*/
+				if(!nourris){
+					nourris = true;
+					int ration = 10;
+					if(this.nourriture - ration > 0){
+						nourriture -= ration;
+						citoyens.get(getR).nourrir(ration);
+					} else {
+						citoyens.get(getR).nourrir(nourriture);
+						nourriture = 0;
+					}
+				}
+			}
+		}
+		
+		/*=========placement de structure (si possible)=========*/
+		Case placeFerme = recherchePlaceFerme();
+		if( ((bois % 100) == 0) && (placeFerme != null)){
+			fermes.add(new Ferme(this.numero+11,(placeFerme.x+2)%world.getWidth(),(placeFerme.y+2)%world.getWidth(),world));
+		}
+
+		/*=========création des citoyens=========*/
+		
+		if(bois < 100 && nourriture > 100){
+			citoyens.add(new Bucheron(numero,(coordoVille.x)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this));
+		}
+		
+		if(nbFermier < fermes.size()){
+			citoyens.add(new Fermier(numero,(coordoVille.x)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,fermes.get(nbFermier)));
+			nbFermier++;
+		}
+
 		/*=========étendre territoire========*/
-		if(cpt % 10 == 9) {
+		
+		if(cpt % 10 == 9 && bois > 10) {
 			if((frontiere.size() != 0) ){
 				this.etendreFrontiere();
 				cptExtention++;
+				bois-=10;
 			}
-			//System.out.println(agents.size());
 		}
 		cpt++;
-		if(cptExtention == 50){
+		/*if(cptExtention == 50){
 			Ferme f =new Ferme(this.numero+11,(coordoVille.x+2)%world.getWidth(),(coordoVille.y+2)%world.getWidth(),world);
-			structures.add(f);
+			fermes.add(f);
 			world.uniqueDynamicObjects.add(f);
 			world.setCell(this.numero+11, (coordoVille.x+2)%world.getWidth(), (coordoVille.y+2)%world.getWidth());
-			Bucheron b =new Bucheron(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this);
-			agents.add(b);
+			Fermier b =new Fermier(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,f);
+			citoyens.add(b);
 			world.uniqueDynamicObjects.add(b);
 			cptExtention++;
-		}
-		/*=========placement de structure (si possible)=========*/
+		}*/
+		
 		
 	}
 	
