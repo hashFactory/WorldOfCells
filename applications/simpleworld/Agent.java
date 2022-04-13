@@ -36,7 +36,7 @@ public class Agent extends UniqueDynamicObject{
 		}
 	}
 
-	public void goTo(int _x,int _y,int numero){
+	public void goTo(int _x,int _y){
 		if(_x < this.x)
 			this.x = ( this.x - 1 ) % this.world.getWidth() ;
 		else if (_x > this.x) {
