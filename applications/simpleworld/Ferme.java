@@ -55,7 +55,7 @@ public class Ferme extends Agent{
 	public void step(){
 		if(produit){
 			if( cpt == 5 ){
-				stockNourriture++;
+				stockNourriture+=10;
 				cpt=0;
 			}
 			cpt++;

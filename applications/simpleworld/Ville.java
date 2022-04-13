@@ -22,10 +22,9 @@ public class Ville extends Agent{
 
 	public Case coordoVille;	//coordonnées de la ville
 
+	private boolean nourris;
 	private int nourriture;		//Quantité de nourriture, nécessaire à la création d'agents
 	private int bois;		//Quantité de bois, nécessaire à la création de villages
-	private int fer;		//Quantité de fer, nécessaire à la création de soldats
-	private int or;			//Quantité d'or, sert de monnais, obtenus dans les mines, ou par transactions avec d'autres villes
 	private int nbFermier;
 
 	private int numero;		//identifiant de la ville
@@ -54,9 +53,10 @@ public class Ville extends Agent{
 		c = Couleur.rand();
 		Ville.mapCouleurs.put(numero, c);
 
+		nourris = false;
 		nourriture = 500; 
 		bois = 500;
-		fer = 0;
+		
 		
 		nbFermier = 0;
 		citoyens = new ArrayList<Citoyen>();
@@ -143,7 +143,11 @@ public class Ville extends Agent{
 	
 	public Case recherchePlaceFerme(){
 		/*recherche case sans arbre (liste)*/
+		int random = (int)(Math.random()*(territoire.size()));
 		
+		if(world.rechercheEmplacementValideMoore(territoire.get(random))){
+			return territoire.get(random);
+		}
 		/*random dans la liste*/
 		
 		/*checker si il n'y a pas de voisin (en Moore, avec une fonction dans WorldOfTrees), si il y en a un, refaire un random*/
@@ -188,29 +192,41 @@ public class Ville extends Agent{
 				}
 				
 				/*=========nourrir les citoyens=========*/
-				if(!nourris){
+				if(!nourris && this.nourriture > 0){
 					nourris = true;
 					int ration = 10;
-					if(this.nourriture - ration > 0){
-						nourriture -= ration*citoyens.size();
-						citoyens.get(getR).nourrir(ration);
-					} else {
-						citoyens.get(getR).nourrir(nourriture);
-						nourriture = 0;
+					for(int nour = 0; nour < citoyens.size();nour++){
+						if(this.nourriture - ration > 0){
+							nourriture -= ration;
+							citoyens.get(getR).nourrir(ration);
+						} else {
+							citoyens.get(getR).nourrir(nourriture);
+							nourriture = 0;
+						}
 					}
 				}
 			}
 		}
+		if(world.getHeure() > 20.1) {
+			nourris = false;
+		}
 		
 		/*=========placement de structure (si possible)=========*/
-		Case placeFerme = recherchePlaceFerme();
-		if( ((bois % 100) == 0) && (placeFerme != null)){
-			fermes.add(new Ferme(this.numero+11,(placeFerme.x+2)%world.getWidth(),(placeFerme.y+2)%world.getWidth(),world));
+		if(territoire.size() > 5 && (territoire.size() %10) == 0){
+			//System.out.println("test");
+			Case placeFerme = recherchePlaceFerme();
+			//System.out.println(placeFerme);
+			if( ((bois % 50) == 0) && (placeFerme != null)){
+				System.out.println("creation ferme");
+				Ferme fe = new Ferme(this.numero+11,(placeFerme.x)%world.getWidth(),(placeFerme.y)%world.getWidth(),world);
+				fermes.add(fe);
+				world.uniqueDynamicObjects.add(fe);
+			}
 		}
 
 		/*=========création des citoyens=========*/
 		
-		if(bois < 100 && nourriture > 100){
+		if(bois < 100 && nourriture > 200){
 			
 			Bucheron b = new Bucheron(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this);
 			citoyens.add(b);
@@ -218,7 +234,7 @@ public class Ville extends Agent{
 			this.nourriture-=100;
 		}
 		
-		if(nbFermier < fermes.size()){
+		if(nbFermier < fermes.size() && nourriture < 100){
 			Fermier f = new Fermier(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,fermes.get(nbFermier));
 			citoyens.add(f);
 			world.uniqueDynamicObjects.add(f);

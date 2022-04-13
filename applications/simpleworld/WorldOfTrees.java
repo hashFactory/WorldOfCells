@@ -132,6 +132,66 @@ public class WorldOfTrees extends World {
 		return new Case(resX, resY, libre);
 		//return new Case(resX,resY,libre);
 	}
+	
+	
+	public boolean rechercheEmplacementValideMoore(Case c){
+		int coordoX = c.x+dxCA;
+		int coordoY = c.y+dyCA;
+
+		// on commence par regarder a droite
+		int currentCell = cellularAutomata.getCellState2((coordoX+1)%dxCA,(coordoY)%dyCA);
+		if((currentCell % 100) != 0){
+			return false;
+		}
+
+		// ensuite en haut
+		currentCell = cellularAutomata.getCellState2((coordoX)%dxCA,(coordoY+1)%dyCA);
+		if((currentCell % 100) != 0){
+			return false;
+		}
+
+		// et a gauche
+		currentCell = cellularAutomata.getCellState2((coordoX-1)%dxCA,(coordoY)%dyCA);
+		if((currentCell % 100) != 0){
+			return false;
+		}
+
+		// et enfin en bas
+		currentCell = cellularAutomata.getCellState2((coordoX)%dxCA,(coordoY-1)%dyCA);
+		if((currentCell % 100) != 0){
+			return false;
+		}
+		
+		currentCell = cellularAutomata.getCellState2((coordoX+1)%dxCA,(coordoY+1)%dyCA);
+		if((currentCell % 100) != 0){
+			return false;
+		}
+		
+		currentCell = cellularAutomata.getCellState2((coordoX+1)%dxCA,(coordoY-1)%dyCA);
+		if((currentCell % 100) != 0){
+			return false;
+		}
+		
+		currentCell = cellularAutomata.getCellState2((coordoX-1)%dxCA,(coordoY+1)%dyCA);
+		if((currentCell % 100) != 0){
+			return false;
+		}
+		
+		currentCell = cellularAutomata.getCellState2((coordoX-1)%dxCA,(coordoY-1)%dyCA);
+		if((currentCell % 100) != 0){
+			return false;
+		}
+		
+		currentCell = cellularAutomata.getCellState2((coordoX)%dxCA,(coordoY)%dyCA);
+		if((currentCell % 100) != 0){
+			return false;
+		}
+
+		return true;
+	}
+	
+	
+	
     protected void initCellularAutomata(int __dxCA, int __dyCA, double[][] landscape)
     {
     	cellularAutomata = new ForestCA(this,__dxCA,__dyCA,cellsHeightValuesCA);
