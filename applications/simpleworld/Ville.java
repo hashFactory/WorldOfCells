@@ -54,8 +54,8 @@ public class Ville extends Agent{
 		c = Couleur.rand();
 		Ville.mapCouleurs.put(numero, c);
 
-		nourriture = 10000; 
-		bois = 0;
+		nourriture = 500; 
+		bois = 500;
 		fer = 0;
 		
 		nbFermier = 0;
@@ -192,7 +192,7 @@ public class Ville extends Agent{
 					nourris = true;
 					int ration = 10;
 					if(this.nourriture - ration > 0){
-						nourriture -= ration;
+						nourriture -= ration*citoyens.size();
 						citoyens.get(getR).nourrir(ration);
 					} else {
 						citoyens.get(getR).nourrir(nourriture);
@@ -211,17 +211,25 @@ public class Ville extends Agent{
 		/*=========création des citoyens=========*/
 		
 		if(bois < 100 && nourriture > 100){
-			citoyens.add(new Bucheron(numero,(coordoVille.x)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this));
+			
+			Bucheron b = new Bucheron(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this);
+			citoyens.add(b);
+			world.uniqueDynamicObjects.add(b);
+			this.nourriture-=100;
 		}
 		
 		if(nbFermier < fermes.size()){
-			citoyens.add(new Fermier(numero,(coordoVille.x)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,fermes.get(nbFermier)));
+			Fermier f = new Fermier(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,fermes.get(nbFermier));
+			citoyens.add(f);
+			world.uniqueDynamicObjects.add(f);
 			nbFermier++;
+			this.nourriture-=100;
 		}
-
+		System.out.println("size = "+citoyens.size()+"        bois = "+bois+"    nourriture = "+nourriture);
 		/*=========étendre territoire========*/
 		
 		if(cpt % 10 == 9 && bois > 10) {
+			
 			if((frontiere.size() != 0) ){
 				this.etendreFrontiere();
 				cptExtention++;
