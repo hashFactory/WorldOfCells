@@ -81,9 +81,9 @@ public class Ferme extends Agent{
 		float xx = offset + (x2 * stepX);
 		float yy = offset + (y2 * stepY);
 
-		gl.glVertex3f( xx-lenX, yy-lenY, (float)myWorld.getCellHeight(x-1, y-1) * normalizeHeight + 0.4f);
-		gl.glVertex3f( xx-lenX, yy+lenY, (float)myWorld.getCellHeight(x-1, y+1) * normalizeHeight + 0.4f);
-		gl.glVertex3f( xx+lenX, yy+lenY, (float)myWorld.getCellHeight(x+1, y+1) * normalizeHeight + 0.4f);
-		gl.glVertex3f( xx+lenX, yy-lenY, (float)myWorld.getCellHeight(x+1, y-1) * normalizeHeight + 0.4f);
+		gl.glVertex3f( xx-lenX, yy-lenY, (float)myWorld.getCellHeight((x+world.getWidth()-1)%world.getWidth(), (y+world.getWidth()-1)%world.getWidth()) * normalizeHeight + 0.4f);
+		gl.glVertex3f( xx-lenX, yy+lenY, (float)myWorld.getCellHeight((x+world.getWidth()-1)%world.getWidth(), (y+world.getWidth()+1)%world.getWidth()) * normalizeHeight + 0.4f);
+		gl.glVertex3f( xx+lenX, yy+lenY, (float)myWorld.getCellHeight((x+world.getWidth()+1)%world.getWidth(), (y+world.getWidth()+1)%world.getWidth()) * normalizeHeight + 0.4f);
+		gl.glVertex3f( xx+lenX, yy-lenY, (float)myWorld.getCellHeight((x+world.getWidth()+1)%world.getWidth(), (y+world.getWidth()-1)%world.getWidth()) * normalizeHeight + 0.4f);
 	}
 }

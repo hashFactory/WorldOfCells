@@ -252,15 +252,15 @@ public class Ville extends Agent{
 			if(this.nourriture >= 0){
 				if(nbFermier < fermes.size()){
 					//System.out.println("creation fermier");
-					Fermier f = new Fermier(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,fermes.get(nbFermier-1));
+					Fermier f = new Fermier(numero,(coordoVille.x+world.getWidth())%world.getWidth(),(coordoVille.y+world.getWidth())%world.getWidth(),world,this,fermes.get(nbFermier));
 					citoyens.add(f);
 					world.uniqueDynamicObjects.add(f);
 					nbFermier++;
 					this.nourriture-=50;
 				}
-				else if((bois < 150 && nourriture > 200) || Math.random() < ((1000.0-(double)(bois)) / 1000.0)){
+				else if((bois < 150 && nourriture > 200) || Math.random() < ((1000.0-(double)(bois)) / 5000.0)){
 				//	System.out.println("creation bucheron");
-					Bucheron b = new Bucheron(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this);
+					Bucheron b = new Bucheron(numero,(coordoVille.x)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this);
 					citoyens.add(b);
 					world.uniqueDynamicObjects.add(b);
 					this.nourriture-=50;
