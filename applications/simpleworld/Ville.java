@@ -57,7 +57,7 @@ public class Ville extends Agent{
 
 		nourris = false;
 		nourriture = 500; 
-		bois = 500;
+		bois = 300;
 		
 		
 		nbFermier = 0;
@@ -103,9 +103,10 @@ public class Ville extends Agent{
 		}
 			
 		if(plusProche!=null && plusProche.x != -1){
+			//bois -= 5;
 			voisin = plusProche;
 			int val = world.cellularAutomata.getCellState2(plusProche.x, plusProche.y);
-			world.setCell(val+numero,Couleur.intToCouleur(val+numero).toArray(),voisin.x,voisin.y);
+			world.setCell(val+numero,Couleur.intToCouleur(val+numero, voisin.x, voisin.y).toArray(),voisin.x,voisin.y);
 			voisin.setLibre(false);
 			frontiere.add(new Case(voisin.x, voisin.y, false));
 		}
@@ -148,15 +149,16 @@ public class Ville extends Agent{
 	public Case recherchePlaceFerme(){
 		/*recherche case sans arbre (liste)*/
 		int random = (int)(Math.random()*(territoire.size()));
-		
-		if(world.rechercheEmplacementValideMoore(territoire.get(random))){
-			return territoire.get(random);
+
+		while(!world.rechercheEmplacementValideMoore(territoire.get(random))){
+			random = (int)(Math.random()*(territoire.size()));
 		}
+		return territoire.get(random);
 		/*random dans la liste*/
 		
 		/*checker si il n'y a pas de voisin (en Moore, avec une fonction dans WorldOfTrees), si il y en a un, refaire un random*/
 		
-		return null;
+		//return null;
 	}
 
 	public void step(){
@@ -168,7 +170,7 @@ public class Ville extends Agent{
 				
 				/*=========potentiel mort des citoyens=========*/
 					
-				if(citoyens.get(getV).getVie() <= 0){
+				if(citoyens.get(getV).getVie() <= -1000){
 					for(int display = 0 ; display < world.uniqueDynamicObjects.size(); display ++){
 						if(world.uniqueDynamicObjects.get(display) == citoyens.get(getV)){
 							world.uniqueDynamicObjects.remove(display);
@@ -184,8 +186,9 @@ public class Ville extends Agent{
 			}
 			
 			/*=========récolte des ressources des citoyens=========*/
-			boolean nourris = false;
-			if(world.getHeure() > 20.0 && world.getHeure() < 20.1){
+
+			if(world.getHeure() > 20.0 && !nourris){
+				nourris = true;
 				for(int getR = 0; getR < citoyens.size(); getR++){
 					
 					if(citoyens.get(getR) instanceof Bucheron){
@@ -196,37 +199,34 @@ public class Ville extends Agent{
 						nourriture += citoyens.get(getR).getRessources();
 					//	System.out.println("B  "+citoyens.get(getR).getnourriture());
 					}
-					
+
 					/*=========nourrir les citoyens=========*/
-					if(!nourris){
-						nourris = true;
-						int ration = 10;
-						for(int nour = 0; nour < citoyens.size();nour++){
-							if(this.nourriture > 0){
-								if(this.nourriture - ration > 0){
-									nourriture -= ration;
-									citoyens.get(getR).nourrir(ration);
-								} else {
-									citoyens.get(getR).nourrir(nourriture);
-									nourriture = 0;
-								}
+					int ration = 10;
+					//for(int nour = 0; nour < citoyens.size();nour++){
+						if(this.nourriture > 0){
+							if(this.nourriture - ration > 0){
+								nourriture -= ration;
+								citoyens.get(getR).nourrir(ration);
+							} else {
+								citoyens.get(getR).nourrir(nourriture);
+								nourriture = 0;
 							}
 						}
-					}
+
 				}
 			}
-			if(world.getHeure() > 20.1) {
+			if(world.getHeure() < 8) {
 				nourris = false;
 			}
 			
 			/*=========placement de structure (si possible)=========*/
 			//System.out.println("cpt "+cptferme+"    territoire  "+territoire.size());
-			if(territoire.size() > 1 && cptferme == 20){
-			//	System.out.println("test");
-				Case placeFerme = recherchePlaceFerme();
+			 if(territoire.size() > 1 && cptferme > 30){
+				//System.out.println("test");
+				Case placeFerme = rechercheRandomCaseParNumero(0);
 				//System.out.println(placeFerme);
-				if( ((bois % 50) == 0) && (placeFerme != null) && (bois >= 50)){
-					
+				if (placeFerme != null && bois >= 50){
+					assert placeFerme != null;
 					Ferme fe = new Ferme(this.numero+11,(placeFerme.x)%world.getWidth(),(placeFerme.y)%world.getWidth(),world);
 					fermes.add(fe);
 					world.uniqueDynamicObjects.add(fe);
@@ -236,7 +236,7 @@ public class Ville extends Agent{
 					if(this.nourriture > 0){
 						//System.out.println("fermier 1");
 						if((nbFermier < fermes.size()) && (this.nourriture > 50)){
-							System.out.println("creation fermier");
+							//System.out.println("creation fermier");
 							Fermier f = new Fermier(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,fermes.get(nbFermier));
 							citoyens.add(f);
 							world.uniqueDynamicObjects.add(f);
@@ -249,16 +249,16 @@ public class Ville extends Agent{
 			}
 			cptferme++;
 			/*=========création des citoyens=========*/
-			if(this.nourriture > 0){
-				if(nbFermier < fermes.size() && nourriture < 50){
+			if(this.nourriture >= 0){
+				if(nbFermier < fermes.size()){
 					//System.out.println("creation fermier");
-					Fermier f = new Fermier(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,fermes.get(nbFermier));
+					Fermier f = new Fermier(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,fermes.get(nbFermier-1));
 					citoyens.add(f);
 					world.uniqueDynamicObjects.add(f);
 					nbFermier++;
 					this.nourriture-=50;
 				}
-				if(bois < 100 && nourriture > 200){
+				else if((bois < 150 && nourriture > 200) || Math.random() < ((1000.0-(double)(bois)) / 1000.0)){
 				//	System.out.println("creation bucheron");
 					Bucheron b = new Bucheron(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this);
 					citoyens.add(b);
@@ -271,7 +271,7 @@ public class Ville extends Agent{
 			cpt2 = 0;
 		}
 		cpt2++;
-		System.out.println("sizeCitoyens = "+citoyens.size()+"      sizeFermes = "+fermes.size()+"        bois = "+bois+"    nourriture = "+nourriture);
+		//System.out.println("sizeCitoyens = "+citoyens.size()+"      sizeFermes = "+fermes.size()+"        bois = "+bois+"    nourriture = "+nourriture);
 		/*=========étendre territoire========*/
 		
 		if(cpt % 10 == 9 && bois > 5) {

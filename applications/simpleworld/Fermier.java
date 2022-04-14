@@ -91,8 +91,7 @@ public class Fermier extends Citoyen{
 	}
 	
 	public void displayUniqueObject(World myWorld, GL2 gl, int offsetCA_x, int offsetCA_y, float offset, float stepX, float stepY, float lenX, float lenY, float normalizeHeight ){
-		Couleur c = Couleur.getBaseColor(11); // couleur ferme
-		c = Couleur.mix(c, new Couleur(0.2f, 0.2f, 0.2f), 0.2f);
+		Couleur c = new Couleur(0.2f, 0.1f, 0.6f);
 		gl.glColor3f(c.r,c.g,c.b);
 		Couleur.setGLCouleur(gl, c);
 

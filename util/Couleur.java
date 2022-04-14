@@ -90,7 +90,7 @@ public class Couleur {
         gl.glMaterialfv( GL.GL_FRONT_AND_BACK, GL2.GL_AMBIENT, c.toArray(), 0 );
         gl.glMaterialfv( GL.GL_FRONT_AND_BACK, GL2.GL_DIFFUSE, c.toArray(), 0 );
         gl.glMaterialfv( GL.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, c.toArray(), 0 );
-        gl.glMateriali( GL.GL_FRONT_AND_BACK, GL2.GL_SHININESS, 4 );
+        gl.glMateriali( GL.GL_FRONT_AND_BACK, GL2.GL_SHININESS, 2 );
         float[] colorBlack  = {0.0f,0.0f,0.0f,1.0f};
         gl.glMaterialfv( GL.GL_FRONT_AND_BACK, GL2.GL_EMISSION, colorBlack, 0 );
     }

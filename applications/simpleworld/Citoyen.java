@@ -7,6 +7,8 @@ import worlds.World;
 
 public class Citoyen extends Agent{
 
+	int nou;
+
 	public Citoyen ( int __x , int __y, WorldOfTrees __world )
 	{
 		super(__x,__y,__world);
@@ -20,7 +22,7 @@ public class Citoyen extends Agent{
 		return 0;
 	}
 	
-	public void nourrir(int nourriture){}
+	public void nourrir(int nourriture){ }
 	
 	public void step(){}
 	

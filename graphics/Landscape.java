@@ -64,7 +64,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 	
 		static boolean MY_LIGHT_RENDERING = true; // true: nicer but slower
 		
-		final static boolean SMOOTH_AT_BORDER = true; // nicer (but wrong) rendering at border (smooth altitudes)
+		final static boolean SMOOTH_AT_BORDER = false; // nicer (but wrong) rendering at border (smooth altitudes)
 		
 		//final static double landscapeAltitudeRatio = 0.6; // 0.5: half mountain, half water ; 0.3: fewer water
 		
@@ -72,7 +72,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 		
 		static boolean DISPLAY_OBJECTS = true; // useful to deactivate if view_from_above
 		
-		final static boolean DISPLAY_FPS = true; // on-screen display
+		final static boolean DISPLAY_FPS = false; // on-screen display
 		
 		/*
 		 * benchmarking 
@@ -96,6 +96,8 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 		//  then: in the main method, replace the FPSAnimator with a regular Animator.
 		
 		private float rotateX = 0.0f;
+
+		private float rotateY = 0.0f;
 		
 		private float rotationVelocity = 0.0f; // 0.2f
 
@@ -140,7 +142,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
         {
     		_myWorld = __myWorld;
 
-			int nombreDeVilles = 30;
+			int nombreDeVilles = 6;
 
     		landscape = PerlinNoiseLandscapeGenerator.generatePerlinNoiseLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,10); // 11
     		//landscape = PolynomialLandscapeGenerator.generatePolynomialLandscape(__dx,__dy,scaling,landscapeAltitudeRatio,nombreDeVilles); // 11
@@ -205,6 +207,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
     		lenY = stepY / 2f;
 
 			zoom = 1.f;
+			rotateY = -70.f;
     		
             smoothFactor = new float[4];
             for ( int i = 0 ; i < 4 ; i++ )
@@ -231,7 +234,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
             canvas.addMouseListener(__landscape);// register mouse callback functions
             canvas.addKeyListener(__landscape);// register keyboard callback functions
             frame.add(canvas);
-            frame.setSize(1600, 1200);
+            frame.setSize(800, 800);
             //frame.setSize(1280, 960);
             frame.setResizable(true);
             frame.addWindowListener(new WindowAdapter() {
@@ -312,6 +315,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 				// color le ciel
 				Couleur ciel = Couleur.heureToCouleur(heure);
 				gl.glClearColor(ciel.r, ciel.g, ciel.b, 1.f);
+				//gl.glClearColor(0.2f, 0.6f, 0.8f, 1.f);
 
 				gl.glClear(GL.GL_COLOR_BUFFER_BIT);
                 gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
@@ -342,7 +346,10 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 	                //float[] lightPos = {40.f, 0.f, -300.f, SHINE_ALL_DIRECTIONS};
 	                float[] lightPos = {0.f, 40.f, -100.f, SHINE_ALL_DIRECTIONS};
 	                //float[] lightColorAmbient = {0.2f, 0.2f, 0.2f, 1f};
-					float intensite = (ciel.r + ciel.g + ciel.b) / 2.f + 0.4f;
+					float intensite = ((ciel.r + ciel.g + ciel.b) / 3.f) + 0.4f;
+					//float intensite = 0.45f;
+					//if (VIEW_FROM_ABOVE)
+					//	intensite *= 0.6;
 	                float[] lightColorAmbient = {intensite, intensite, intensite, 1f};
 	                float[] lightColorSpecular = {intensite*0.6f, intensite*0.6f, intensite*0.6f, 1f};
 	
@@ -393,9 +400,9 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
                 {
                     // continuous rotation (default view)
 
-                    gl.glTranslatef(0.0f, -50.f * zoom, -200.0f * zoom); // 0,0,-5
+                    gl.glTranslatef(0.0f, -50.f * zoom, -400.0f * zoom); // 0,0,-5
                     gl.glRotatef(rotateX, 0.0f, 1.0f, 0.0f);
-                    gl.glRotatef(-90.f, 1.0f, 0.0f, 0.0f);
+                    gl.glRotatef(rotateY, 1.0f, 0.0f, 0.0f);
                 }
                 
                 //System.out.println("rotateT = " + rotateT );
@@ -429,7 +436,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 	                        gl.glMaterialfv( GL.GL_FRONT_AND_BACK, GL2.GL_AMBIENT, color, 0 );
 	                        gl.glMaterialfv( GL.GL_FRONT_AND_BACK, GL2.GL_DIFFUSE, color, 0 );
 	                        gl.glMaterialfv( GL.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, color, 0 );
-	                        gl.glMateriali( GL.GL_FRONT_AND_BACK, GL2.GL_SHININESS, 4 );
+	                        gl.glMateriali( GL.GL_FRONT_AND_BACK, GL2.GL_SHININESS, 2 );
 	                        float[] colorBlack  = {0.0f,0.0f,0.0f,1.0f};
 	                        gl.glMaterialfv( GL.GL_FRONT_AND_BACK, GL2.GL_EMISSION, colorBlack, 0 );
                         }
@@ -675,6 +682,12 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 					break;
 				case KeyEvent.VK_7:
 					this._myWorld.setRate(this._myWorld.getRate() * 0.90);
+					break;
+				case KeyEvent.VK_6:
+					rotateY+=1.f;
+					break;
+				case KeyEvent.VK_5:
+					rotateY-=1.f;
 					break;
 			default:
 				break;

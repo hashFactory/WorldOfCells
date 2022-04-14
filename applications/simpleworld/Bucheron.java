@@ -41,6 +41,7 @@ public class Bucheron extends Citoyen{
 		
 		bois = 0;
 		cptBois = 0;
+		nou = 100;
 	}
 	
 	public int getRessources(){
@@ -67,20 +68,19 @@ public class Bucheron extends Citoyen{
 		if(cpt == 5){
 			//System.out.println(this.vie);
 			if(world.estJour()){	//action pendant la journée
-			
+
 				if(tree == null){	//Si je n'ai pas d'arbre en vue, j'en trouve un
-					
+
 					tree = this.ville.rechercheRandomCaseParNumero(1);
-					
 				}
 				else{							// sinon
-						
+
 					if (tree.distance(this.x, this.y) < 1.0){	//Si je suis sur l'arbre, je le coupe 10 fois
 						if(cptBois != 10){
 							bois+=5;
 							cptBois++;
 						}
-							
+
 						else {		//après avoir coupé 10 fois, l'arbre est détruit
 							tree = null;
 							cptBois = 0;

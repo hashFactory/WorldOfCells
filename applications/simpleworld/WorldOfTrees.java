@@ -215,7 +215,8 @@ public class WorldOfTrees extends World {
     {
 		this.cellularAutomata.sync();
     	// nothing to do.
-    	for ( int i = 0 ; i < this.uniqueDynamicObjects.size() ; i++ )
+		int size = this.uniqueDynamicObjects.size();
+    	for ( int i = 0 ; i < size ; i++ )
     	{
     		this.uniqueDynamicObjects.get(i).step();
 			//this.cellularAutomata.swapBuffer();
