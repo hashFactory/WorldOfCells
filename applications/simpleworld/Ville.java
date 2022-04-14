@@ -237,7 +237,7 @@ public class Ville extends Agent{
 						//System.out.println("fermier 1");
 						if((nbFermier < fermes.size()) && (this.nourriture > 50)){
 							//System.out.println("creation fermier");
-							Fermier f = new Fermier(numero,(coordoVille.x+1)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,fermes.get(nbFermier));
+							Fermier f = new Fermier(numero,(coordoVille.x)%world.getWidth(),(coordoVille.y)%world.getWidth(),world,this,fermes.get(nbFermier));
 							citoyens.add(f);
 							world.uniqueDynamicObjects.add(f);
 							nbFermier++;

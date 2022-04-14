@@ -48,7 +48,7 @@ public class Bucheron extends Citoyen{
 		int temp = this.bois;
 		this.bois = 0;
 		
-		System.out.println("temp "+temp);
+		//System.out.println("temp "+temp);
 		return temp;
 	}
 	

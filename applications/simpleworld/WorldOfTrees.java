@@ -59,17 +59,6 @@ public class WorldOfTrees extends World {
 				// on affecte la couleur des cases aux cellules
 		        this.cellsColorValues.setCellState(x, y, color);
     		}
-    	
-    	// add some objects
-    	/*for ( int i = 0 ; i < 11 ; i++ )
-    	{
-    		if ( i%10 == 0 )
-    			uniqueObjects.add(new Monolith(5,5+i,this));
-    		else
-    			uniqueObjects.add(new BridgeBlock(10,10+i,this));
-    	}*/
-    	
-    	//uniqueDynamicObjects.add(new Agent(62,62,this));
     }
 
 	public void setCell(int num, int x, int y) {

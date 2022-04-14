@@ -72,7 +72,7 @@ public class Landscape implements GLEventListener, KeyListener, MouseListener{
 		
 		static boolean DISPLAY_OBJECTS = true; // useful to deactivate if view_from_above
 		
-		final static boolean DISPLAY_FPS = false; // on-screen display
+		final static boolean DISPLAY_FPS = true; // on-screen display
 		
 		/*
 		 * benchmarking 
